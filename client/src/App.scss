@@ -1,0 +1,7 @@
+@import "~bootstrap/scss/bootstrap";
+@import "./assets/fonts/IBMPlexSansThai-Regular.ttf";
+
+.App {
+  height: calc(var(--vh, 1vh) * 100);
+  font-family: 'IBM Plex Sans Thai';
+}
