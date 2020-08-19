@@ -1,0 +1,14 @@
+.container {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+
+  .home-container {
+    width: 80vw;
+    margin-top: 1em;
+    // display: flex;
+    // flex-flow: row wrap;
+    // justify-items: center;
+    // align-content: center;
+  }
+}
