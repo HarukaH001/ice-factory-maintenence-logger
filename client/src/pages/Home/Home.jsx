@@ -7,18 +7,19 @@ export const Home = () => {
   return (
     <div className="container">
       <div className="home-container">
-        {/* <h1 style={{ color: "#42a4f5" }}>หน้าหลัก</h1> */}
         <Jumbotron>
-          <h1 style={{ color: "#42a4f5" }}>หน้าหลัก</h1>
+          <h1 style={{ color: "#007bff" }}>หน้าหลัก</h1>
           <p>
             Ice Factory Maintenance WebApp
-            
           </p>
           <a href="https://github.com/HarukaH001/ice-factory-maintenence-logger">
             <Button variant="primary" >GitHub Repository</Button>
           </a>
+          <a href="/login">
+            <Button variant="secondary" style={{marginLeft: "1rem"}}>ลงชื่อเข้าใช้</Button>
+          </a>
         </Jumbotron>
-        <p>WIP // React-Bootstrap v1.3.0</p>
+        <p style={{ position: "absolute", bottom: 0, color: "#B9B9B9" }}>WIP // React-Bootstrap v1.3.0</p>
       </div>
     </div>
   )
