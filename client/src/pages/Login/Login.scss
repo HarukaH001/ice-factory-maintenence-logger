@@ -13,6 +13,25 @@
 
     .username {
       margin: 3vh 0;
+      
+      button {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        justify-content: space-between;
+        border: solid #d3d3d3 1px;
+      }
+
+      .dropdown-menu {
+        width: 100%;
+
+        a{
+          transition: ease-in-out 100ms;
+          &:hover {
+            background-color: #ccf1ff;
+          }
+        }
+      }
     }
 
     .login-btn {
