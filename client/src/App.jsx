@@ -1,7 +1,8 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import './App.scss';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Home, Login } from './pages'
+
 
 function App() {
   let vh = window.innerHeight * 0.01;
@@ -10,6 +11,7 @@ function App() {
     let vh = window.innerHeight * 0.01;
     document.documentElement.style.setProperty('--vh', `${ vh }px`);
   })
+
 
   return (
     <div className="App">

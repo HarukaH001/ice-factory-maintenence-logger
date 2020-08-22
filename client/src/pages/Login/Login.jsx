@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import './Login.scss'
 import { Button, InputGroup, FormControl, Dropdown } from 'react-bootstrap'
 import { FaLock } from 'react-icons/fa'
+import Service from '../../services/service.js'
 
 export const Login = () => {
   const history = useHistory()
@@ -14,6 +15,20 @@ export const Login = () => {
     setLoginError(true)
     // history.push("/")
   }
+
+  // const readData = () => {
+  //   database.ref('user/').once('value').then((snapshot)=>{
+  //     const Data = snapshot.val()
+  //     console.log(Data)
+  //   })
+  // }
+
+  useEffect(()=>{
+    Service.getAuthen().getUserList().then((value)=>{
+      
+    })
+    // console.log(Get.getNahee())
+  },[])
 
   return (
     <div className="container">
