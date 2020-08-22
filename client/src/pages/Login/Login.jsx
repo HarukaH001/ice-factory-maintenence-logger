@@ -1,11 +1,19 @@
 import React, { useState } from 'react'
-// import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom'
 import './Login.scss'
-import { Button, InputGroup, DropdownButton, FormControl, Dropdown } from 'react-bootstrap';
-import { FaLock, FaUser } from 'react-icons/fa'
+import { Button, InputGroup, FormControl, Dropdown } from 'react-bootstrap'
+import { FaLock } from 'react-icons/fa'
 
 export const Login = () => {
-  const [user, setUser] = useState("เลือกชื่อผู้ใช้");
+  const history = useHistory()
+  const [user, setUser] = useState("เลือกชื่อผู้ใช้")
+  const [loginError, setLoginError] = useState(false)
+  const userList = ["admin", "user1", "user2", "user3"]
+
+  function login() {
+    setLoginError(true)
+    // history.push("/")
+  }
 
   return (
     <div className="container">
@@ -16,9 +24,9 @@ export const Login = () => {
             {user}
           </Dropdown.Toggle>
           <Dropdown.Menu>
-            <Dropdown.Item href="#" onClick={() => setUser("admin")}>admin</Dropdown.Item>
-            <Dropdown.Item href="#" onClick={() => setUser("user1")}>user1</Dropdown.Item>
-            <Dropdown.Item href="#" onClick={() => setUser("user2")}>user2</Dropdown.Item>
+            {
+              userList.map((ele, i) => <Dropdown.Item key={i} href="#" onClick={() => setUser(ele)}>{ele}</Dropdown.Item>)
+            }
           </Dropdown.Menu>
         </Dropdown>
 
@@ -33,7 +41,9 @@ export const Login = () => {
             aria-describedby="basic-addon1"
           />
         </InputGroup>
-        <a href="/"><Button variant="primary" className="login-btn">ลงชื่อเข้าใช้</Button></a>
+        {loginError ? <p style={{ color: "red", marginTop: "1vh", fontSize: "14px", textAlign: "end" }}>รหัสผ่านไม่ถูกต้อง</p> : null}
+        <Button variant="primary" className="login-btn" onClick={login}>ลงชื่อเข้าใช้</Button>
+        <a href="/" style={{ marginTop: "1vh", fontSize: "14px", textAlign: "center", width: "100%" }}>ไปหน้าหลัก</a>
       </div>
     </div >
   )
