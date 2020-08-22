@@ -1,11 +1,27 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 // import { Link } from 'react-router-dom';
 import './Login.scss'
 import { Button, InputGroup, DropdownButton, FormControl, Dropdown } from 'react-bootstrap';
 import { FaLock, FaUser } from 'react-icons/fa'
+import Service from '../../services/service.js'
+import Get from '../../services/get.js'
 
 export const Login = () => {
   const [user, setUser] = useState("เลือกชื่อผู้ใช้");
+
+  // const readData = () => {
+  //   database.ref('user/').once('value').then((snapshot)=>{
+  //     const Data = snapshot.val()
+  //     console.log(Data)
+  //   })
+  // }
+
+  useEffect(()=>{
+    Service.getAuthen().getUserList().then((value)=>{
+      
+    })
+    // console.log(Get.getNahee())
+  },[])
 
   return (
     <div className="container">
