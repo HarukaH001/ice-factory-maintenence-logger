@@ -1,10 +1,11 @@
 import React from 'react'
 import './Home.scss'
-// import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { Dropdown, Button, Form } from 'react-bootstrap'
 import { HistoryCard } from '../../components'
 
 export const Home = () => {
+  const history = useHistory()
   const mock = [{
     machine: "Compressor",
     location: "ลูกสูบฝั่งมอเตอร์",
@@ -18,18 +19,23 @@ export const Home = () => {
   }
   ]
 
+  function logout() {
+    // Logout Code Here
+    history.push("/login")
+  }
+
   return (
     <div className="container">
       <div className="home-container">
+        <div className="header">
         <h2 style={{ fontStyle: "Bold" }}>ประวัติรายการ</h2>
-        <div className="menu" style={{ position: "absolute", top: "1em", right: "2.5em" }}>
           <Dropdown>
-            <Dropdown.Toggle variant="primary"  id="dropdown-basic">&#xF0C9;</Dropdown.Toggle>
+            <Dropdown.Toggle variant="light"  id="dropdown-basic">&#xF0C9;</Dropdown.Toggle>
             <Dropdown.Menu>
-              <Dropdown.Item href="#/action-1">จัดการผู้ใช้</Dropdown.Item>
-              <Dropdown.Item href="#/action-2">จัดการข้อมูลเครื่อง</Dropdown.Item>
+              <Dropdown.Item href="/users">จัดการผู้ใช้</Dropdown.Item>
+              <Dropdown.Item href="/machines">จัดการข้อมูลเครื่อง</Dropdown.Item>
               <Dropdown.Divider />
-              <Dropdown.Item href="#/action-3">ออกจากระบบ</Dropdown.Item>
+              <Dropdown.Item href="#" onClick={logout}>ออกจากระบบ</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
         </div>
