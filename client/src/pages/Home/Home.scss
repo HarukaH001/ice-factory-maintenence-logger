@@ -1,26 +1,28 @@
-.container {
-  display: flex;
-  align-content: center;
-  justify-content: center;
+.Home {
+  .container {
+    display: flex;
+    align-content: center;
+    justify-content: center;
 
-  .home-container {
-    width: 80vw;
-    margin-top: 1em;
+    .home-container {
+      width: 90vw;
+      margin-top: 1em;
 
-    .header {
-      display: flex;
-      justify-content: space-between;
+      .header {
+        display: flex;
+        justify-content: space-between;
 
-      .dropdown-toggle::after {
-        display: none;
+        .dropdown-toggle::after {
+          display: none;
+        }
       }
-    }
 
-    .card-wrapper {
-    }
+      .card-wrapper {
+      }
 
-    .add-btn {
-      width: 100%;
+      .add-btn {
+        width: 100%;
+      }
     }
   }
 }
