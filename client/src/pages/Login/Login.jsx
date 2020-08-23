@@ -37,7 +37,7 @@ export const Login = () => {
 
   useEffect(()=>{
     Service.getAuthen().getUserList().then((value)=>{
-      
+      console.log(value)
     })
     // console.log(Get.getNahee())
   },[])

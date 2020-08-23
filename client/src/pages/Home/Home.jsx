@@ -1,11 +1,19 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import './Home.scss'
 import { useHistory } from 'react-router-dom';
 import { Dropdown, Button, Form } from 'react-bootstrap'
+import Service from '../../services/service.js'
 import { HistoryCard } from '../../components'
 
 export const Home = () => {
   const history = useHistory()
+
+  useEffect(()=>{
+    Service.getAuthen().getUserList().then((value)=>{
+      console.log(value)
+    })
+    // console.log(Get.getNahee())
+  },[])
   const mock = [{
     machine: "Compressor",
     location: "ลูกสูบฝั่งมอเตอร์",
