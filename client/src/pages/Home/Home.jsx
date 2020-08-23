@@ -18,12 +18,20 @@ export const Home = () => {
     machine: "Compressor",
     location: "ลูกสูบฝั่งมอเตอร์",
     number: 1,
-    date: "16 สิงหาคม 2563  15:03 น."
+    jobNo: "00244",
+    technician: "ช่าง ABC",
+    list: ["ABC", "DEF"],
+    date: "16 สิงหาคม 2563  15:03 น.",
+    remark: "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
   }, {
     machine: "ปั๊มน้ำ",
     location: "คอเพลาซ้าย",
     number: 3,
-    date: "16 สิงหาคม 2563  15:03 น."
+    jobNo: "00244",
+    technician: "ช่าง ABC",
+    list: ["ABC", "DEF"],
+    date: "16 สิงหาคม 2563  15:03 น.",
+    remark: "กขฃคฅฆงจฉชซฌญฎฏฐฑฒณดตถทธนบปผฝพฟภมยรลวศษสหฬอฮ"
   }
   ]
 
