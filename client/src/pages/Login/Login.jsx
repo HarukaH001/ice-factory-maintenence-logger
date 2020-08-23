@@ -9,7 +9,19 @@ export const Login = () => {
   const history = useHistory()
   const [user, setUser] = useState("เลือกชื่อผู้ใช้")
   const [loginError, setLoginError] = useState(false)
-  const userList = ["admin", "user1", "user2", "user3"]
+  const userList = [{
+    username: "admin",
+    password: "admin"
+  },{
+    username: "user1",
+    password: "1234561"
+  },{
+    username: "user2",
+    password: "1234562"
+  },{
+    username: "user3",
+    password: "1234563"
+  },]
 
   function login() {
     setLoginError(true)
@@ -40,7 +52,7 @@ export const Login = () => {
           </Dropdown.Toggle>
           <Dropdown.Menu>
             {
-              userList.map((ele, i) => <Dropdown.Item key={i} href="#" onClick={() => setUser(ele)}>{ele}</Dropdown.Item>)
+              userList.map((ele, i) => <Dropdown.Item key={i} href="#" onClick={() => setUser(ele.username)}>{ele.username}</Dropdown.Item>)
             }
           </Dropdown.Menu>
         </Dropdown>
