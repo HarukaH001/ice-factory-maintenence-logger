@@ -1,9 +1,19 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import './Home.scss'
 // import { Link } from 'react-router-dom';
 import { Jumbotron, Button, Form } from 'react-bootstrap';
+import Service from '../../services/service.js'
 
 export const Home = () => {
+
+  useEffect(()=>{
+    Service.getAuthen().getUserList().then((value)=>{
+      console.log(value)
+    })
+    // console.log(Get.getNahee())
+  },[])
+
+
   return (
     <div className="container">
       <div className="home-container">
