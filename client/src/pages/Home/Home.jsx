@@ -35,7 +35,7 @@ export const Home = () => {
         <div className="home-container">
           <div className="header">
             <h2 style={{ fontStyle: "Bold" }}>ประวัติการซ่อม</h2>
-            <NavDropdown></NavDropdown>
+            <NavDropdown _disabled={"home"}></NavDropdown>
           </div>
           <Form.Group controlId="exampleForm.ControlInput1">
             <Form.Control type="text" placeholder="&#xF002;  ค้นหารายการ" />

@@ -19,7 +19,7 @@ export const Machine = () => {
         <div className="machine-container">
           <div className="header">
             <h2 style={{ fontStyle: "Bold" }}>จัดการข้อมูลเครื่อง</h2>
-            <NavDropdown></NavDropdown>
+            <NavDropdown _disabled={"machine"}></NavDropdown>
           </div>
           <InputGroup className="add-machine">
             <FormControl

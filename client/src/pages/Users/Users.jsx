@@ -18,7 +18,7 @@ export const Users = () => {
         <div className="users-container">
           <div className="header">
             <h2 style={{ fontStyle: "Bold" }}>จัดการบัญชี</h2>
-            <NavDropdown></NavDropdown>
+            <NavDropdown _disabled={"users"}></NavDropdown>
           </div>
           <InputGroup className="search-user">
             <FormControl
