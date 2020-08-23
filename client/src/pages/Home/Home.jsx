@@ -58,7 +58,7 @@ export const Home = () => {
             </Dropdown>
           </div>
           <Form.Group controlId="exampleForm.ControlInput1">
-            <Form.Control type="text" placeholder="&#xF002;  ค้นหา..." />
+            <Form.Control type="text" placeholder="&#xF002;  ค้นหารายการ" />
           </Form.Group>
           <Button variant="primary" className="add-btn" >+ เพิ่มรายการ</Button>
           <div className="card-wrapper">
