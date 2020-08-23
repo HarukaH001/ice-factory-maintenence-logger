@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import './Home.scss'
 import { useHistory } from 'react-router-dom';
 import { Dropdown, Button, Form } from 'react-bootstrap'
-import Service from '../../services/service.js'
+// import Service from '../../services/service.js'
 import { HistoryCard, NavDropdown } from '../../components'
 
 export const Home = () => {

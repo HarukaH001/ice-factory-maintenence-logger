@@ -2,10 +2,10 @@ import React, { useEffect } from 'react';
 import './App.scss';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Home, Login, Machine, Users } from './pages';
-import Service from './services/service.js'
-
+import firebase, { Authen } from './services/service.js'
 
 function App() {
+
   let vh = window.innerHeight * 0.01;
   document.documentElement.style.setProperty('--vh', `${ vh }px`);
   window.addEventListener('resize', () => {
@@ -14,14 +14,14 @@ function App() {
   })
 
   useEffect(()=>{
-    Service.getAuthen().auth().onAuthStateChanged(user=>{
+    Authen.auth().onAuthStateChanged(user=>{
       // console.log(user)
       if(user){
-        // window.location.href = '/'
+        if(window.location.pathname.includes('/login')) window.location.href = '/'
         console.log('Logged in')
   
       } else {
-        // if(!window.location.pathname.includes('/login')) window.location.href = '/login'
+        if(!window.location.pathname.includes('/login')) window.location.href = '/login'
         console.log('Logged out')
       }
     })

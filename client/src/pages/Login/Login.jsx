@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom'
 import './Login.scss'
 import { Button, InputGroup, FormControl, Dropdown, Alert } from 'react-bootstrap'
 import { FaLock } from 'react-icons/fa'
-import Service from '../../services/service.js'
+import firebase, { Authen } from '../../services/service.js'
 
 export const Login = () => {
   const errorMessageList = ["กรุณากรอกรหัสผ่าน", "รหัสผ่านไม่ถูกต้อง","กรุณาเลือกผู้ใช้","บัญชีถูกระงับชั่วคราว","สำหรับนักพัฒนา: อีเมลใช้งานไม่ได้", "สำหรับนักพัฒนา: ไม่พบผู้ใช้"]
@@ -28,7 +28,7 @@ export const Login = () => {
         setLoginError(true)
         return
       }
-      Service.getAuthen().login(user.email,password).then(value=>{
+      Authen.login(user.email,password).then(value=>{
         document.getElementById('password').value = ''
         setPassword('')
         if(value.user){
@@ -52,11 +52,11 @@ export const Login = () => {
   }
 
   function logout() {
-    Service.getAuthen().logout()
+    Authen.logout()
   }
 
   useEffect(() => {
-    Service.getAuthen().getFullUserList().then((value) => {
+    Authen.getFullUserList().then((value) => {
       setUserList(Object.entries(value).map(ele=>{
         ele[1].uid = ele[0]
         return ele[1]
