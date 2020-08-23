@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './App.scss';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Home, Login, Machine, Users } from './pages';
+import Service from './services/service.js'
 
 
 function App() {
@@ -12,6 +13,19 @@ function App() {
     document.documentElement.style.setProperty('--vh', `${ vh }px`);
   })
 
+  useEffect(()=>{
+    Service.getAuthen().auth().onAuthStateChanged(user=>{
+      // console.log(user)
+      if(user){
+        // window.location.href = '/'
+        console.log('Logged in')
+  
+      } else {
+        // if(!window.location.pathname.includes('/login')) window.location.href = '/login'
+        console.log('Logged out')
+      }
+    })
+  })
 
   return (
     <div className="App">

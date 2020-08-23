@@ -6,40 +6,62 @@ import { FaLock } from 'react-icons/fa'
 import Service from '../../services/service.js'
 
 export const Login = () => {
-  const history = useHistory()
-  const [user, setUser] = useState("เลือกชื่อผู้ใช้")
-  const [loginError, setLoginError] = useState(false)
-  const userList = [{
-    username: "admin",
-    password: "admin"
-  }, {
-    username: "user1",
-    password: "1234561"
-  }, {
-    username: "user2",
-    password: "1234562"
-  }, {
-    username: "user3",
-    password: "1234563"
-  },]
+  const errorMessageList = ["กรุณากรอกรหัสผ่าน", "รหัสผ่านไม่ถูกต้อง","กรุณาเลือกผู้ใช้","บัญชีถูกระงับชั่วคราว","สำหรับนักพัฒนา: อีเมลใช้งานไม่ได้", "สำหรับนักพัฒนา: ไม่พบผู้ใช้"]
+  const defaultSelectUser = {username: "เลือกชื่อผู้ใช้"}
 
-  function login() {
-    setLoginError(true)
-    // history.push("/")
+  const history = useHistory()
+  const [user, setUser] = useState(defaultSelectUser)
+  const [password, setPassword] = useState('')
+  const [loginError, setLoginError] = useState(false)
+  const [errorMessage, setErrorMessage] = useState(errorMessageList[1])
+  const [userList, setUserList] = useState([])
+
+  function login(e) {
+    e.preventDefault()
+    setLoginError(false)
+    if(user.username === "เลือกชื่อผู้ใช้"){
+      setErrorMessage(errorMessageList[2])
+      setLoginError(true)
+    } else {
+      if(!password){
+        setErrorMessage(errorMessageList[0])
+        setLoginError(true)
+        return
+      }
+      Service.getAuthen().login(user.email,password).then(value=>{
+        document.getElementById('password').value = ''
+        setPassword('')
+        if(value.user){
+          setUser(defaultSelectUser)
+          // history.push('/')
+        } else {
+          console.log(value.code)
+          if(value.code === "auth/invalid-email"){
+            setErrorMessage(errorMessageList[2])
+          } else if (value.code === "auth/user-disabled") {
+            setErrorMessage(errorMessageList[3])
+          } else if (value.code === "auth/user-not-found") {
+            setErrorMessage(errorMessageList[5])
+          } else if (value.code === "auth/wrong-password") {
+            setErrorMessage(errorMessageList[1])
+          }
+          setLoginError(true)
+        }
+      })
+    }
   }
 
-  // const readData = () => {
-  //   database.ref('user/').once('value').then((snapshot)=>{
-  //     const Data = snapshot.val()
-  //     console.log(Data)
-  //   })
-  // }
+  function logout() {
+    Service.getAuthen().logout()
+  }
 
   useEffect(() => {
-    Service.getAuthen().getUserList().then((value) => {
-      console.log(value)
+    Service.getAuthen().getFullUserList().then((value) => {
+      setUserList(Object.entries(value).map(ele=>{
+        ele[1].uid = ele[0]
+        return ele[1]
+      }))
     })
-    // console.log(Get.getNahee())
   }, [])
 
   return (
@@ -49,11 +71,11 @@ export const Login = () => {
           <h1 className="title">ลงชื่อเข้าใช้</h1>
           <Dropdown className="username">
             <Dropdown.Toggle variant="light" id="dropdown-basic">
-              {user}
+              {user.username}
             </Dropdown.Toggle>
             <Dropdown.Menu>
               {
-                userList.map((ele, i) => <Dropdown.Item key={i} href="#" onClick={() => setUser(ele.username)}>{ele.username}</Dropdown.Item>)
+                userList.map((ele, i) => <Dropdown.Item key={i} href="#" onClick={() => setUser(ele)}>{ele.username}</Dropdown.Item>)
               }
             </Dropdown.Menu>
           </Dropdown>
@@ -66,11 +88,15 @@ export const Login = () => {
               placeholder="รหัสผ่าน"
               aria-label="รหัสผ่าน"
               aria-describedby="password"
+              onChange={e => setPassword(e.target.value)}
+              id="password"
             />
           </InputGroup>
-          {loginError ? <Alert variant="danger" className="alert">รหัสผ่านไม่ถูกต้อง</Alert> : null}
+          {loginError ? <Alert variant="danger" className="alert">{errorMessage}</Alert> : null}
           <Button variant="primary" className="login-btn" onClick={login}>ลงชื่อเข้าใช้</Button>
           <a href="/" style={{ marginTop: "1vh", fontSize: "14px", textAlign: "center", width: "100%" }}>ไปหน้าหลัก</a>
+          <br></br><br></br>
+          <a href="#" style={{ marginTop: "1vh", fontSize: "14px", textAlign: "center", width: "100%" }} onClick={logout}>ลงชื่อออก</a>
         </div>
       </div >
     </div>

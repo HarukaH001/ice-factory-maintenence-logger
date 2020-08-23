@@ -3,17 +3,11 @@ import './Home.scss'
 import { useHistory } from 'react-router-dom';
 import { Dropdown, Button, Form } from 'react-bootstrap'
 import Service from '../../services/service.js'
-import { HistoryCard } from '../../components'
+import { HistoryCard, NavDropdown } from '../../components'
 
 export const Home = () => {
   const history = useHistory()
 
-  useEffect(() => {
-    Service.getAuthen().getUserList().then((value) => {
-      console.log(value)
-    })
-    // console.log(Get.getNahee())
-  }, [])
   const mock = [{
     machine: "Compressor",
     location: "ลูกสูบฝั่งมอเตอร์",
@@ -35,27 +29,13 @@ export const Home = () => {
   }
   ]
 
-  function logout() {
-    // Logout Code Here
-    history.push("/login")
-  }
-
   return (
     <div className="Home">
       <div className="container">
         <div className="home-container">
           <div className="header">
             <h2 style={{ fontStyle: "Bold" }}>ประวัติการซ่อม</h2>
-            <Dropdown>
-              <Dropdown.Toggle variant="light" id="dropdown-basic">&#xF0C9;</Dropdown.Toggle>
-              <Dropdown.Menu>
-                <Dropdown.Item href="/" disabled>ประวัติการซ่อม</Dropdown.Item>
-                <Dropdown.Item href="/users">จัดการผู้ใช้</Dropdown.Item>
-                <Dropdown.Item href="/machines">จัดการข้อมูลเครื่อง</Dropdown.Item>
-                <Dropdown.Divider />
-                <Dropdown.Item href="#" onClick={logout} style={{ color: "red" }}>ออกจากระบบ</Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
+            <NavDropdown></NavDropdown>
           </div>
           <Form.Group controlId="exampleForm.ControlInput1">
             <Form.Control type="text" placeholder="&#xF002;  ค้นหารายการ" />

@@ -2,6 +2,7 @@ import React from 'react'
 import './Machine.scss'
 import { Link, useHistory } from 'react-router-dom';
 import { Button, InputGroup, FormControl, Dropdown } from 'react-bootstrap'
+import { NavDropdown } from '../../components'
 
 export const Machine = () => {
   const history = useHistory()
@@ -18,16 +19,7 @@ export const Machine = () => {
         <div className="machine-container">
           <div className="header">
             <h2 style={{ fontStyle: "Bold" }}>จัดการข้อมูลเครื่อง</h2>
-            <Dropdown>
-              <Dropdown.Toggle variant="light" id="dropdown-basic">&#xF0C9;</Dropdown.Toggle>
-              <Dropdown.Menu>
-                <Dropdown.Item href="/">ประวัติการซ่อม</Dropdown.Item>
-                <Dropdown.Item href="/users">จัดการผู้ใช้</Dropdown.Item>
-                <Dropdown.Item href="/machines" disabled>จัดการข้อมูลเครื่อง</Dropdown.Item>
-                <Dropdown.Divider />
-                <Dropdown.Item href="#" onClick={logout} style={{ color: "red" }}>ออกจากระบบ</Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
+            <NavDropdown></NavDropdown>
           </div>
           <InputGroup className="add-machine">
             <FormControl

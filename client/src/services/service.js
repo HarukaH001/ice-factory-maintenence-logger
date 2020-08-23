@@ -7,7 +7,8 @@ class Service {
 
     constructor(){
         firebase.initializeApp(firebaseConfig)
-        this.Authen = new Authen(firebase)
+        firebase.analytics()
+        this.Authen = new Authen(firebase,firebaseConfig)
     }
 
 

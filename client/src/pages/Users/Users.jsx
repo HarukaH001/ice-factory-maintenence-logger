@@ -2,6 +2,7 @@ import React from 'react'
 import './Users.scss'
 import { Link, useHistory } from 'react-router-dom';
 import { Button, InputGroup, FormControl, Dropdown } from 'react-bootstrap'
+import { NavDropdown } from '../../components'
 
 export const Users = () => {
   const history = useHistory()
@@ -17,16 +18,7 @@ export const Users = () => {
         <div className="users-container">
           <div className="header">
             <h2 style={{ fontStyle: "Bold" }}>จัดการบัญชี</h2>
-            <Dropdown>
-              <Dropdown.Toggle variant="light" id="dropdown-basic">&#xF0C9;</Dropdown.Toggle>
-              <Dropdown.Menu>
-                <Dropdown.Item href="/">ประวัติการซ่อม</Dropdown.Item>
-                <Dropdown.Item href="/users" disabled>จัดการผู้ใช้</Dropdown.Item>
-                <Dropdown.Item href="/machines">จัดการข้อมูลเครื่อง</Dropdown.Item>
-                <Dropdown.Divider />
-                <Dropdown.Item href="#" onClick={logout} style={{ color: "red" }}>ออกจากระบบ</Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
+            <NavDropdown></NavDropdown>
           </div>
           <InputGroup className="search-user">
             <FormControl
