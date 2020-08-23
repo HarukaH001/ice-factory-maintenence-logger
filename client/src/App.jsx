@@ -19,6 +19,8 @@ function App() {
         <Switch>
           <Route exact path="/"><Home /></Route>
           <Route exact path="/login"><Login /></Route>
+          <Route exact path="/users"><Login /></Route>
+          <Route exact path="/machines"><Login /></Route>
         </Switch>
       </Router>
     </div>
