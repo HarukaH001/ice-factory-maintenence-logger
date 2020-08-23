@@ -1,42 +1,50 @@
-.container {
-  display: flex;
-  height: 100vh;
+.Login {
+  .container {
+    display: flex;
+    height: 100vh;
 
-  .login-container {
-    margin: auto;
+    .login-container {
+      width: 80vw;
+      margin: auto;
 
-    .title {
-      font-weight: bold;
-      text-align: center;
-      margin-bottom: 7vh;
-    }
-
-    .username {
-      margin: 3vh 0;
-      
-      button {
-        display: flex;
-        width: 100%;
-        align-items: center;
-        justify-content: space-between;
-        border: solid #d3d3d3 1px;
+      .title {
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 7vh;
       }
 
-      .dropdown-menu {
-        width: 100%;
+      .username {
+        margin: 3vh 0;
 
-        a{
-          transition: ease-in-out 100ms;
-          &:hover {
-            background-color: #ccf1ff;
+        button {
+          display: flex;
+          width: 100%;
+          align-items: center;
+          justify-content: space-between;
+          border: solid #d3d3d3 1px;
+        }
+
+        .dropdown-menu {
+          width: 100%;
+
+          a {
+            transition: ease-in-out 100ms;
+            &:hover {
+              background-color: #ccf1ff;
+            }
           }
         }
       }
-    }
 
-    .login-btn {
-      margin-top: 10vh;
-      width: 100%;
+      .alert {
+        margin-top: 1em;
+        height: 50px;
+      }
+
+      .login-btn {
+        margin-top: 8vh;
+        width: 100%;
+      }
     }
   }
 }
