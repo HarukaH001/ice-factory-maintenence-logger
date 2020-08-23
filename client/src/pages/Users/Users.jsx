@@ -16,7 +16,7 @@ export const Users = () => {
       <div className="container">
         <div className="users-container">
           <div className="header">
-            <h2 style={{ fontStyle: "Bold" }}>จัดการผู้ใช้</h2>
+            <h2 style={{ fontStyle: "Bold" }}>จัดการบัญชี</h2>
             <Dropdown>
               <Dropdown.Toggle variant="light" id="dropdown-basic">&#xF0C9;</Dropdown.Toggle>
               <Dropdown.Menu>
@@ -35,6 +35,7 @@ export const Users = () => {
               aria-describedby="basic-addon2"
             />
           </InputGroup>
+          <Button variant="primary" className="add-user-btn" >+ เพิ่มผู้ใช้ใหม่</Button>
           <div className="btn-container">
             
           </div>

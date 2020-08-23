@@ -7,7 +7,7 @@
     .users-container {
       width: 90vw;
       margin-top: 1em;
-      
+
       .header {
         display: flex;
         justify-content: space-between;
@@ -15,6 +15,11 @@
         .dropdown-toggle::after {
           display: none;
         }
+      }
+
+      .add-user-btn {
+        margin: 1rem 0;
+        width: 100%;
       }
 
       .btn-container {
