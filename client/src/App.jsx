@@ -1,7 +1,7 @@
-import React,{useEffect} from 'react';
+import React from 'react';
 import './App.scss';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { Home, Login } from './pages'
+import { Home, Login, Machine, Users } from './pages';
 
 
 function App() {
@@ -19,8 +19,8 @@ function App() {
         <Switch>
           <Route exact path="/"><Home /></Route>
           <Route exact path="/login"><Login /></Route>
-          <Route exact path="/users"><Login /></Route>
-          <Route exact path="/machines"><Login /></Route>
+          <Route exact path="/users"><Users /></Route>
+          <Route exact path="/machines"><Machine /></Route>
         </Switch>
       </Router>
     </div>
