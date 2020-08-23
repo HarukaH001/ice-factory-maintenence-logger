@@ -16,7 +16,7 @@ export const Users = () => {
       <div className="container">
         <div className="users-container">
           <div className="header">
-            <h2 style={{ fontStyle: "Bold" }}>จัดการบัญชี</h2>
+            <h2 style={{ fontStyle: "Bold" }}>จัดการผู้ใช้</h2>
             <Dropdown>
               <Dropdown.Toggle variant="light" id="dropdown-basic">&#xF0C9;</Dropdown.Toggle>
               <Dropdown.Menu>

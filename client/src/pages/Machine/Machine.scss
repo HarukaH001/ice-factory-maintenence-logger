@@ -12,6 +12,14 @@
         display: flex;
         justify-content: space-between;
 
+        h2 {
+          padding-top: 4px;
+          min-width: 70vw;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
         .dropdown-toggle::after {
           display: none;
         }
@@ -22,7 +30,7 @@
         button {
           width: 100%;
           margin: 5px 0;
-          font-weight: bolder;
+          font-weight: 500;
         }
       }
     }
