@@ -25,14 +25,13 @@ export const Machine = () => {
             <FormControl
               placeholder="เพิ่มเครื่องจักร"
               aria-label="เพิ่มเครื่องจักร"
-              aria-describedby="basic-addon2"
             />
             <InputGroup.Append>
               <Button variant="primary">เพิ่ม</Button>
             </InputGroup.Append>
           </InputGroup>
           <div className="btn-container">
-            {machineList.map((ele, i) => { return <Link to={"machines/" + ele}><Button variant="success" key={i}>{ele}</Button></Link> })}
+            {machineList.map((ele, i) => { return <Link key={i} to={"machines/" + ele}><Button variant="success">{ele}</Button></Link> })}
           </div>
         </div>
       </div>
