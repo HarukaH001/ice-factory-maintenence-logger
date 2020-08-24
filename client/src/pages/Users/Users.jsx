@@ -77,7 +77,7 @@ export const Users = () => {
         <div className="container">
           <div className="users-container">
             <div className="header">
-              <h2 style={{ fontStyle: "Bold" }}>จัดการบัญชี</h2>
+              <h2 style={{ fontStyle: "Bold" }}>จัดการผู้ใช้</h2>
               <NavDropdown _disabled={"users"}></NavDropdown>
             </div>
             <InputGroup className="search-user">
@@ -97,7 +97,7 @@ export const Users = () => {
       <Modal show={show} onHide={handleClose} centered style={{ fontFamily: "IBM Plex Sans Thai" }}>
         <Form onSubmit={(e) => { addUser(e) }}>
           <Modal.Header closeButton>
-            <Modal.Title style={{width: "100%"}}>เพิ่มผู้ใช้</Modal.Title>
+            <Modal.Title style={{width: "100%"}}>เพิ่มผู้ใช้ใหม่</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form.Group controlId="username">
