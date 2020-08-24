@@ -42,6 +42,12 @@ export const Users = () => {
       }
     })
   }, [])
+  
+  function register() {
+    Authen.addUser("Haruka","Haruka001",false).then(()=>{
+      handleClose()
+    })
+  }
 
   return (
     <>

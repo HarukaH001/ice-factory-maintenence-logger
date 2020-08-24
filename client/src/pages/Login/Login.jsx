@@ -51,10 +51,6 @@ export const Login = () => {
     }
   }
 
-  function logout() {
-    Authen.logout()
-  }
-
   useEffect(() => {
     Authen.getPublicUserList().then((value) => {
       setUserList(value)

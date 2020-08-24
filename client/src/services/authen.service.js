@@ -58,6 +58,32 @@ export const Auth = (firebase) => {
                 })
             })
         },
+
+        addUser(username, password, isAdmin) {
+            return new Promise(resolve=>{
+                let email = Date.now() + "@gmail.com"
+                superagent.post(config.authRestDomain+"signupNewUser?key="+config.apiKey)
+                .set('Content-Type','application/json')
+                    .send({
+                    email: email,
+                    password: password,
+                    returnSecureToken: true
+                }).end((err,res)=>{
+                    // console.log(err?err:res)
+                    if(!err){
+                        //เพิ่มผู้ใช้ใน db
+                        database.ref('user/'+res.body.localId).set({
+                            email: email,
+                            password: password,
+                            role: isAdmin?'admin':'user',
+                            username: username
+                        }).then(()=>{
+                            resolve()
+                        })
+                    }
+                })
+            })
+        },
     
         logout(){
             firebase.auth().signOut()
