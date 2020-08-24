@@ -8,7 +8,7 @@ export const NavDropdown = ({ data, _disabled }) => {
 
   return (
     <>
-      <Dropdown>
+      <Dropdown alignRight>
         <Dropdown.Toggle variant="light" id="dropdown-basic">&#xF0C9;</Dropdown.Toggle>
         <Dropdown.Menu>
           <Dropdown.Item href="/" disabled={_disabled === "home"}>ประวัติการซ่อม</Dropdown.Item>
