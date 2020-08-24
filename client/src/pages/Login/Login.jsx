@@ -93,7 +93,6 @@ export const Login = () => {
             {loginError ? <Alert variant="danger" className="alert">{errorMessage}</Alert> : null}
             <Button variant="primary" className="login-btn" type="submit" onClick={login}>ลงชื่อเข้าใช้</Button>
           </Form>
-          <a href="#" style={{ marginTop: "1vh", fontSize: "14px", textAlign: "center", width: "100%" }} onClick={logout}>ลงชื่อออก</a>
         </div>
       </div >
     </div>
