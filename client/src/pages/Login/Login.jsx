@@ -56,11 +56,8 @@ export const Login = () => {
   }
 
   useEffect(() => {
-    Authen.getFullUserList().then((value) => {
-      setUserList(Object.entries(value).map(ele => {
-        ele[1].uid = ele[0]
-        return ele[1]
-      }))
+    Authen.getPublicUserList().then((value) => {
+      setUserList(value)
     })
   }, [])
 
