@@ -44,7 +44,7 @@ export const Auth = (firebase) => {
                     let Data = snapshot.val()
                     Data.uid = auth_user.uid
                     resolve(Data)
-                })
+                }).catch(err=>resolve(''))
             })
         },
     
