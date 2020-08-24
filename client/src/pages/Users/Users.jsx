@@ -11,13 +11,14 @@ export const Users = () => {
   const [alert, setAlert] = useState('')
 
   const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
+  const handleClose = () => {setShow(false); setAlert('')}
   const handleShow = () => setShow(true);
 
   const [showSuccess, setShowSuccess] = useState(false);
   const toggleShowSuccess = () => setShowSuccess(!showSuccess);
 
   const addUser = (e) => {
+    setAlert('')
     e.preventDefault()
     const registerForm = {
       username: document.getElementById("username").value,
@@ -27,26 +28,47 @@ export const Users = () => {
     if (user.some(ele => ele.username === registerForm.username)) {
       setAlert("ชื่อผู้ใช้นี้มีผู้ใช้งานอยู่แล้ว")
     }
+    else if (registerForm.password.length < 6){
+      setAlert("รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร")
+    }
     else {
-      handleClose()
-      toggleShowSuccess()
+      Authen.addUser(registerForm.username, registerForm.password, registerForm.isAdmin).then(()=>{
+        handleClose()
+        toggleShowSuccess()
+      })
     }
   }
 
   useEffect(() => {
-    Authen.auth().onAuthStateChanged(user => {
-      if (user) {
-        Authen.getUserList().then(res => {
-          setUser(res)
+    if (firebase.auth().currentUser) {
+      // Authen.getUserList().then(res => {
+      //   setUser(res)
+      // })
+      Authen.getUsersRef().on('value',snapshot=>{
+        const Data = Object.entries(snapshot.val()).map(ele => {
+          ele[1].uid = ele[0]
+          return ele[1]
         })
-      }
-    })
+        setUser(Data)
+      })
+    }
   }, [])
-  
-  function register() {
-    Authen.addUser("Haruka","Haruka001",false).then(()=>{
-      handleClose()
+
+  function renderUser(){
+
+    return user.sort((a,b)=>sortByTimeStampGeneratedEmail(a,b,'Asd')).map(ele=> {
+      return ( //ทำ component มา render ที่นี่
+          <p key={ele.uid}>{"ชื่อผู้ใช้: "+ele.username+" รหัสผ่าน: "+ele.password+" สิทธิ:"+ele.role}</p>
+        )
     })
+  }
+
+  function sortByTimeStampGeneratedEmail(a,b,option='Des'){
+    if(option === 'Asd'){
+      return parseInt((a.email).substring(0,(a.email).indexOf('@'))) - parseInt((b.email).substring(0,(b.email).indexOf('@')))
+    } else {
+      return parseInt((b.email).substring(0,(b.email).indexOf('@'))) - parseInt((a.email).substring(0,(a.email).indexOf('@')))
+    }
   }
 
   return (
@@ -67,6 +89,7 @@ export const Users = () => {
             </InputGroup>
             <Button variant="primary" className="add-user-btn" onClick={handleShow}>+ เพิ่มผู้ใช้ใหม่</Button>
             <div className="btn-container">
+              {renderUser()}
             </div>
           </div>
         </div>

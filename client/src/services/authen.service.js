@@ -47,6 +47,10 @@ export const Auth = (firebase) => {
                 }).catch(err=>resolve(''))
             })
         },
+
+        getUsersRef(){
+            return database.ref('user')
+        },
     
         login(email,password){
             return firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL).then(()=>{
