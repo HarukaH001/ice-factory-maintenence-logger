@@ -3,6 +3,7 @@ import './Users.scss'
 import { Link, useHistory } from 'react-router-dom';
 import { Button, InputGroup, FormControl, Modal, Form } from 'react-bootstrap'
 import { NavDropdown } from '../../components'
+import firebase, { Authen } from '../../services/service'
 
 export const Users = () => {
   const history = useHistory()
@@ -13,6 +14,12 @@ export const Users = () => {
 
   function addUser() {
     // Your function here
+  }
+
+  function register() {
+    Authen.addUser("Haruka","Haruka001",false).then(()=>{
+      handleClose()
+    })
   }
 
   return (
@@ -55,6 +62,7 @@ export const Users = () => {
           <Modal.Footer>
             <Button variant="secondary" type="cancel" onClick={() => { handleClose() }}>ยกเลิก</Button>
             <Button variant="primary" type="submit" onClick={() => { addUser(); handleClose() }}>บันทึก</Button>
+            <a href="#" style={{ marginTop: "1vh", fontSize: "14px", textAlign: "center", width: "100%" }} onClick={register}>เพิ่มผู้ใช้</a>
           </Modal.Footer>
         </Form>
       </Modal>

@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.scss';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Home, Login, Machine, Users } from './pages';
 import firebase, { Authen } from './services/service.js'
 
 function App() {
+  const [isAuthenticated, setAuthenticated] = useState(false)
 
   let vh = window.innerHeight * 0.01;
   document.documentElement.style.setProperty('--vh', `${ vh }px`);
@@ -18,23 +19,27 @@ function App() {
       // console.log(user)
       if(user){
         if(window.location.pathname.includes('/login')) window.location.href = '/'
+        Authen.getUser().then(res=>{
+          setAuthenticated(true)
+        })
         console.log('Logged in')
   
       } else {
         if(!window.location.pathname.includes('/login')) window.location.href = '/login'
+        setAuthenticated(false)
         console.log('Logged out')
       }
     })
-  })
+  },[])
 
   return (
     <div className="App">
       <Router>
         <Switch>
-          <Route exact path="/"><Home /></Route>
+          <Route exact path="/">{isAuthenticated && <Home />}</Route>
           <Route exact path="/login"><Login /></Route>
-          <Route exact path="/users"><Users /></Route>
-          <Route exact path="/machines"><Machine /></Route>
+          <Route exact path="/users">{isAuthenticated && <Users />}</Route>
+          <Route exact path="/machines">{isAuthenticated && <Machine />}</Route>
         </Switch>
       </Router>
     </div>
