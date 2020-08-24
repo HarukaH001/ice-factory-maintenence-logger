@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import './Login.scss'
-import { Button, InputGroup, FormControl, Dropdown, Alert } from 'react-bootstrap'
+import { Button, InputGroup, FormControl, Dropdown, Alert, Form } from 'react-bootstrap'
 import { FaLock } from 'react-icons/fa'
 import firebase, { Authen } from '../../services/service.js'
 
 export const Login = () => {
-  const errorMessageList = ["กรุณากรอกรหัสผ่าน", "รหัสผ่านไม่ถูกต้อง","กรุณาเลือกผู้ใช้","บัญชีถูกระงับชั่วคราว","สำหรับนักพัฒนา: อีเมลใช้งานไม่ได้", "สำหรับนักพัฒนา: ไม่พบผู้ใช้"]
-  const defaultSelectUser = {username: "เลือกชื่อผู้ใช้"}
+  const errorMessageList = ["กรุณากรอกรหัสผ่าน", "รหัสผ่านไม่ถูกต้อง", "กรุณาเลือกผู้ใช้", "บัญชีถูกระงับชั่วคราว", "สำหรับนักพัฒนา: อีเมลใช้งานไม่ได้", "สำหรับนักพัฒนา: ไม่พบผู้ใช้"]
+  const defaultSelectUser = { username: "เลือกชื่อผู้ใช้" }
 
   const history = useHistory()
   const [user, setUser] = useState(defaultSelectUser)
@@ -19,24 +19,24 @@ export const Login = () => {
   function login(e) {
     e.preventDefault()
     setLoginError(false)
-    if(user.username === "เลือกชื่อผู้ใช้"){
+    if (user.username === "เลือกชื่อผู้ใช้") {
       setErrorMessage(errorMessageList[2])
       setLoginError(true)
     } else {
-      if(!password){
+      if (!password) {
         setErrorMessage(errorMessageList[0])
         setLoginError(true)
         return
       }
-      Authen.login(user.email,password).then(value=>{
+      Authen.login(user.email, password).then(value => {
         document.getElementById('password').value = ''
         setPassword('')
-        if(value.user){
+        if (value.user) {
           setUser(defaultSelectUser)
           // history.push('/')
         } else {
           console.log(value.code)
-          if(value.code === "auth/invalid-email"){
+          if (value.code === "auth/invalid-email") {
             setErrorMessage(errorMessageList[2])
           } else if (value.code === "auth/user-disabled") {
             setErrorMessage(errorMessageList[3])
@@ -57,7 +57,7 @@ export const Login = () => {
 
   useEffect(() => {
     Authen.getFullUserList().then((value) => {
-      setUserList(Object.entries(value).map(ele=>{
+      setUserList(Object.entries(value).map(ele => {
         ele[1].uid = ele[0]
         return ele[1]
       }))
@@ -69,33 +69,33 @@ export const Login = () => {
       <div className="container">
         <div className="login-container">
           <h1 className="title">ลงชื่อเข้าใช้</h1>
-          <Dropdown className="username">
-            <Dropdown.Toggle variant="light" id="dropdown-basic">
-              {user.username}
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              {
-                userList.map((ele, i) => <Dropdown.Item key={i} href="#" onClick={() => setUser(ele)}>{ele.username}</Dropdown.Item>)
-              }
-            </Dropdown.Menu>
-          </Dropdown>
-          <InputGroup className="password">
-            <InputGroup.Prepend>
-              <InputGroup.Text id="lock"><FaLock /></InputGroup.Text>
-            </InputGroup.Prepend>
-            <FormControl
-              type="password"
-              placeholder="รหัสผ่าน"
-              aria-label="รหัสผ่าน"
-              aria-describedby="password"
-              onChange={e => setPassword(e.target.value)}
-              id="password"
-            />
-          </InputGroup>
-          {loginError ? <Alert variant="danger" className="alert">{errorMessage}</Alert> : null}
-          <Button variant="primary" className="login-btn" onClick={login}>ลงชื่อเข้าใช้</Button>
-          <a href="/" style={{ marginTop: "1vh", fontSize: "14px", textAlign: "center", width: "100%" }}>ไปหน้าหลัก</a>
-          <br></br><br></br>
+          <Form>
+            <Dropdown className="username">
+              <Dropdown.Toggle variant="light" id="dropdown-basic">
+                {user.username}
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                {
+                  userList.map((ele, i) => <Dropdown.Item key={i} href="#" onClick={() => setUser(ele)}>{ele.username}</Dropdown.Item>)
+                }
+              </Dropdown.Menu>
+            </Dropdown>
+            <InputGroup className="password">
+              <InputGroup.Prepend>
+                <InputGroup.Text id="lock"><FaLock /></InputGroup.Text>
+              </InputGroup.Prepend>
+              <FormControl
+                type="password"
+                placeholder="รหัสผ่าน"
+                aria-label="รหัสผ่าน"
+                aria-describedby="password"
+                onChange={e => setPassword(e.target.value)}
+                id="password"
+              />
+            </InputGroup>
+            {loginError ? <Alert variant="danger" className="alert">{errorMessage}</Alert> : null}
+            <Button variant="primary" className="login-btn" type="submit" onClick={login}>ลงชื่อเข้าใช้</Button>
+          </Form>
           <a href="#" style={{ marginTop: "1vh", fontSize: "14px", textAlign: "center", width: "100%" }} onClick={logout}>ลงชื่อออก</a>
         </div>
       </div >
