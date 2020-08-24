@@ -3,6 +3,7 @@ import './Home.scss'
 import { useHistory } from 'react-router-dom';
 import { Dropdown, Button, Form } from 'react-bootstrap'
 import { HistoryCard, NavDropdown } from '../../components'
+import firebase, { Authen } from '../../services/service'
 
 export const Home = () => {
   const history = useHistory()
@@ -39,7 +40,7 @@ export const Home = () => {
           <Form.Group controlId="exampleForm.ControlInput1">
             <Form.Control type="text" placeholder="&#xF002;  ค้นหารายการ" />
           </Form.Group>
-          <Button variant="primary" className="add-btn" >+ เพิ่มรายการ</Button>
+          <Button variant="primary" className="add-btn">+ เพิ่มรายการ</Button>
           <div className="card-wrapper">
             {mock.map((ele, i) => { return <HistoryCard data={ele} key={i} /> })}
           </div>

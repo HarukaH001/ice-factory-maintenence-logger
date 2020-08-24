@@ -7,10 +7,16 @@ import superagent from 'superagent'
 export const Auth = (firebase) => {
     const database = firebase.database()
     return { 
-        getFullUserList(){
+        getPublicUserList(){
             return superagent.get(config.databaseURL+"/user.json?auth="+config.databaseKey)
             .then(res=>{
-                if(!res.error) return res.body
+                if(!res.error) {
+                    return Object.entries(res.body).map(ele => {
+                        delete (ele[1])["password"]
+                        delete (ele[1])["role"]
+                        return ele[1]
+                    })
+                }
                 else return []
             }).catch(err=>{
                 return []
@@ -19,10 +25,26 @@ export const Auth = (firebase) => {
     
         getUserList(){
             return database.ref('user/').once('value').then((snapshot)=>{
-                const Data = snapshot.val()
-                return Data
+                let Data = snapshot.val()
+                return Object.entries(Data).map(ele => {
+                    ele[1].uid = ele[0]
+                    return ele[1]
+                })
             }).catch(err=>{
+                // console.log(err)
                 return []
+            })
+        },
+
+        getUser(){
+            return new Promise(resolve => {
+                let auth_user = firebase.auth().currentUser
+                
+                database.ref('user/').child(auth_user.uid).once('value').then((snapshot)=>{
+                    let Data = snapshot.val()
+                    Data.uid = auth_user.uid
+                    resolve(Data)
+                })
             })
         },
     
