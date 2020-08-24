@@ -1,19 +1,47 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './Users.scss'
-import { Link, useHistory } from 'react-router-dom';
-import { Button, InputGroup, FormControl, Modal, Form } from 'react-bootstrap'
+import { useHistory } from 'react-router-dom';
+import { Button, InputGroup, FormControl, Modal, Form, Toast } from 'react-bootstrap'
 import { NavDropdown } from '../../components'
+import firebase, { Authen } from '../../services/service.js'
 
 export const Users = () => {
   const history = useHistory()
-  const [show, setShow] = useState(false);
+  const [user, setUser] = useState([])
+  const [alert, setAlert] = useState('')
 
+  const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  function addUser() {
-    // Your function here
+  const [showSuccess, setShowSuccess] = useState(false);
+  const toggleShowSuccess = () => setShowSuccess(!showSuccess);
+
+  const addUser = (e) => {
+    e.preventDefault()
+    const registerForm = {
+      username: document.getElementById("username").value,
+      password: document.getElementById("password").value,
+      isAdmin: document.getElementById("admincheckbox").checked
+    }
+    if (user.some(ele => ele.username === registerForm.username)) {
+      setAlert("ชื่อผู้ใช้นี้มีผู้ใช้งานอยู่แล้ว")
+    }
+    else {
+      handleClose()
+      toggleShowSuccess()
+    }
   }
+
+  useEffect(() => {
+    Authen.auth().onAuthStateChanged(user => {
+      if (user) {
+        Authen.getUserList().then(res => {
+          setUser(res)
+        })
+      }
+    })
+  }, [])
 
   return (
     <>
@@ -38,26 +66,44 @@ export const Users = () => {
         </div>
       </div>
       <Modal show={show} onHide={handleClose} centered style={{ fontFamily: "IBM Plex Sans Thai" }}>
-        <Form>
+        <Form onSubmit={(e) => { addUser(e) }}>
           <Modal.Header closeButton>
-            <Modal.Title>เพิ่มผู้ใช้</Modal.Title>
+            <Modal.Title style={{width: "100%"}}>เพิ่มผู้ใช้</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Form.Group controlId="formBasicUsername">
-              <Form.Label>ชื่อผู้ใช้</Form.Label>
-              <Form.Control type="text" placeholder="กรอกชื่อผู้ใช้" />
+            <Form.Group controlId="username">
+              <Form.Label style={{width: "100%"}}>ชื่อผู้ใช้</Form.Label>
+              <Form.Control type="text" placeholder="กรอกชื่อผู้ใช้" required={true} />
+              {alert !== '' ?
+                <p style={{ color: "red", fontSize: "14px", marginTop: "10px" }}>{alert}</p> : null}
             </Form.Group>
-            <Form.Group controlId="formBasicPassword">
-              <Form.Label>รหัสผ่าน</Form.Label>
-              <Form.Control type="password" placeholder="กรอกรหัสผ่าน" />
+            <Form.Group controlId="password">
+              <Form.Label style={{width: "100%"}}>รหัสผ่าน</Form.Label>
+              <Form.Control type="password" placeholder="กรอกรหัสผ่าน" required={true} />
+            </Form.Group>
+            <Form.Group controlId="admincheckbox">
+              <Form.Check type="checkbox" label="ตั้งเป็นผู้ดูแล" />
             </Form.Group>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" type="cancel" onClick={() => { handleClose() }}>ยกเลิก</Button>
-            <Button variant="primary" type="submit" onClick={() => { addUser(); handleClose() }}>บันทึก</Button>
+            <Button variant="secondary" type="button" onClick={() => { handleClose() }}>ยกเลิก</Button>
+            <Button variant="primary" type="submit">บันทึก</Button>
           </Modal.Footer>
         </Form>
       </Modal>
+      <Toast show={showSuccess} onClose={toggleShowSuccess} delay={3000} autohide
+        style={{
+          position: 'absolute',
+          bottom: '2rem',
+          left: '50%',
+          backgroundColor: '#28A745',
+          color: 'white',
+          transform: 'translateX(-50%)',
+          width: "100%",
+          textAlign: "center"
+        }}>
+        <Toast.Body>เพิ่มผู้ใช้สำเร็จ</Toast.Body>
+      </Toast>
     </>
   )
 }
