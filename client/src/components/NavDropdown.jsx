@@ -20,11 +20,13 @@ export const NavDropdown = ({ data, _disabled }) => {
       <Dropdown alignRight>
         <Dropdown.Toggle variant="light" id="dropdown-basic">&#xF0C9;</Dropdown.Toggle>
         <Dropdown.Menu>
-          {user?.role === 'admin' && <Dropdown.Item href="/" disabled={_disabled === "home"}>ประวัติการซ่อม</Dropdown.Item>}
-          {user?.role === 'admin' && <Dropdown.Item href="/users" disabled={_disabled === "users"}>จัดการผู้ใช้</Dropdown.Item>}
-          {user?.role === 'admin' && <Dropdown.Item href="/machines" disabled={_disabled === "machine"}>จัดการข้อมูลเครื่อง</Dropdown.Item>}
-          {user?.role === 'admin' && <Dropdown.Divider />}
-          <Dropdown.Item href="#" onClick={() => Authen.logout()} style={{ color: "red" }}>ออกจากระบบ</Dropdown.Item>
+            <Dropdown.Item href="#" disabled>{user?.username}</Dropdown.Item>
+            <Dropdown.Divider />
+            {user?.role === 'admin' && <Dropdown.Item href="/" disabled={_disabled === "home"}>ประวัติการซ่อม</Dropdown.Item>}
+            {user?.role === 'admin' && <Dropdown.Item href="/users" disabled={_disabled === "users"}>จัดการผู้ใช้</Dropdown.Item>}
+            {user?.role === 'admin' && <Dropdown.Item href="/machines" disabled={_disabled === "machine"}>จัดการข้อมูลเครื่อง</Dropdown.Item>}
+            {user?.role === 'admin' && <Dropdown.Divider />}
+            <Dropdown.Item href="#" onClick={() => Authen.logout()} style={{ color: "red" }}>ออกจากระบบ</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
     </>
