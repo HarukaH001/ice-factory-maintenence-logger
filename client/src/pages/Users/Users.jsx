@@ -7,11 +7,6 @@ import { NavDropdown } from '../../components'
 export const Users = () => {
   const history = useHistory()
 
-  function logout() {
-    // Logout Code Here
-    history.push("/login")
-  }
-
   return (
     <div className="Users">
       <div className="container">
