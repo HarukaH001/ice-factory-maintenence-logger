@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import './Users.scss'
 import { useHistory } from 'react-router-dom';
-import { Button, InputGroup, FormControl, Modal, Form, Toast } from 'react-bootstrap'
+import { Button, InputGroup, FormControl, Modal, Form, Toast, Table } from 'react-bootstrap'
 import { NavDropdown } from '../../components'
 import firebase, { Authen } from '../../services/service.js'
 
@@ -9,13 +9,22 @@ export const Users = () => {
   const history = useHistory()
   const [user, setUser] = useState([])
   const [alert, setAlert] = useState('')
+  const [edit, setEdit] = useState(false)
 
   const [show, setShow] = useState(false);
-  const handleClose = () => {setShow(false); setAlert('')}
+  const handleClose = () => { setShow(false); setAlert('') }
   const handleShow = () => setShow(true);
 
   const [showSuccess, setShowSuccess] = useState(false);
   const toggleShowSuccess = () => setShowSuccess(!showSuccess);
+
+  const [showDetail, setShowDetail] = useState(false);
+  const handleCloseDetail = () => { setShowDetail(false); setEdit(false) }
+  const handleShowDetail = () => setShowDetail(true);
+
+  const [showDelete, setShowDelete] = useState(false);
+  const handleCloseDelete = () => { setShowDelete(false); setEdit(false) }
+  const handleShowDelete = () => { handleCloseDetail(); setShowDelete(true) }
 
   const addUser = (e) => {
     setAlert('')
@@ -28,14 +37,14 @@ export const Users = () => {
     if (user.some(ele => ele.username === registerForm.username)) {
       setAlert("ชื่อผู้ใช้นี้มีผู้ใช้งานอยู่แล้ว")
     }
-    else if (registerForm.password.length < 6){
+    else if (registerForm.password.length < 6) {
       setAlert("รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร")
     }
     else {
-      Authen.addUser(registerForm.username, registerForm.password, registerForm.isAdmin).then(()=>{
-        handleClose()
-        toggleShowSuccess()
-      })
+      // Authen.addUser(registerForm.username, registerForm.password, registerForm.isAdmin).then(() => {
+      handleClose()
+      toggleShowSuccess()
+      // })
     }
   }
 
@@ -44,7 +53,7 @@ export const Users = () => {
       // Authen.getUserList().then(res => {
       //   setUser(res)
       // })
-      Authen.getUsersRef().on('value',snapshot=>{
+      Authen.getUsersRef().on('value', snapshot => {
         const Data = Object.entries(snapshot.val()).map(ele => {
           ele[1].uid = ele[0]
           return ele[1]
@@ -54,21 +63,36 @@ export const Users = () => {
     }
   }, [])
 
-  function renderUser(){
+  function renderUser() {
 
-    return user.sort((a,b)=>sortByTimeStampGeneratedEmail(a,b,'Asd')).map(ele=> {
+    return user.sort((a, b) => sortByTimeStampGeneratedEmail(a, b, 'Asd')).map((ele, i) => {
       return ( //ทำ component มา render ที่นี่
-          <p key={ele.uid}>{"ชื่อผู้ใช้: "+ele.username+" รหัสผ่าน: "+ele.password+" สิทธิ:"+ele.role}</p>
-        )
+        <tr onClick={handleShowDetail}>
+          <td>{i + 1}</td>
+          <td>{ele.username}</td>
+          <td>{ele.password}</td>
+        </tr>
+      )
     })
   }
 
-  function sortByTimeStampGeneratedEmail(a,b,option='Des'){
-    if(option === 'Asd'){
-      return parseInt((a.email).substring(0,(a.email).indexOf('@'))) - parseInt((b.email).substring(0,(b.email).indexOf('@')))
+  function sortByTimeStampGeneratedEmail(a, b, option = 'Des') {
+    if (option === 'Asd') {
+      return parseInt((a.email).substring(0, (a.email).indexOf('@'))) - parseInt((b.email).substring(0, (b.email).indexOf('@')))
     } else {
-      return parseInt((b.email).substring(0,(b.email).indexOf('@'))) - parseInt((a.email).substring(0,(a.email).indexOf('@')))
+      return parseInt((b.email).substring(0, (b.email).indexOf('@'))) - parseInt((a.email).substring(0, (a.email).indexOf('@')))
     }
+  }
+
+  function editUser(e) {
+    e.preventDefault()
+    handleCloseDetail()
+    setEdit(false)
+  }
+
+  function deleteUser(e) {
+    e.preventDefault()
+    handleCloseDelete()
   }
 
   return (
@@ -88,8 +112,19 @@ export const Users = () => {
               />
             </InputGroup>
             <Button variant="primary" className="add-user-btn" onClick={handleShow}>+ เพิ่มผู้ใช้ใหม่</Button>
-            <div className="btn-container">
-              {renderUser()}
+            <div className="table-container">
+              <Table striped bordered hover>
+                <thead>
+                  <tr>
+                    <th style={{ width: "10px" }}>#</th>
+                    <th>ชื่อผู้ใช้</th>
+                    <th>รหัสผ่าน</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {renderUser()}
+                </tbody>
+              </Table>
             </div>
           </div>
         </div>
@@ -97,30 +132,38 @@ export const Users = () => {
       <Modal show={show} onHide={handleClose} centered style={{ fontFamily: "IBM Plex Sans Thai" }}>
         <Form onSubmit={(e) => { addUser(e) }}>
           <Modal.Header closeButton>
-            <Modal.Title style={{width: "100%"}}>เพิ่มผู้ใช้ใหม่</Modal.Title>
+            <Modal.Title style={{ width: "100%" }}>เพิ่มผู้ใช้ใหม่</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form.Group controlId="username">
-              <Form.Label style={{width: "100%"}}>ชื่อผู้ใช้</Form.Label>
-              <Form.Control type="text" placeholder="กรอกชื่อผู้ใช้" required={true} />
-              {alert !== '' ?
-                <p style={{ color: "red", fontSize: "14px", marginTop: "10px" }}>{alert}</p> : null}
+              <Form.Label style={{ width: "100%" }}>ชื่อผู้ใช้</Form.Label>
+              <Form.Control type="text" placeholder="กรอกชื่อผู้ใช้" required={true}
+                style={alert.includes("ชื่อผู้ใช้") ? {
+                  borderColor: "red",
+                  backgroundColor: "#ffe6e6"
+                } : {}} />
             </Form.Group>
             <Form.Group controlId="password">
-              <Form.Label style={{width: "100%"}}>รหัสผ่าน</Form.Label>
-              <Form.Control type="password" placeholder="กรอกรหัสผ่าน" required={true} />
+              <Form.Label style={{ width: "100%" }}>รหัสผ่าน</Form.Label>
+              <Form.Control type="password" placeholder="กรอกรหัสผ่าน" required={true}
+                style={alert.includes("รหัสผ่าน") ? {
+                  borderColor: "red",
+                  backgroundColor: "#ffe6e6"
+                } : {}} />
             </Form.Group>
             <Form.Group controlId="admincheckbox">
               <Form.Check type="checkbox" label="ตั้งเป็นผู้ดูแล" />
             </Form.Group>
           </Modal.Body>
           <Modal.Footer>
+            {alert !== '' ?
+              <p style={{ color: "red", fontSize: "16px", marginTop: "10px" }}>{alert}</p> : null}
             <Button variant="secondary" type="button" onClick={() => { handleClose() }}>ยกเลิก</Button>
             <Button variant="primary" type="submit">บันทึก</Button>
           </Modal.Footer>
         </Form>
       </Modal>
-      <Toast show={showSuccess} onClose={toggleShowSuccess} delay={3000} autohide
+      <Toast show={showSuccess} onClose={toggleShowSuccess} delay={4000} autohide
         style={{
           position: 'absolute',
           bottom: '2rem',
@@ -131,8 +174,75 @@ export const Users = () => {
           width: "100%",
           textAlign: "center"
         }}>
-        <Toast.Body>เพิ่มผู้ใช้สำเร็จ</Toast.Body>
+        <Toast.Body><b style={{ fontSize: "18px" }}>เพิ่มผู้ใช้สำเร็จ</b></Toast.Body>
       </Toast>
+
+      <Modal show={showDetail} onHide={handleCloseDetail} centered style={{ fontFamily: "IBM Plex Sans Thai" }}>
+        <Modal.Header closeButton>
+          <Modal.Title style={{ width: "100%" }}>{edit ? "แก้ไขรายละเอียดผู้ใช้" : "รายละเอียดผู้ใช้"}</Modal.Title>
+        </Modal.Header>
+        {edit ? <>
+          <Form onSubmit={(e) => { editUser(e) }}>
+            <Modal.Body>
+              <Form.Group controlId="name">
+                <Form.Label style={{ width: "100%" }}>ชื่อช่าง</Form.Label>
+                <Form.Control type="text" placeholder="กรอกชื่อช่าง" defaultValue="ชื่อช่างเดิม" required={true} />
+              </Form.Group>
+              <Form.Group controlId="username">
+                <Form.Label style={{ width: "100%" }}>ชื่อผู้ใช้</Form.Label>
+                <Form.Control type="text" placeholder="กรอกชื่อผู้ใช้" defaultValue="ชื่อผู้ใช้เดิม" required={true}
+                  style={alert.includes("ชื่อผู้ใช้") ? {
+                    borderColor: "red",
+                    backgroundColor: "#ffe6e6"
+                  } : {}} />
+              </Form.Group>
+              <Form.Group controlId="password">
+                <Form.Label style={{ width: "100%" }}>รหัสผ่าน</Form.Label>
+                <Form.Control type="password" placeholder="กรอกรหัสผ่าน" defaultValue="รหัสผ่านเดิม" required={true}
+                  style={alert.includes("รหัสผ่าน") ? {
+                    borderColor: "red",
+                    backgroundColor: "#ffe6e6"
+                  } : {}} />
+              </Form.Group>
+              <Form.Group controlId="admincheckbox">
+                <Form.Check type="checkbox" label="ตั้งเป็นผู้ดูแล" defaultChecked={true} />
+              </Form.Group>
+              <Button style={{ width: "100%" }} variant="outline-danger" type="button" onClick={handleShowDelete}>ลบผู้ใช้นี้</Button>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" type="button" onClick={() => handleCloseDetail()}>ยกเลิก</Button>
+              <Button variant="primary" type="submit">บันทึก</Button>
+            </Modal.Footer>
+          </Form>
+        </> : <>
+            <Modal.Body>
+              <b>ชื่อช่าง</b> : {"Selected user Name"}<br />
+              <b>ชื่อผู้ใช้</b> : {"Selected user Username"}<br />
+              <b>รหัสผ่าน</b> : {"Selected user Password"}<br />
+              <b>ระดับสิทธิ์</b> : {"Selected user Role"}<br />
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="success" type="button" onClick={() => { setEdit(true) }}>แก้ไข</Button>
+              <Button variant="primary" type="button" onClick={() => { handleCloseDetail() }}>ปิด</Button>
+            </Modal.Footer>
+          </>
+        }
+      </Modal>
+
+      <Modal show={showDelete} onHide={handleCloseDelete} centered style={{ fontFamily: "IBM Plex Sans Thai" }} backdrop="static" keyboard={false}>
+        <Form onSubmit={(e) => { deleteUser(e) }}>
+          <Modal.Header>
+            <Modal.Title style={{ width: "100%" }}>ลบผู้ใช้</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <p>คุณแน่ใจว่าต้องการลบ xxx ?</p>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" type="button" onClick={() => { handleCloseDelete(); setEdit(true); handleShowDetail(); }}>ยกเลิก</Button>
+            <Button variant="danger" type="button">ลบ</Button>
+          </Modal.Footer>
+        </Form>
+      </Modal>
     </>
   )
 }
