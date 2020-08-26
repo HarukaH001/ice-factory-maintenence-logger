@@ -67,7 +67,7 @@ export const Users = () => {
 
     return user.sort((a, b) => sortByTimeStampGeneratedEmail(a, b, 'Asd')).map((ele, i) => {
       return ( //ทำ component มา render ที่นี่
-        <tr onClick={handleShowDetail}>
+        <tr onClick={handleShowDetail} style={{ cursor: "pointer" }}>
           <td>{i + 1}</td>
           <td>{ele.username}</td>
           <td>{ele.password}</td>
@@ -210,7 +210,7 @@ export const Users = () => {
               <Button style={{ width: "100%" }} variant="outline-danger" type="button" onClick={handleShowDelete}>ลบผู้ใช้นี้</Button>
             </Modal.Body>
             <Modal.Footer>
-              <Button variant="secondary" type="button" onClick={() => handleCloseDetail()}>ยกเลิก</Button>
+              <Button variant="secondary" type="button" onClick={() => setEdit(false)}>ยกเลิก</Button>
               <Button variant="primary" type="submit">บันทึก</Button>
             </Modal.Footer>
           </Form>
