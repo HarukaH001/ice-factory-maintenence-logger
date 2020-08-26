@@ -6,6 +6,7 @@ import superagent from 'superagent'
 
 export const Auth = (firebase) => {
     const database = firebase.database()
+    const functions = firebase.functions()
     return { 
         getPublicUserList(){
             return superagent.get(config.databaseURL+"/user.json?auth="+config.databaseKey)
@@ -91,18 +92,10 @@ export const Auth = (firebase) => {
 
         removeUser(uid) {
             return new Promise(resolve=>{
-                // superagent.post(config.authRestDomain+"deleteAccount?key="+config.apiKey)
-                // .set('Content-Type','application/json')
-                // .send({
-                //     "localId": uid
-                // }).end((err,res)=>{
-                //     console.log(err?err:res)
-                //     if(!err){
-                //         //ลบผู้ใช้ใน db
-                //         database.ref('user/'+uid).set(null).then(()=>resolve())
-                //     }
-                // })
-                resolve()
+                const rmuser = functions.httpsCallable('removeUser')
+                rmuser({localId: uid}).then(res=>{
+                    resolve()
+                })
             })
         },
     

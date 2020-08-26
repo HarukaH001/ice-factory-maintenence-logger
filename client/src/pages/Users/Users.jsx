@@ -19,6 +19,9 @@ export const Users = () => {
   const [showSuccess, setShowSuccess] = useState(false);
   const toggleShowSuccess = () => setShowSuccess(!showSuccess);
 
+  const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
+  const toggleShowDeleteSuccess = () => setShowDeleteSuccess(!showDeleteSuccess);
+
   const [showDetail, setShowDetail] = useState(false);
   const handleCloseDetail = () => { setShowDetail(false); setEdit(false) }
   const handleCloseEdit = () => { setEdit(false) }
@@ -95,8 +98,7 @@ export const Users = () => {
     e.preventDefault()
     Authen.removeUser(userDetail.uid).then(()=>{
       handleCloseDelete()
-      setAlert("ลบผู้ใช้สำเร็จ")
-      toggleShowSuccess()
+      toggleShowDeleteSuccess()
     })
   }
 
@@ -181,6 +183,19 @@ export const Users = () => {
         }}>
         <Toast.Body><b style={{ fontSize: "18px" }}>เพิ่มผู้ใช้สำเร็จ</b></Toast.Body>
       </Toast>
+      <Toast show={showDeleteSuccess} onClose={toggleShowDeleteSuccess} delay={4000} autohide
+        style={{
+          position: 'absolute',
+          bottom: '2rem',
+          left: '50%',
+          backgroundColor: '#28A745',
+          color: 'white',
+          transform: 'translateX(-50%)',
+          width: "100%",
+          textAlign: "center"
+        }}>
+        <Toast.Body><b style={{ fontSize: "18px" }}>ลบผู้ใช้สำเร็จ</b></Toast.Body>
+      </Toast>
 
       <Modal show={showDetail} onHide={handleCloseDetail} centered style={{ fontFamily: "IBM Plex Sans Thai" }}>
         <Modal.Header closeButton>
@@ -189,10 +204,6 @@ export const Users = () => {
         {edit ? <>
           <Form onSubmit={(e) => { editUser(e) }}>
             <Modal.Body>
-              <Form.Group controlId="name">
-                <Form.Label style={{ width: "100%" }}>ชื่อช่าง</Form.Label>
-                <Form.Control type="text" placeholder="กรอกชื่อช่าง" defaultValue="ชื่อช่างเดิม" required={true} />
-              </Form.Group>
               <Form.Group controlId="username">
                 <Form.Label style={{ width: "100%" }}>ชื่อผู้ใช้</Form.Label>
                 <Form.Control type="text" placeholder="กรอกชื่อผู้ใช้" defaultValue="ชื่อผู้ใช้เดิม" required={true}
