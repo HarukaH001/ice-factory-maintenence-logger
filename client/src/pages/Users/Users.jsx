@@ -25,7 +25,7 @@ export const Users = () => {
   const [showDetail, setShowDetail] = useState(false);
   const handleCloseDetail = () => { setShowDetail(false); setEdit(false) }
   const handleCloseEdit = () => { setEdit(false) }
-  const handleShowDetail = (select) => { setShowDetail(true); setUserDetail(select)};
+  const handleShowDetail = (select) => { setShowDetail(true); setUserDetail(select) };
 
   const [showDelete, setShowDelete] = useState(false);
   const handleCloseDelete = () => { setShowDelete(false); setEdit(false) }
@@ -72,7 +72,7 @@ export const Users = () => {
 
     return user.sort((a, b) => sortByTimeStampGeneratedEmail(a, b, 'Asd')).map((ele, i) => {
       return ( //ทำ component มา render ที่นี่
-        <tr onClick={()=>handleShowDetail(ele)} style={{ cursor: "pointer" }} key={ele.uid}>
+        <tr onClick={() => handleShowDetail(ele)} style={{ cursor: "pointer" }} key={ele.uid}>
           <td>{i + 1}</td>
           <td>{ele.username}</td>
           <td>{ele.password}</td>
@@ -96,7 +96,7 @@ export const Users = () => {
 
   function deleteUser(e) {
     e.preventDefault()
-    Authen.removeUser(userDetail.uid).then(()=>{
+    Authen.removeUser(userDetail.uid).then(() => {
       handleCloseDelete()
       toggleShowDeleteSuccess()
     })
@@ -206,7 +206,7 @@ export const Users = () => {
             <Modal.Body>
               <Form.Group controlId="username">
                 <Form.Label style={{ width: "100%" }}>ชื่อผู้ใช้</Form.Label>
-                <Form.Control type="text" placeholder="กรอกชื่อผู้ใช้" defaultValue="ชื่อผู้ใช้เดิม" required={true}
+                <Form.Control type="text" placeholder="กรอกชื่อผู้ใช้" defaultValue={userDetail.username} required={true}
                   style={alert.includes("ชื่อผู้ใช้") ? {
                     borderColor: "red",
                     backgroundColor: "#ffe6e6"
@@ -214,14 +214,14 @@ export const Users = () => {
               </Form.Group>
               <Form.Group controlId="password">
                 <Form.Label style={{ width: "100%" }}>รหัสผ่าน</Form.Label>
-                <Form.Control type="password" placeholder="กรอกรหัสผ่าน" defaultValue="รหัสผ่านเดิม" required={true}
+                <Form.Control type="text" placeholder="กรอกรหัสผ่าน" defaultValue={userDetail.password} required={true}
                   style={alert.includes("รหัสผ่าน") ? {
                     borderColor: "red",
                     backgroundColor: "#ffe6e6"
                   } : {}} />
               </Form.Group>
               <Form.Group controlId="admincheckbox">
-                <Form.Check type="checkbox" label="ตั้งเป็นผู้ดูแล" defaultChecked={true} />
+                <Form.Check type="checkbox" label="ตั้งเป็นผู้ดูแล" defaultChecked={userDetail.role === 'admin' ? true : false} />
               </Form.Group>
               <Button style={{ width: "100%" }} variant="outline-danger" type="button" onClick={handleShowDelete}>ลบผู้ใช้นี้</Button>
             </Modal.Body>
@@ -250,10 +250,10 @@ export const Users = () => {
             <Modal.Title style={{ width: "100%" }}>ลบผู้ใช้</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <p>คุณแน่ใจว่าต้องการลบ xxx ?</p>
+            <p>คุณแน่ใจว่าต้องการลบ {userDetail.username} ?</p>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" type="button" onClick={() => { handleCloseDelete(); setEdit(true); handleShowDetail({}); }}>ยกเลิก</Button>
+            <Button variant="secondary" type="button" onClick={() => { handleCloseDelete(); setEdit(true); setShowDetail(true) }}>ยกเลิก</Button>
             <Button variant="danger" type="submit">ลบ</Button>
           </Modal.Footer>
         </Form>
