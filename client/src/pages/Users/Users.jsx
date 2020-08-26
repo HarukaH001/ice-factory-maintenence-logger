@@ -10,6 +10,7 @@ export const Users = () => {
   const [user, setUser] = useState([])
   const [alert, setAlert] = useState('')
   const [edit, setEdit] = useState(false)
+  const [userDetail, setUserDetail] = useState({})
 
   const [show, setShow] = useState(false);
   const handleClose = () => { setShow(false); setAlert('') }
@@ -20,7 +21,8 @@ export const Users = () => {
 
   const [showDetail, setShowDetail] = useState(false);
   const handleCloseDetail = () => { setShowDetail(false); setEdit(false) }
-  const handleShowDetail = () => setShowDetail(true);
+  const handleCloseEdit = () => { setEdit(false) }
+  const handleShowDetail = (select) => { setShowDetail(true); setUserDetail(select)};
 
   const [showDelete, setShowDelete] = useState(false);
   const handleCloseDelete = () => { setShowDelete(false); setEdit(false) }
@@ -41,10 +43,10 @@ export const Users = () => {
       setAlert("รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร")
     }
     else {
-      // Authen.addUser(registerForm.username, registerForm.password, registerForm.isAdmin).then(() => {
-      handleClose()
-      toggleShowSuccess()
-      // })
+      Authen.addUser(registerForm.username, registerForm.password, registerForm.isAdmin).then(() => {
+        handleClose()
+        toggleShowSuccess()
+      })
     }
   }
 
@@ -67,7 +69,7 @@ export const Users = () => {
 
     return user.sort((a, b) => sortByTimeStampGeneratedEmail(a, b, 'Asd')).map((ele, i) => {
       return ( //ทำ component มา render ที่นี่
-        <tr onClick={handleShowDetail} style={{ cursor: "pointer" }}>
+        <tr onClick={()=>handleShowDetail(ele)} style={{ cursor: "pointer" }} key={ele.uid}>
           <td>{i + 1}</td>
           <td>{ele.username}</td>
           <td>{ele.password}</td>
@@ -86,13 +88,16 @@ export const Users = () => {
 
   function editUser(e) {
     e.preventDefault()
-    handleCloseDetail()
-    setEdit(false)
+    handleCloseEdit()
   }
 
   function deleteUser(e) {
     e.preventDefault()
-    handleCloseDelete()
+    Authen.removeUser(userDetail.uid).then(()=>{
+      handleCloseDelete()
+      setAlert("ลบผู้ใช้สำเร็จ")
+      toggleShowSuccess()
+    })
   }
 
   return (
@@ -216,10 +221,9 @@ export const Users = () => {
           </Form>
         </> : <>
             <Modal.Body>
-              <b>ชื่อช่าง</b> : {"Selected user Name"}<br />
-              <b>ชื่อผู้ใช้</b> : {"Selected user Username"}<br />
-              <b>รหัสผ่าน</b> : {"Selected user Password"}<br />
-              <b>ระดับสิทธิ์</b> : {"Selected user Role"}<br />
+              <b>ชื่อผู้ใช้</b> : {userDetail.username}<br />
+              <b>รหัสผ่าน</b> : {userDetail.password}<br />
+              <b>ระดับสิทธิ์</b> : {userDetail.role}<br />
             </Modal.Body>
             <Modal.Footer>
               <Button variant="success" type="button" onClick={() => { setEdit(true) }}>แก้ไข</Button>
@@ -238,8 +242,8 @@ export const Users = () => {
             <p>คุณแน่ใจว่าต้องการลบ xxx ?</p>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" type="button" onClick={() => { handleCloseDelete(); setEdit(true); handleShowDetail(); }}>ยกเลิก</Button>
-            <Button variant="danger" type="button">ลบ</Button>
+            <Button variant="secondary" type="button" onClick={() => { handleCloseDelete(); setEdit(true); handleShowDetail({}); }}>ยกเลิก</Button>
+            <Button variant="danger" type="submit">ลบ</Button>
           </Modal.Footer>
         </Form>
       </Modal>

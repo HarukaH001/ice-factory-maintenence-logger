@@ -68,7 +68,7 @@ export const Auth = (firebase) => {
                 let email = Date.now() + "@gmail.com"
                 superagent.post(config.authRestDomain+"signupNewUser?key="+config.apiKey)
                 .set('Content-Type','application/json')
-                    .send({
+                .send({
                     email: email,
                     password: password,
                     returnSecureToken: true
@@ -86,6 +86,23 @@ export const Auth = (firebase) => {
                         })
                     }
                 })
+            })
+        },
+
+        removeUser(uid) {
+            return new Promise(resolve=>{
+                // superagent.post(config.authRestDomain+"deleteAccount?key="+config.apiKey)
+                // .set('Content-Type','application/json')
+                // .send({
+                //     "localId": uid
+                // }).end((err,res)=>{
+                //     console.log(err?err:res)
+                //     if(!err){
+                //         //ลบผู้ใช้ใน db
+                //         database.ref('user/'+uid).set(null).then(()=>resolve())
+                //     }
+                // })
+                resolve()
             })
         },
     
