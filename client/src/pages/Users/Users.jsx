@@ -223,7 +223,7 @@ export const Users = () => {
               <Form.Group controlId="admincheckbox">
                 <Form.Check type="checkbox" label="ตั้งเป็นผู้ดูแล" defaultChecked={userDetail.role === 'admin' ? true : false} />
               </Form.Group>
-              <Button style={{ width: "100%" }} variant="outline-danger" type="button" onClick={handleShowDelete}>ลบผู้ใช้นี้</Button>
+              {firebase?.auth().currentUser.uid !== userDetail.uid && <Button style={{ width: "100%" }} variant="outline-danger" type="button" onClick={handleShowDelete}>ลบผู้ใช้นี้</Button>}
             </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" type="button" onClick={() => setEdit(false)}>ยกเลิก</Button>
