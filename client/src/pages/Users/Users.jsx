@@ -68,6 +68,11 @@ export const Users = () => {
     }
   }, [])
 
+  useEffect(()=>{
+    const selectedUser = user.find(ele=>userDetail.uid===ele.uid)
+    setUserDetail(selectedUser?selectedUser:{})
+  },[user])
+
   function renderUser() {
 
     return user.sort((a, b) => sortByTimeStampGeneratedEmail(a, b, 'Asd')).map((ele, i) => {

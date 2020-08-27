@@ -53,28 +53,6 @@ export const Auth = (firebase) => {
         getUsersRef(){
             return database.ref('user')
         },
-    
-        login(email,password){
-            return firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL).then(()=>{
-                return getPublicUserList().then(users=>{
-                    const user = users.find(ele=>ele.email === email)
-                    let subPass = config.commonPassword
-                    let subMail = email
-                    if(!user){
-                        //user not found
-                        subMail = 'ff' + subMail
-                    } else if(user && user.password !== password){
-                        //wrong password
-                        subPass += 'ff'
-                    }
-                    return firebase.auth().signInWithEmailAndPassword(subMail, subPass).then(res=>{
-                        return res
-                    }).catch(err=>{
-                        return err
-                    })
-                })
-            })
-        },
 
         addUser(username, password, isAdmin) {
             return new Promise(resolve=>{
@@ -113,7 +91,33 @@ export const Auth = (firebase) => {
                 })
             })
         },
+
+        editUser(uid,obj){
+            return 'edit' 
+        },
     
+        login(email,password){
+            return firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL).then(()=>{
+                return getPublicUserList().then(users=>{
+                    const user = users.find(ele=>ele.email === email)
+                    let subPass = config.commonPassword
+                    let subMail = email
+                    if(!user){
+                        //user not found
+                        subMail = 'ff' + subMail
+                    } else if(user && user.password !== password){
+                        //wrong password
+                        subPass += 'ff'
+                    }
+                    return firebase.auth().signInWithEmailAndPassword(subMail, subPass).then(res=>{
+                        return res
+                    }).catch(err=>{
+                        return err
+                    })
+                })
+            })
+        },
+
         logout(){
             firebase.auth().signOut()
         },
