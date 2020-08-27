@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { Dropdown } from 'react-bootstrap'
 import firebase, { Authen } from '../services/service.js'
-import { useHistory } from 'react-router-dom';
+// import { useHistory } from 'react-router-dom';
 
 export const NavDropdown = ({ data, _disabled }) => {
   const [user, setUser] = useState('')
-  const history = useHistory()
+  // const history = useHistory()
 
   useEffect(() => {
     if (firebase.auth().currentUser) {

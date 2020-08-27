@@ -1,12 +1,11 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import './Home.scss'
-import { useHistory } from 'react-router-dom';
-import { Dropdown, Button, Form } from 'react-bootstrap'
+// import { useHistory } from 'react-router-dom';
+import { Button, Form } from 'react-bootstrap'
 import { HistoryCard, NavDropdown } from '../../components'
-import firebase, { Authen } from '../../services/service'
 
 export const Home = () => {
-  const history = useHistory()
+  // const history = useHistory()
 
   const mock = [{
     machine: "Compressor",

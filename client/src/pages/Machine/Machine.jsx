@@ -1,17 +1,12 @@
 import React from 'react'
 import './Machine.scss'
-import { Link, useHistory } from 'react-router-dom';
-import { Button, InputGroup, FormControl, Dropdown } from 'react-bootstrap'
+import { Link } from 'react-router-dom';
+import { Button, InputGroup, FormControl } from 'react-bootstrap'
 import { NavDropdown } from '../../components'
 
 export const Machine = () => {
-  const history = useHistory()
+  // const history = useHistory()
   const machineList = ["Compressor", "ปั๊มน้ำ", "พัดลมคูลลิ่ง"]
-
-  function logout() {
-    // Logout Code Here
-    history.push("/login")
-  }
 
   return (
     <div className="Machine">

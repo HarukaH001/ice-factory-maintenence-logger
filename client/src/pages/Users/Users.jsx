@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import './Users.scss'
-import { useHistory } from 'react-router-dom';
+// import { useHistory } from 'react-router-dom';
 import { Button, InputGroup, FormControl, Modal, Form, Toast, Table } from 'react-bootstrap'
 import { NavDropdown } from '../../components'
 import firebase, { Authen } from '../../services/service.js'
 
 export const Users = () => {
-  const history = useHistory()
+  // const history = useHistory()
   const [user, setUser] = useState([])
   const [alert, setAlert] = useState('')
   const [edit, setEdit] = useState(false)
@@ -71,6 +71,7 @@ export const Users = () => {
   useEffect(()=>{
     const selectedUser = user.find(ele=>userDetail.uid===ele.uid)
     setUserDetail(selectedUser?selectedUser:{})
+    //eslint-disable-next-line
   },[user])
 
   function renderUser() {

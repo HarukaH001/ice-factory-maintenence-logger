@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './App.scss';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Home, Login, Machine, Users } from './pages';
-import firebase, { Authen } from './services/service.js'
+import { Authen } from './services/service.js'
 
 function App() {
   const [isAuthenticated, setAuthenticated] = useState(false)
