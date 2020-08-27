@@ -7,22 +7,23 @@ import superagent from 'superagent'
 export const Auth = (firebase) => {
     const database = firebase.database()
     const functions = firebase.functions()
+
+    const getPublicUserList = () => {
+        return superagent.get(config.databaseURL+"/user.json?auth="+config.databaseKey)
+        .then(res=>{
+            if(!res.error) {
+                return Object.entries(res.body).map(ele => {
+                    return ele[1]
+                })
+            }
+            else return []
+        }).catch(err=>{
+            return []
+        })
+    }
+
     return { 
-        getPublicUserList(){
-            return superagent.get(config.databaseURL+"/user.json?auth="+config.databaseKey)
-            .then(res=>{
-                if(!res.error) {
-                    return Object.entries(res.body).map(ele => {
-                        delete (ele[1])["password"]
-                        delete (ele[1])["role"]
-                        return ele[1]
-                    })
-                }
-                else return []
-            }).catch(err=>{
-                return []
-            })
-        },
+        getPublicUserList: getPublicUserList,
     
         getUserList(){
             return database.ref('user/').once('value').then((snapshot)=>{
@@ -55,11 +56,22 @@ export const Auth = (firebase) => {
     
         login(email,password){
             return firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL).then(()=>{
-                return firebase.auth().signInWithEmailAndPassword(email,password).then(res=>{
-                    // window.localStorage.setItem('user',JSON.stringify(res))
-                    return res
-                }).catch(err=>{
-                    return err
+                return getPublicUserList().then(users=>{
+                    const user = users.find(ele=>ele.email === email)
+                    let subPass = config.commonPassword
+                    let subMail = email
+                    if(!user){
+                        //user not found
+                        subMail = 'ff' + subMail
+                    } else if(user && user.password !== password){
+                        //wrong password
+                        subPass += 'ff'
+                    }
+                    return firebase.auth().signInWithEmailAndPassword(subMail, subPass).then(res=>{
+                        return res
+                    }).catch(err=>{
+                        return err
+                    })
                 })
             })
         },
@@ -71,7 +83,7 @@ export const Auth = (firebase) => {
                 .set('Content-Type','application/json')
                 .send({
                     email: email,
-                    password: password,
+                    password: config.commonPassword,
                     returnSecureToken: true
                 }).end((err,res)=>{
                     // console.log(err?err:res)
