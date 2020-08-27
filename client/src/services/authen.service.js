@@ -104,8 +104,11 @@ export const Auth = (firebase) => {
 
         removeUser(uid) {
             return new Promise(resolve=>{
-                const rmuser = functions.httpsCallable('removeUser')
-                rmuser({localId: uid}).then(res=>{
+                database.ref('user/'+uid).set(null).then(res=>{
+                    const rmuser = functions.httpsCallable('removeUser')
+                    rmuser({localId: uid})
+                    resolve()
+                }).catch(err=>{
                     resolve()
                 })
             })
