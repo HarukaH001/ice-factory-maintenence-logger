@@ -93,7 +93,13 @@ export const Auth = (firebase) => {
         },
 
         editUser(uid,obj){
-            return 'edit' 
+            return new Promise(resolve=>{
+                database.ref('user/'+uid).update(obj).then(res=>{
+                    resolve()
+                }).catch(err=>{
+                    resolve()
+                })
+            })
         },
     
         login(email,password){

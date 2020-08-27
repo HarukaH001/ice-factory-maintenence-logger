@@ -22,9 +22,12 @@ export const Users = () => {
   const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
   const toggleShowDeleteSuccess = () => setShowDeleteSuccess(!showDeleteSuccess);
 
+  const [showEditSuccess, setShowEditSuccess] = useState(false);
+  const toggleShowEditSuccess = () => setShowEditSuccess(!showEditSuccess);
+
   const [showDetail, setShowDetail] = useState(false);
-  const handleCloseDetail = () => { setShowDetail(false); setEdit(false) }
-  const handleCloseEdit = () => { setEdit(false) }
+  const handleCloseDetail = () => { setShowDetail(false); setEdit(false); setAlert('') }
+  // const handleCloseEdit = () => { setEdit(false) }
   const handleShowDetail = (select) => { setShowDetail(true); setUserDetail(select) };
 
   const [showDelete, setShowDelete] = useState(false);
@@ -55,9 +58,6 @@ export const Users = () => {
 
   useEffect(() => {
     if (firebase.auth().currentUser) {
-      // Authen.getUserList().then(res => {
-      //   setUser(res)
-      // })
       Authen.getUsersRef().on('value', snapshot => {
         const Data = Object.entries(snapshot.val()).map(ele => {
           ele[1].uid = ele[0]
@@ -97,7 +97,27 @@ export const Users = () => {
 
   function editUser(e) {
     e.preventDefault()
-    handleCloseEdit()
+    setAlert('')
+    const formData = {
+      username: document.getElementById("username").value,
+      password: document.getElementById("password").value,
+      role: document.getElementById("admincheckbox").checked
+    }
+    formData.role = formData.role?'admin':'user'
+
+    if (user.filter(ele=>ele.uid !== userDetail.uid).some(ele => ele.username === formData.username)) {
+      setAlert("ชื่อผู้ใช้นี้มีผู้ใช้งานอยู่แล้ว")
+    }
+    else if (formData.password.length < 6) {
+      setAlert("รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร")
+    }
+    else {
+      // console.log(formData)
+      Authen.editUser(userDetail.uid, formData).then(()=>{
+        handleCloseDetail()
+        toggleShowEditSuccess()
+      })
+    }
   }
 
   function deleteUser(e) {
@@ -189,19 +209,6 @@ export const Users = () => {
         }}>
         <Toast.Body><b style={{ fontSize: "18px" }}>เพิ่มผู้ใช้สำเร็จ</b></Toast.Body>
       </Toast>
-      <Toast show={showDeleteSuccess} onClose={toggleShowDeleteSuccess} delay={4000} autohide
-        style={{
-          position: 'absolute',
-          bottom: '2rem',
-          left: '50%',
-          backgroundColor: '#28A745',
-          color: 'white',
-          transform: 'translateX(-50%)',
-          width: "100%",
-          textAlign: "center"
-        }}>
-        <Toast.Body><b style={{ fontSize: "18px" }}>ลบผู้ใช้สำเร็จ</b></Toast.Body>
-      </Toast>
 
       <Modal show={showDetail} onHide={handleCloseDetail} centered style={{ fontFamily: "IBM Plex Sans Thai" }}>
         <Modal.Header closeButton>
@@ -232,7 +239,9 @@ export const Users = () => {
               {firebase?.auth().currentUser.uid !== userDetail.uid && <Button style={{ width: "100%" }} variant="outline-danger" type="button" onClick={handleShowDelete}>ลบผู้ใช้นี้</Button>}
             </Modal.Body>
             <Modal.Footer>
-              <Button variant="secondary" type="button" onClick={() => setEdit(false)}>ยกเลิก</Button>
+              {alert !== '' ?
+              <p style={{ color: "red", fontSize: "16px", marginTop: "10px" }}>{alert}</p> : null}
+              <Button variant="secondary" type="button" onClick={() => {setEdit(false); setAlert('')}}>ยกเลิก</Button>
               <Button variant="primary" type="submit">บันทึก</Button>
             </Modal.Footer>
           </Form>
@@ -249,6 +258,19 @@ export const Users = () => {
           </>
         }
       </Modal>
+      <Toast show={showEditSuccess} onClose={toggleShowEditSuccess} delay={4000} autohide
+        style={{
+          position: 'absolute',
+          bottom: '2rem',
+          left: '50%',
+          backgroundColor: '#28A745',
+          color: 'white',
+          transform: 'translateX(-50%)',
+          width: "100%",
+          textAlign: "center"
+        }}>
+        <Toast.Body><b style={{ fontSize: "18px" }}>แก้ไขข้อมูลผู้ใช้สำเร็จ</b></Toast.Body>
+      </Toast>
 
       <Modal show={showDelete} onHide={handleCloseDelete} centered style={{ fontFamily: "IBM Plex Sans Thai" }} backdrop="static" keyboard={false}>
         <Form onSubmit={(e) => { deleteUser(e) }}>
@@ -264,6 +286,19 @@ export const Users = () => {
           </Modal.Footer>
         </Form>
       </Modal>
+      <Toast show={showDeleteSuccess} onClose={toggleShowDeleteSuccess} delay={4000} autohide
+        style={{
+          position: 'absolute',
+          bottom: '2rem',
+          left: '50%',
+          backgroundColor: '#28A745',
+          color: 'white',
+          transform: 'translateX(-50%)',
+          width: "100%",
+          textAlign: "center"
+        }}>
+        <Toast.Body><b style={{ fontSize: "18px" }}>ลบผู้ใช้สำเร็จ</b></Toast.Body>
+      </Toast>
     </>
   )
 }
