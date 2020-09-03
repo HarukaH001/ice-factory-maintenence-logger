@@ -1,0 +1,42 @@
+.Subsite {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+
+  .container {
+    width: 90vw;
+    margin-top: 1em;
+
+    .header {
+      display: flex;
+
+      button {
+        height: fit-content;
+      }
+
+      h2 {
+        padding-top: 4px;
+        min-width: 70vw;
+        font-style: bold;
+        margin-left: 10px;
+        // white-space: nowrap;
+        // overflow: hidden;
+        // text-overflow: ellipsis;
+        @media screen and (max-width: 359px) {
+          font-size: x-large;
+          // margin-bottom: 1rem;
+        }
+      }
+    }
+
+    .btn-container {
+      margin-top: 10px;
+
+      button {
+        width: 100%;
+        margin: 5px 0;
+        font-weight: 500;
+      }
+    }
+  }
+}

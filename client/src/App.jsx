@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './App.scss';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { Home, Login, Machine, Users } from './pages';
+import { Home, Login, Sites, Users, Subsite } from './pages';
 import { Authen } from './services/service.js'
 
 function App() {
@@ -39,7 +39,8 @@ function App() {
           <Route exact path="/">{isAuthenticated && <Home />}</Route>
           <Route exact path="/login"><Login /></Route>
           <Route exact path="/users">{isAuthenticated && <Users />}</Route>
-          <Route exact path="/machines">{isAuthenticated && <Machine />}</Route>
+          <Route exact path="/sites">{isAuthenticated && <Sites />}</Route>
+          <Route exact path="/test"><Subsite /></Route>
         </Switch>
       </Router>
     </div>
