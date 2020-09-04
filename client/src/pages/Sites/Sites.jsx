@@ -1,12 +1,11 @@
 import React from 'react'
 import './Sites.scss'
-import { Link } from 'react-router-dom';
+import { Link, useRouteMatch } from 'react-router-dom';
 import { Button, InputGroup, FormControl } from 'react-bootstrap'
 import { NavDropdown } from '../../components'
 
 export const Sites = () => {
-  // const history = useHistory()
-  // const machineList = ["Compressor", "ปั๊มน้ำ", "พัดลมคูลลิ่ง"]
+  const { path, url } = useRouteMatch()
   const siteList = [1, 2, 3, "..."]
 
 
@@ -28,7 +27,7 @@ export const Sites = () => {
             </InputGroup.Append>
           </InputGroup>
           <div className="btn-container">
-            {siteList.map((ele, i) => { return <Link key={i} to={"sites/" + ele}><Button variant="success">{"บ่อ " + ele}</Button></Link> })}
+            {siteList.map((ele, i) => { return <Link key={i} to={`${url}/` + ele}><Button variant="success">{"บ่อ " + ele}</Button></Link> })}
           </div>
         </div>
       </div>
