@@ -39,7 +39,7 @@ export const Home = () => {
           <Form.Group controlId="exampleForm.ControlInput1">
             <Form.Control type="text" placeholder="&#xF002;  ค้นหารายการ" />
           </Form.Group>
-          <Button variant="primary" className="add-btn">+ เพิ่มรายการ</Button>
+          <Button variant="primary" className="add-btn">+ เพิ่มรายการซ่อม</Button>
           <div className="card-wrapper">
             {mock.map((ele, i) => { return <HistoryCard data={ele} key={i} /> })}
           </div>
