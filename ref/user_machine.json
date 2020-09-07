@@ -1,0 +1,23 @@
+{
+    "card":{
+        
+        "c_id_xxx":{
+            "createdDate":null,
+            "Date":null,
+            "user":null,
+            "machine":null,
+            "position":null,
+            "list":{
+                "ลิ้นไอดี": "ซ่อม", // ซ่อม เปลี่ยน null   
+                "ลิ้นไอเสีย": null,
+                "ลูกสูบ":null,
+                "เสือสูบ":null,
+                "ก้านสูบ":null,
+                "ชาร์ปก้าน":null,
+                "แหวนลูกสูบ":null
+            },
+            "note":"ซ่อมอะไรสักอย่าง ในเครื่องนี้นี่แหละ"
+        }
+
+    }
+}
