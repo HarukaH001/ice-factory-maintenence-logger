@@ -33,8 +33,14 @@
       width: 100%;
     }
 
-    .card-container {
+    .cards-container {
       margin-top: 10px;
+      // background-color: red;
+      min-height: 80vh;
     }
   }
+}
+
+.card-container {
+  margin: 10px 0;
 }
