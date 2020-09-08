@@ -4,6 +4,7 @@ import './Users.scss'
 import { Button, InputGroup, FormControl, Modal, Form, Toast, Table } from 'react-bootstrap'
 import { NavDropdown } from '../../components'
 import firebase, { Authen } from '../../services/service.js'
+import { search } from 'superagent'
 
 export const Users = () => {
   // const history = useHistory()
@@ -11,6 +12,7 @@ export const Users = () => {
   const [alert, setAlert] = useState('')
   const [edit, setEdit] = useState(false)
   const [userDetail, setUserDetail] = useState({})
+  const [search, setSearch] = useState('')
 
   const [show, setShow] = useState(false);
   const handleClose = () => { setShow(false); setAlert('') }
@@ -68,22 +70,39 @@ export const Users = () => {
     }
   }, [])
 
-  useEffect(()=>{
-    const selectedUser = user.find(ele=>userDetail.uid===ele.uid)
-    setUserDetail(selectedUser?selectedUser:{})
+  useEffect(() => {
+    const selectedUser = user.find(ele => userDetail.uid === ele.uid)
+    setUserDetail(selectedUser ? selectedUser : {})
     //eslint-disable-next-line
-  },[user])
+  }, [user])
 
-  function renderUser() {
+  useEffect(() => {
 
+  }, [search])
+
+  function renderUser(search) {
     return user.sort((a, b) => sortByTimeStampGeneratedEmail(a, b, 'Asd')).map((ele, i) => {
-      return ( //ทำ component มา render ที่นี่
-        <tr onClick={() => handleShowDetail(ele)} style={{ cursor: "pointer" }} key={ele.uid}>
-          <td>{i + 1}</td>
-          <td>{ele.username}</td>
-          <td>{ele.password}</td>
-        </tr>
-      )
+      if (search) {
+        if (ele.username.includes(search)) {
+          return ( 
+          <tr onClick={() => handleShowDetail(ele)} style={{ cursor: "pointer" }} key={ele.uid}>
+            <td>{i + 1}</td>
+            <td>{ele.username}</td>
+            <td>{ele.password}</td>
+          </tr>
+        )
+        }
+        else return null
+      }
+      else {
+        return ( //ทำ component มา render ที่นี่
+          <tr onClick={() => handleShowDetail(ele)} style={{ cursor: "pointer" }} key={ele.uid}>
+            <td>{i + 1}</td>
+            <td>{ele.username}</td>
+            <td>{ele.password}</td>
+          </tr>
+        )
+      }
     })
   }
 
@@ -103,9 +122,9 @@ export const Users = () => {
       password: document.getElementById("password").value,
       role: document.getElementById("admincheckbox").checked
     }
-    formData.role = formData.role?'admin':'user'
+    formData.role = formData.role ? 'admin' : 'user'
 
-    if (user.filter(ele=>ele.uid !== userDetail.uid).some(ele => ele.username === formData.username)) {
+    if (user.filter(ele => ele.uid !== userDetail.uid).some(ele => ele.username === formData.username)) {
       setAlert("ชื่อผู้ใช้นี้มีผู้ใช้งานอยู่แล้ว")
     }
     else if (formData.password.length < 6) {
@@ -113,7 +132,7 @@ export const Users = () => {
     }
     else {
       // console.log(formData)
-      Authen.editUser(userDetail.uid, formData).then(()=>{
+      Authen.editUser(userDetail.uid, formData).then(() => {
         handleCloseDetail()
         toggleShowEditSuccess()
       })
@@ -139,9 +158,9 @@ export const Users = () => {
             </div>
             <InputGroup className="search-user">
               <FormControl
-                placeholder="&#xF002;  ค้นหาผู้ใช้"
-                aria-label="ค้นหาผู้ใช้"
-                aria-describedby="basic-addon2"
+                placeholder="&#xF002;  ค้นหาชื่อผู้ใช้"
+                aria-label="ค้นหาชื่อผู้ใช้"
+                onInput={(e) => setSearch(e.target.value)}
               />
             </InputGroup>
             <Button variant="primary" className="add-user-btn" onClick={handleShow}>+ เพิ่มผู้ใช้ใหม่</Button>
@@ -155,7 +174,7 @@ export const Users = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {renderUser()}
+                  {renderUser(search)}
                 </tbody>
               </Table>
             </div>
@@ -240,8 +259,8 @@ export const Users = () => {
             </Modal.Body>
             <Modal.Footer>
               {alert !== '' ?
-              <p style={{ color: "red", fontSize: "16px", marginTop: "10px" }}>{alert}</p> : null}
-              <Button variant="secondary" type="button" onClick={() => {setEdit(false); setAlert('')}}>ยกเลิก</Button>
+                <p style={{ color: "red", fontSize: "16px", marginTop: "10px" }}>{alert}</p> : null}
+              <Button variant="secondary" type="button" onClick={() => { setEdit(false); setAlert('') }}>ยกเลิก</Button>
               <Button variant="primary" type="submit">บันทึก</Button>
             </Modal.Footer>
           </Form>
