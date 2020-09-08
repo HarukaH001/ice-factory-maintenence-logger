@@ -1,8 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './NewLocation.scss'
-import { Button, InputGroup, Form, FormControl, Divider } from 'react-bootstrap'
+import { useHistory } from 'react-router-dom'
+import { Button, InputGroup, Form, FormControl, Modal } from 'react-bootstrap'
 
 export const NewLocation = () => {
+  const history = useHistory()
+  const [showModal, setShowModal] = useState(false);
+  const handleClose = () => { setShowModal(false) }
+  const handleShow = () => { setShowModal(true) }
+
   return (
     <div className="NewLocation">
       <div className="container">
@@ -28,11 +34,23 @@ export const NewLocation = () => {
         <div className="footer">
           <div className="line"></div>
           <div className="btn-container">
-            <Button variant="secondary">ยกเลิก</Button>
+            <Button variant="secondary" onClick={handleShow}>ยกเลิก</Button>
             <Button>บันทึก</Button>
           </div>
         </div>
       </div>
+      <Modal show={showModal} onHide={handleClose} centered style={{ fontFamily: "IBM Plex Sans Thai" }} backdrop="static" keyboard={false}>
+        <Modal.Header>
+          <Modal.Title style={{ width: "100%" }}>ละทิ้ัง</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>คุณแน่ใจหรือไม่ว่าต้องการละทิ้ง?</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" type="button" onClick={handleClose}>ยกเลิก</Button>
+          <Button variant="danger" type="submit" onClick={history.goBack}>ละทิ้ง</Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   )
 }
