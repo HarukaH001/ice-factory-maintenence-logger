@@ -75,10 +75,6 @@ export const Users = () => {
     //eslint-disable-next-line
   }, [user])
 
-  useEffect(() => {
-
-  }, [search])
-
   function renderUser(search) {
     return user.sort((a, b) => sortByTimeStampGeneratedEmail(a, b, 'Asd')).map((ele, i) => {
       if (search) {
