@@ -4,7 +4,6 @@ import './Users.scss'
 import { Button, InputGroup, FormControl, Modal, Form, Toast, Table } from 'react-bootstrap'
 import { NavDropdown } from '../../components'
 import firebase, { Authen } from '../../services/service.js'
-import { search } from 'superagent'
 
 export const Users = () => {
   // const history = useHistory()
@@ -84,13 +83,13 @@ export const Users = () => {
     return user.sort((a, b) => sortByTimeStampGeneratedEmail(a, b, 'Asd')).map((ele, i) => {
       if (search) {
         if (ele.username.includes(search)) {
-          return ( 
-          <tr onClick={() => handleShowDetail(ele)} style={{ cursor: "pointer" }} key={ele.uid}>
-            <td>{i + 1}</td>
-            <td>{ele.username}</td>
-            <td>{ele.password}</td>
-          </tr>
-        )
+          return (
+            <tr onClick={() => handleShowDetail(ele)} style={{ cursor: "pointer" }} key={ele.uid}>
+              <td>{i + 1}</td>
+              <td>{ele.username}</td>
+              <td>{ele.password}</td>
+            </tr>
+          )
         }
         else return null
       }
