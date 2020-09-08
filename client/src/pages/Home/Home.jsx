@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './Home.scss'
 // import { useHistory } from 'react-router-dom';
 import { Button, Form } from 'react-bootstrap'
@@ -6,6 +6,7 @@ import { HistoryCard, NavDropdown } from '../../components'
 
 export const Home = () => {
   // const history = useHistory()
+  const [search, setSearch] = useState('')
 
   const mock = [{
     machine: "Compressor",
@@ -28,6 +29,20 @@ export const Home = () => {
   }
   ]
 
+  function cardRender(search) {
+    return mock.map((ele, i) => {
+      if (search) {
+        if (ele.machine.includes(search) || ele.location.includes(search)) {
+          return (<HistoryCard data={ele} key={i} />)
+        }
+        else return null
+      }
+      else {
+        return (<HistoryCard data={ele} key={i} />)
+      }
+    })
+  }
+
   return (
     <div className="Home">
       <div className="container">
@@ -37,11 +52,11 @@ export const Home = () => {
             <NavDropdown _disabled={"home"}></NavDropdown>
           </div>
           <Form.Group controlId="exampleForm.ControlInput1">
-            <Form.Control type="text" placeholder="&#xF002;  ค้นหารายการ" />
+            <Form.Control type="text" placeholder="&#xF002;  ค้นหารายการ" onInput={(e) => setSearch(e.target.value)} />
           </Form.Group>
           <Button variant="primary" className="add-btn">+ เพิ่มรายการซ่อม</Button>
           <div className="card-wrapper">
-            {mock.map((ele, i) => { return <HistoryCard data={ele} key={i} /> })}
+            {cardRender(search)}
           </div>
         </div>
       </div>
