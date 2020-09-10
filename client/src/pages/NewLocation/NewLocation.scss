@@ -19,7 +19,6 @@
       z-index: 100;
 
       h2 {
-        // padding-top: 4px;
         min-width: 70vw;
         font-style: bold;
         margin-left: 2rem;
@@ -41,10 +40,17 @@
     }
 
     .form {
+      padding: 10px;
       height: 80vh;
       max-height: 80vh;
       overflow: auto;
       margin-top: 75px;
+
+      .list {
+        input {
+          border-radius: 0.25rem 0 0 0.25rem;
+        }
+      }
     }
 
     .footer {

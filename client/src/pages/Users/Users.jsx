@@ -263,7 +263,7 @@ export const Users = () => {
             <Modal.Body>
               <b>ชื่อผู้ใช้</b> : {userDetail.username}<br />
               <b>รหัสผ่าน</b> : {userDetail.password}<br />
-              <b>ระดับสิทธิ์</b> : {userDetail.role}<br />
+              <b>ระดับสิทธิ์</b> : <div style={{ display: "inline", textTransform: "uppercase" }}>{userDetail.role}</div><br />
             </Modal.Body>
             <Modal.Footer>
               <Button variant="success" type="button" onClick={() => { setEdit(true) }}>แก้ไข</Button>

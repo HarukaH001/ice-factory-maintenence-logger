@@ -1,7 +1,7 @@
 import React from 'react'
 import './Machine.scss'
 import { Link, useHistory, useParams, useRouteMatch } from 'react-router-dom';
-import { Button, InputGroup, FormControl } from 'react-bootstrap'
+import { Button } from 'react-bootstrap'
 
 export const Machine = () => {
   const history = useHistory()
@@ -29,7 +29,7 @@ export const Machine = () => {
 const Card = ({ location }) => {
   return (
     <div className="card-container">
-      <h5 style={{ margin: 0 }}>{location}</h5>
+      <h5 style={{ margin: 0, fontSize: "20px" }}>{location}</h5>
     </div>
   )
 }
