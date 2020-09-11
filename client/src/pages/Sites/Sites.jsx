@@ -4,24 +4,27 @@ import { Link, useRouteMatch } from 'react-router-dom';
 import { Button, InputGroup, FormControl } from 'react-bootstrap'
 import { NavDropdown } from '../../components'
 import firebase, { Data, Authen } from '../../services/service'
-import { addListener, setMaxListeners } from 'superagent';
 
 export const Sites = () => {
   const { path, url } = useRouteMatch()
   const [site, setSite] = useState([])
 
   useEffect(()=>{
-    if(firebase.auth().currentUser) {
       Data.getSitesRef().on('value', snapshot=>{
-        if(snapshot.val()){
-          const Data = Object.entries(snapshot.val()).map(ele => {
-            ele[1].sid = ele[0]
-            return ele[1]
-          })
-          setSite(Data)
+        if(snapshot){
+          if(snapshot.val()){
+            const Data = Object.entries(snapshot.val()).map(ele => {
+              ele[1].sid = ele[0]
+              return ele[1]
+            })
+            setSite(Data)
+          } else setSite([])
         }
       })
-    }
+
+      return () => {
+        Data.getSitesRef().off()
+      }
   },[])
   
   function addSiteHandler(e) {
@@ -29,7 +32,7 @@ export const Sites = () => {
     const name = document.getElementById('site-name').value
     if(name != ''){
       if(site.length > 0){
-        if(site.find(ele=>ele.sitename === name)){
+        if(site.find(ele=>ele.sid === name)){
           document.getElementById('site-name').value = ''
           return
         }
@@ -59,7 +62,7 @@ export const Sites = () => {
             </InputGroup.Append>
           </InputGroup>
           <div className="btn-container">
-            {site.map((ele, i) => { return <Link key={i} to={`${url}/` + ele.sitename}><Button variant="success">{"บ่อ "+ele.sitename}</Button></Link> })}
+            {site.map((ele, i) => { return <Link key={i} to={`${url}/` + ele.sid}><Button variant="success">{"บ่อ "+ele.sid}</Button></Link> })}
           </div>
         </div>
       </div>

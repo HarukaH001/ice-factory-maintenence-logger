@@ -9,21 +9,36 @@ export const _Data = (firebase) => {
     const functions = firebase.functions()
 
     return {
-         getSitesRef(){
-             return database.ref('sites')
-         },
+        getSitesRef(){
+            return database.ref('sites')
+        },
 
-         addSite(name){
+        addSite(name){
             return new Promise(resolve=>{
-                database.ref('sites/'+Date.now()).update({
-                    sitename: name
+                database.ref('sites/'+name).update({
+                    createdTime: Date.now()
                 }).then(res=>{
                     resolve()
                 }).catch(err=>{
-                    console.log(err)
                     resolve()
                 })
             })
-         }
+        },
+
+        getMachineRef(site){
+            return database.ref('sites/'+site+"/"+"machine")
+        },
+
+        addMachine(site, name){
+            return new Promise(resolve => {
+                database.ref('sites/'+site+"/"+"machine/"+name).update({
+                    createdTime: Date.now()
+                }).then(res=>{
+                    resolve()
+                }).catch(err=>{
+                    resolve()
+                })
+            })
+        }
     }
 }
