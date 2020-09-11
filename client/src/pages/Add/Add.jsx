@@ -34,8 +34,11 @@ export const Add = () => {
 
   function currentTime() {
     const d = new Date()
-    var hour = d.getHours()
-    var minute = d.getMinutes()
+    var hour = "" + d.getHours()
+    var minute = "" + d.getMinutes()
+
+    if (hour.length < 2) hour = '0' + hour
+    if (minute.length < 2) minute = '0' + minute
 
     return [hour, minute].join(":")
   }
