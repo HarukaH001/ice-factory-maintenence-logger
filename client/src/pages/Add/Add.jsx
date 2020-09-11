@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import './Add.scss'
-import { useHistory } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { Button, InputGroup, Form, FormControl, Modal, DropdownButton, Dropdown } from 'react-bootstrap'
 
 export const Add = () => {
@@ -23,7 +23,7 @@ export const Add = () => {
   function currentDate() {
     const d = new Date()
     var month = "" + (d.getMonth() + 1)
-    var day =  "" + d.getDate()
+    var day = "" + d.getDate()
     var year = d.getFullYear()
 
     if (day.length < 2) day = '0' + day
@@ -106,7 +106,7 @@ export const Add = () => {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" type="button" onClick={handleClose}>ยกเลิก</Button>
-          <Button variant="danger" type="submit" onClick={history.goBack}>ละทิ้ง</Button>
+          <Link to="/"><Button variant="danger" type="button">ละทิ้ง</Button></Link>
         </Modal.Footer>
       </Modal>
     </div>
