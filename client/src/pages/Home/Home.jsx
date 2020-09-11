@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import './Home.scss'
-// import { useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Button, Form } from 'react-bootstrap'
 import { HistoryCard, NavDropdown } from '../../components'
 
@@ -54,7 +54,7 @@ export const Home = () => {
           <Form.Group controlId="exampleForm.ControlInput1">
             <Form.Control type="text" placeholder="&#xF002;  ค้นหารายการ" onInput={(e) => setSearch(e.target.value)} />
           </Form.Group>
-          <Button variant="primary" className="add-btn">+ เพิ่มรายการซ่อม</Button>
+          <Link to="/add"><Button variant="primary" className="add-btn">+ เพิ่มรายการซ่อม</Button></Link>
           <div className="card-wrapper">
             {cardRender(search)}
           </div>
