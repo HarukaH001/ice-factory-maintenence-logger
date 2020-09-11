@@ -40,16 +40,12 @@
     }
 
     .form {
-      // display: flex;
-      // flex-flow: row wrap;
       width: 100%;
       padding: 10px;
       height: 80vh;
       max-height: 80vh;
       overflow: auto;
-      margin-top: 75px;
-      // justify-content: center;
-
+      margin-top: 50px;
       .line-wrapper {
         display: flex;
         margin: 10px 0;
