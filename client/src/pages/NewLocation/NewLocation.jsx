@@ -41,7 +41,7 @@ export const NewLocation = () => {
       </div>
       <Modal show={showModal} onHide={handleClose} centered style={{ fontFamily: "IBM Plex Sans Thai" }} backdrop="static" keyboard={false}>
         <Modal.Header>
-          <Modal.Title style={{ width: "100%" }}>ละทิ้ัง</Modal.Title>
+          <Modal.Title style={{ width: "100%" }}>ละทิ้ง</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <p>คุณแน่ใจหรือไม่ว่าต้องการละทิ้ง?</p>
