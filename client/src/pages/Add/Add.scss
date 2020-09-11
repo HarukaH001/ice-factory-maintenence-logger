@@ -1,0 +1,130 @@
+.Add {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+
+  .container {
+    // width: 90vw;
+    margin-top: 1em;
+
+    .header {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 70px;
+      border-bottom: solid #c4c4c4 1px;
+      background-color: rgba(255, 255, 255, 0.4);
+      backdrop-filter: blur(15px) saturate(200%);
+      z-index: 100;
+
+      h2 {
+        min-width: 70vw;
+        font-style: bold;
+        margin-left: 2rem;
+        margin-top: 1rem;
+        // white-space: nowrap;
+        // overflow: hidden;
+        // text-overflow: ellipsis;
+        @media screen and (max-width: 359px) {
+          font-size: x-large;
+          // margin-bottom: 1rem;
+        }
+      }
+    }
+
+    .line {
+      background-color: #c4c4c4;
+      // width: 100vw;
+      height: 1px;
+    }
+
+    .form {
+      // display: flex;
+      // flex-flow: row wrap;
+      width: 100%;
+      padding: 10px;
+      height: 80vh;
+      max-height: 80vh;
+      overflow: auto;
+      margin-top: 75px;
+      // justify-content: center;
+
+      .line-wrapper {
+        display: flex;
+        margin: 10px 0;
+
+        p {
+          font-weight: bold;
+          margin-right: 1rem;
+          text-align: start;
+          min-width: 4rem;
+          margin: 0;
+        }
+
+        .inner {
+          display: flex;
+          flex: 1 1 auto;
+          align-items: center;
+
+          button {
+            display: inline-flex;
+            width: 100%;
+            text-align: start;
+            justify-content: space-between;
+            align-items: center;
+            background: #dbdbdb;
+            background: linear-gradient(
+              180deg,
+              rgb(236, 236, 236) 0%,
+              rgb(218, 218, 218) 100%
+            );
+          }
+
+          .dropdown-menu {
+            width: 100%;
+          }
+
+          input {
+            border: none;
+            padding: 5px 10px;
+            border-radius: 0.25rem;
+            background: #dbdbdb;
+            background: linear-gradient(
+              180deg,
+              rgb(236, 236, 236) 0%,
+              rgb(218, 218, 218) 100%
+            );
+          }
+        }
+      }
+
+      .list {
+        input {
+          border-radius: 0.25rem 0 0 0.25rem;
+        }
+      }
+    }
+
+    .footer {
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 70px;
+      background-color: rgba(255, 255, 255, 0.4);
+      backdrop-filter: blur(15px) saturate(200%);
+      z-index: 100;
+
+      .btn-container {
+        position: fixed;
+        right: 1em;
+        bottom: 1em;
+
+        button {
+          margin-left: 10px;
+        }
+      }
+    }
+  }
+}
