@@ -30,7 +30,7 @@ export const Sites = () => {
   function addSiteHandler(e) {
     e.preventDefault()
     const name = document.getElementById('site-name').value
-    if(name != ''){
+    if(name !== ''){
       if(site.length > 0){
         if(site.find(ele=>ele.sid === name)){
           document.getElementById('site-name').value = ''

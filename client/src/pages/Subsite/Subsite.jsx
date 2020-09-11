@@ -31,7 +31,7 @@ export const Subsite = () => {
   function addMachineHandler(e) {
     e.preventDefault()
     const name = document.getElementById('machine-name').value
-    if(name != ''){
+    if(name !== ''){
       if(machine.length > 0){
         if(machine.find(ele=>ele.mid === name)){
           document.getElementById('machine-name').value = ''
@@ -44,12 +44,22 @@ export const Subsite = () => {
     }
   }
 
+  function deleteSiteHandler(e){
+    e.preventDefault()
+    //ทำอะไรสักอย่างก่อนลบ
+    Data.deleteSite(num).then(()=>{
+      //ทำอะไรสักอย่างหลังสั่งลบ
+      history.goBack()
+    })
+  }
+
   return (
     <div className="Subsite">
       <div className="container">
         <div className="header">
           <Button variant="light" onClick={() => history.goBack()}>&#xF053;</Button>
           <h2>บ่อ {num}</h2>
+          <Button style={{backgroundColor:'red',border:'none'}} onClick={deleteSiteHandler}>ลบ</Button>
         </div>
         <InputGroup className="add-machine">
           <FormControl

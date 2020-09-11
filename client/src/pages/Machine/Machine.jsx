@@ -1,21 +1,32 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './Machine.scss'
 import { Link, useHistory, useParams, useRouteMatch } from 'react-router-dom';
 import { Button } from 'react-bootstrap'
+import firebase, { Data, Authen } from '../../services/service'
 
 export const Machine = () => {
   const history = useHistory()
   const { path, url } = useRouteMatch()
-  const { machine } = useParams()
+  const { machine, num } = useParams()
 
   const locationList = ["ฝั่งมอเตอร์", "ฝั่งวาล์วดูด"]
+
+  function deleteMachineHandler(e){
+    e.preventDefault()
+    //ทำอะไรสักอย่างก่อนลบ
+    Data.deleteMachine(num,machine).then(()=>{
+      //ทำอะไรสักอย่างหลังสั่งลบ
+      history.goBack()
+    })
+  }
 
   return (
     <div className="Machine">
       <div className="container">
         <div className="header">
           <Button variant="light" onClick={() => history.goBack()}>&#xF053;</Button>
-          <h2>{machine}</h2>
+          <h2>{machine}
+          </h2><Button style={{backgroundColor:'red',border:'none'}} onClick={deleteMachineHandler}>ลบ</Button>
         </div>
         <Link to={`${url}/new`}><Button variant="primary" className="add-location" >+ เพิ่มตำแหน่งซ่อม</Button></Link>
         <div className="cards-container">
