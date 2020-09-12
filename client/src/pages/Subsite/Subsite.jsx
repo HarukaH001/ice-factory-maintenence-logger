@@ -83,8 +83,8 @@ export const Subsite = () => {
           <Modal.Title style={{ width: "100%" }}>ลบ "บ่อ {num}"</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <strong style={{ color: "red", display: "inline" }}>เครื่องจักร ตำแหน่งซ่อม และรายการอะไหล่ที่อยู่ในบ่อนี้จะถูกลบทั้งหมด</strong>{" "}
-          <p style={{ color: "red", display: "inline" }}>คุณแน่ใจหรือไม่ว่าต้องการลบ "บ่อ {num}" ?</p>
+          <strong style={{ color: "#dc3545", display: "inline" }}>เครื่องจักร ตำแหน่งซ่อม และรายการอะไหล่ที่อยู่ในบ่อนี้จะถูกลบทั้งหมด</strong>{" "}
+          <p style={{ color: "#dc3545", display: "inline" }}>คุณแน่ใจหรือไม่ว่าต้องการลบ "บ่อ {num}" ?</p>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" type="button" onClick={handleClose}>ยกเลิก</Button>
