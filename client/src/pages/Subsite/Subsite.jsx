@@ -126,7 +126,7 @@ export const Subsite = () => {
           width: "100%",
           textAlign: "center"
         }}>
-        <Toast.Body><b style={{ fontSize: "18px" }}>ลบบ่อ {del} เรียบร้อยแล้ว</b></Toast.Body>
+        <Toast.Body><b style={{ fontSize: "18px" }}>ลบ {del} เรียบร้อยแล้ว</b></Toast.Body>
       </Toast>
 
       <Toast show={showAddSuccess} onClose={toggleShowAddSuccess} delay={3500} autohide
