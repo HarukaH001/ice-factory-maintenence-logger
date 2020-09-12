@@ -30,6 +30,8 @@
 
     .btn-container {
       margin-top: 10px;
+      max-height: 80vh;
+      overflow: auto;
 
       button {
         width: 100%;
