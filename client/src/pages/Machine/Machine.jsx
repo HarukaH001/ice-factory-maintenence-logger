@@ -28,7 +28,7 @@ export const Machine = () => {
     <div className="Machine">
       <div className="container">
         <div className="header">
-          <Button variant="light" onClick={() => history.goBack()}>&#xF053;</Button>
+          <Button variant="light" onClick={() => history.push("/sites/" + num)}>&#xF053;</Button>
           <h2>{machine}</h2>
           <Button variant="outline-danger" onClick={handleShow}>ลบ</Button>
         </div>
