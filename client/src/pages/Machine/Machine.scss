@@ -28,18 +28,50 @@
       }
     }
 
-    .add-location {
-      width: 100%;
-    }
+    .form {
+      padding: 10px;
+      height: 80vh;
+      max-height: 80vh;
+      overflow: auto;
 
-    .cards-container {
-      margin-top: 10px;
-      // background-color: red;
-      min-height: 80vh;
+      input {
+        border-radius: 0.25rem 0 0 0.25rem;
+      }
+
+      .tag-wrapper {
+        display: flex;
+        flex-flow: row wrap;
+        margin: 1rem 0;
+      }
     }
   }
 }
 
-.card-container {
-  margin: 10px 0;
+.Tag {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 5px;
+  width: fit-content;
+  background-color: #d4d4d4;
+  border-radius: 5px;
+  padding: 5px 10px;
+  transition: all ease-in-out 150ms;
+
+  &:hover {
+    background-color: #e7e7e7;
+  }
+
+  h5 {
+    margin: 0;
+    font-size: 18px;
+  }
+
+  button {
+    background: none;
+    border: none;
+    outline: none;
+    color: #dc3545;
+    margin-left: 1rem;
+  }
 }

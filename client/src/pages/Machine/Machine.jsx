@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import './Machine.scss'
 import { Link, useHistory, useParams, useRouteMatch } from 'react-router-dom';
-import { Button, Modal } from 'react-bootstrap'
+import { Button, Modal, InputGroup, Form, FormControl } from 'react-bootstrap'
 import firebase, { Data, Authen } from '../../services/service'
 
 export const Machine = () => {
@@ -10,6 +10,7 @@ export const Machine = () => {
   const { machine, num } = useParams()
 
   const locationList = ["ฝั่งมอเตอร์", "ฝั่งวาล์วดูด"]
+  const partList = ["ลิ้นไอดี", "ลิ้นไอเสีย", "ลูกสูบ"]
 
   const [showModal, setShowModal] = useState(false)
   const handleClose = () => { setShowModal(false) }
@@ -31,9 +32,33 @@ export const Machine = () => {
           <h2>{machine}</h2>
           <Button variant="outline-danger" onClick={handleShow}>ลบ</Button>
         </div>
-        <Link to={`${url}/new`}><Button variant="primary" className="add-location" >+ เพิ่มตำแหน่งซ่อม</Button></Link>
-        <div className="cards-container">
-          {locationList.map((ele, i) => <Card key={i} location={ele} />)}
+        <div className="form">
+          <InputGroup className="location">
+            <Form.Label style={{ width: "100%" }}>เพิ่มตำแหน่งที่ซ่อม</Form.Label>
+            <FormControl
+              placeholder="เพิ่มตำแหน่งที่ซ่อม"
+              aria-label="เพิ่มตำแหน่งที่ซ่อม"
+            />
+            <InputGroup.Append>
+              <Button variant="primary">เพิ่ม</Button>
+            </InputGroup.Append>
+          </InputGroup>
+          <div className="tag-wrapper">
+            {locationList.map((ele, i) => <Tag key={i} content={ele} />)}
+          </div>
+          <InputGroup className="list">
+            <Form.Label style={{ width: "100%" }}>รายการสิ่งที่จะซ่อม</Form.Label>
+            <FormControl
+              placeholder="เพิ่มรายการอะไหล่"
+              aria-label="เพิ่มรายการอะไหล่"
+            />
+            <InputGroup.Append>
+              <Button variant="primary">เพิ่ม</Button>
+            </InputGroup.Append>
+          </InputGroup>
+          <div className="tag-wrapper">
+            {partList.map((ele, i) => <Tag key={i} content={ele} />)}
+          </div>
         </div>
       </div>
       <Modal show={showModal} onHide={handleClose} centered style={{ fontFamily: "IBM Plex Sans Thai" }} backdrop="static" keyboard={false}>
@@ -53,10 +78,16 @@ export const Machine = () => {
   )
 }
 
-const Card = ({ location }) => {
+const Tag = ({ content }) => {
+
+  function deleteXXXX() {
+    alert(content)
+  }
+
   return (
-    <div className="card-container">
-      <h5 style={{ margin: 0, fontSize: "20px" }}>{location}</h5>
+    <div className="Tag">
+      <h5>{content}</h5>
+      <button onClick={() => deleteXXXX(content)}>&#xf00d;</button>
     </div>
   )
 }
