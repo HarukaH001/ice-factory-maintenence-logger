@@ -9,6 +9,7 @@
 
     .header {
       display: flex;
+      border-bottom: solid 0.5px #b8b8b8;
 
       button {
         height: fit-content;
@@ -30,8 +31,7 @@
 
     .form {
       padding: 10px;
-      height: 80vh;
-      max-height: 80vh;
+      max-height: 90vh;
       overflow: auto;
 
       input {
