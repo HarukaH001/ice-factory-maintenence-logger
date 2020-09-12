@@ -1,44 +1,68 @@
 import React, { useEffect, useState } from 'react'
 import './Sites.scss'
-import { Link, useRouteMatch } from 'react-router-dom';
-import { Button, InputGroup, FormControl } from 'react-bootstrap'
+import { Link, useLocation, useRouteMatch, useHistory } from 'react-router-dom';
+import { Button, InputGroup, FormControl, Toast } from 'react-bootstrap'
 import { NavDropdown } from '../../components'
 import firebase, { Data, Authen } from '../../services/service'
 
 export const Sites = () => {
   const { path, url } = useRouteMatch()
   const [site, setSite] = useState([])
+  const history = useHistory()
+  const [input, setInput] = useState("")
 
-  useEffect(()=>{
-      Data.getSitesRef().on('value', snapshot=>{
-        if(snapshot){
-          if(snapshot.val()){
-            const Data = Object.entries(snapshot.val()).map(ele => {
-              ele[1].sid = ele[0]
-              return ele[1]
-            })
-            setSite(Data)
-          } else setSite([])
-        }
-      })
+  function useQuery() {
+    return new URLSearchParams(useLocation().search);
+  }
+  const del = useQuery().get("deleted")
 
-      return () => {
-        Data.getSitesRef().off()
+  const [showDeleteSuccess, setShowDeleteSuccess] = useState(false)
+  const toggleShowDeleteSuccess = () => setShowDeleteSuccess(!showDeleteSuccess)
+
+  const [showAddSuccess, setShowAddSuccess] = useState(false)
+  const toggleShowAddSuccess = () => setShowAddSuccess(!showAddSuccess)
+
+  const [showAddFail, setShowAddFail] = useState(false)
+  const toggleShowAddFail = () => setShowAddFail(!showAddFail)
+
+  useEffect(() => {
+    Data.getSitesRef().on('value', snapshot => {
+      if (snapshot) {
+        if (snapshot.val()) {
+          const Data = Object.entries(snapshot.val()).map(ele => {
+            ele[1].sid = ele[0]
+            return ele[1]
+          })
+          setSite(Data)
+        } else setSite([])
       }
-  },[])
-  
+    })
+
+    return () => {
+      Data.getSitesRef().off()
+    }
+  }, [])
+
+  useEffect(() => {
+    if (del) {
+      toggleShowDeleteSuccess()
+    }
+  }, [del])
+
   function addSiteHandler(e) {
     e.preventDefault()
     const name = document.getElementById('site-name').value
-    if(name !== ''){
-      if(site.length > 0){
-        if(site.find(ele=>ele.sid === name)){
+    setInput(name)
+    if (name !== '') {
+      if (site.length > 0) {
+        if (site.find(ele => ele.sid === name)) {
           document.getElementById('site-name').value = ''
-          return
+          return toggleShowAddFail()
         }
       }
-      Data.addSite(name).then(()=>{
+      Data.addSite(name).then(() => {
         document.getElementById('site-name').value = ''
+        toggleShowAddSuccess()
       })
     }
   }
@@ -62,10 +86,51 @@ export const Sites = () => {
             </InputGroup.Append>
           </InputGroup>
           <div className="btn-container">
-            {site.map((ele, i) => { return <Link key={i} to={`${url}/` + ele.sid}><Button variant="success">{"บ่อ "+ele.sid}</Button></Link> })}
+            {site.map((ele, i) => { return <Link key={i} to={`${url}/` + ele.sid}><Button variant="success">{"บ่อ " + ele.sid}</Button></Link> })}
           </div>
         </div>
       </div>
+      <Toast show={showDeleteSuccess} onClose={() => { toggleShowDeleteSuccess(); history.replace("/sites") }} delay={3500} autohide
+        style={{
+          position: 'absolute',
+          bottom: '2rem',
+          left: '50%',
+          backgroundColor: '#17a2b8',
+          color: 'white',
+          transform: 'translateX(-50%)',
+          width: "100%",
+          textAlign: "center"
+        }}>
+        <Toast.Body><b style={{ fontSize: "18px" }}>ลบบ่อ {del} เรียบร้อยแล้ว</b></Toast.Body>
+      </Toast>
+
+      <Toast show={showAddSuccess} onClose={toggleShowAddSuccess} delay={3500} autohide
+        style={{
+          position: 'absolute',
+          bottom: '2rem',
+          left: '50%',
+          backgroundColor: '#28a745',
+          color: 'white',
+          transform: 'translateX(-50%)',
+          width: "100%",
+          textAlign: "center"
+        }}>
+        <Toast.Body><b style={{ fontSize: "18px" }}>เพิ่มบ่อ {input} เรียบร้อยแล้ว</b></Toast.Body>
+      </Toast>
+
+      <Toast show={showAddFail} onClose={toggleShowAddFail} delay={5000} autohide
+        style={{
+          position: 'absolute',
+          bottom: '2rem',
+          left: '50%',
+          backgroundColor: '#dc3545',
+          color: 'white',
+          transform: 'translateX(-50%)',
+          width: "100%",
+          textAlign: "center"
+        }}>
+        <Toast.Body><b style={{ fontSize: "18px" }}>บ่อ {input} มีอยู่แล้วกรุณาตั้งชื่ออื่น</b></Toast.Body>
+      </Toast>
     </div>
   )
 }
