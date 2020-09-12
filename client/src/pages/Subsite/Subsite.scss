@@ -15,16 +15,15 @@
       }
 
       h2 {
+        flex: auto;
         padding-top: 4px;
-        min-width: 70vw;
         font-style: bold;
         margin-left: 10px;
-        // white-space: nowrap;
-        // overflow: hidden;
-        // text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
         @media screen and (max-width: 359px) {
           font-size: x-large;
-          // margin-bottom: 1rem;
         }
       }
     }

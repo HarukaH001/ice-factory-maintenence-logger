@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import './Subsite.scss'
 import { Link, useHistory, useParams, useRouteMatch } from 'react-router-dom';
-import { Button, InputGroup, FormControl } from 'react-bootstrap'
+import { Button, InputGroup, FormControl, Modal } from 'react-bootstrap'
 import firebase, { Data, Authen } from '../../services/service'
 
 export const Subsite = () => {
@@ -10,46 +10,49 @@ export const Subsite = () => {
   const { path, url } = useRouteMatch()
   const [machine, setMachine] = useState([])
 
-  useEffect(()=>{
-    Data.getMachineRef(num).on('value', snapshot=>{
-        if(snapshot){
-          if(snapshot.val()){
-            const Data = Object.entries(snapshot.val()).map(ele => {
-              ele[1].mid = ele[0]
-              return ele[1]
-            })
-            setMachine(Data)
-          } else setMachine([])
-        }
-      })
+  const [showModal, setShowModal] = useState(false)
+  const handleClose = () => { setShowModal(false) }
+  const handleShow = () => { setShowModal(true) }
+
+  useEffect(() => {
+    Data.getMachineRef(num).on('value', snapshot => {
+      if (snapshot) {
+        if (snapshot.val()) {
+          const Data = Object.entries(snapshot.val()).map(ele => {
+            ele[1].mid = ele[0]
+            return ele[1]
+          })
+          setMachine(Data)
+        } else setMachine([])
+      }
+    })
 
     return () => {
       Data.getMachineRef(num).off()
     }
-  },[])
-  
+  }, [])
+
   function addMachineHandler(e) {
     e.preventDefault()
     const name = document.getElementById('machine-name').value
-    if(name !== ''){
-      if(machine.length > 0){
-        if(machine.find(ele=>ele.mid === name)){
+    if (name !== '') {
+      if (machine.length > 0) {
+        if (machine.find(ele => ele.mid === name)) {
           document.getElementById('machine-name').value = ''
           return
         }
       }
-      Data.addMachine(num,name).then(()=>{
+      Data.addMachine(num, name).then(() => {
         document.getElementById('machine-name').value = ''
       })
     }
   }
 
-  function deleteSiteHandler(e){
+  function deleteSiteHandler(e) {
     e.preventDefault()
-    //ทำอะไรสักอย่างก่อนลบ
-    Data.deleteSite(num).then(()=>{
-      //ทำอะไรสักอย่างหลังสั่งลบ
-      history.goBack()
+    handleClose()
+    Data.deleteSite(num).then(() => {
+      history.push("/sites?deleted=" + num)
     })
   }
 
@@ -59,7 +62,7 @@ export const Subsite = () => {
         <div className="header">
           <Button variant="light" onClick={() => history.goBack()}>&#xF053;</Button>
           <h2>บ่อ {num}</h2>
-          <Button style={{backgroundColor:'red',border:'none'}} onClick={deleteSiteHandler}>ลบ</Button>
+          <Button variant="outline-danger" onClick={handleShow}>ลบ</Button>
         </div>
         <InputGroup className="add-machine">
           <FormControl
@@ -75,6 +78,19 @@ export const Subsite = () => {
           {machine.map((ele, i) => { return <Link key={i} to={`${url}/` + ele.mid}><Button variant="success">{ele.mid}</Button></Link> })}
         </div>
       </div>
+      <Modal show={showModal} onHide={handleClose} centered style={{ fontFamily: "IBM Plex Sans Thai" }} backdrop="static" keyboard={false}>
+        <Modal.Header>
+          <Modal.Title style={{ width: "100%" }}>ลบ "บ่อ {num}"</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <strong style={{ color: "red", display: "inline" }}>เครื่องจักร ตำแหน่งซ่อม และรายการอะไหล่ที่อยู่ในบ่อนี้จะถูกลบทั้งหมด</strong>{" "}
+          <p style={{ color: "red", display: "inline" }}>คุณแน่ใจหรือไม่ว่าต้องการลบ "บ่อ {num}" ?</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" type="button" onClick={handleClose}>ยกเลิก</Button>
+          <Button variant="danger" type="button" onClick={deleteSiteHandler}>ลบ</Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   )
 }
