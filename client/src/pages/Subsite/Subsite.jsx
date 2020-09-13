@@ -85,7 +85,7 @@ export const Subsite = () => {
         <div className="header">
           <Button variant="light" onClick={() => history.push("/sites")}>&#xF053;</Button>
           <h2>บ่อ {num}</h2>
-          <Button variant="outline-danger" onClick={handleShow}>ลบ</Button>
+          <Button variant="outline-danger" title="ลบหน้านี้" style={{ fontSize: "20px" }} onClick={handleShow}>&#xf1f8;</Button>
         </div>
         <InputGroup className="add-machine">
           <FormControl

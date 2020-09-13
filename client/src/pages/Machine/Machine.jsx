@@ -30,7 +30,7 @@ export const Machine = () => {
         <div className="header">
           <Button variant="light" onClick={() => history.push("/sites/" + num)}>&#xF053;</Button>
           <h2>{machine}</h2>
-          <Button variant="outline-danger" onClick={handleShow}>ลบ</Button>
+          <Button variant="outline-danger" title="ลบหน้านี้" style={{ fontSize: "20px" }} onClick={handleShow}>&#xf1f8;</Button>
         </div>
         <div className="form">
           <InputGroup className="location">
@@ -87,7 +87,7 @@ const Tag = ({ content }) => {
   return (
     <div className="Tag">
       <h5>{content}</h5>
-      <button onClick={() => deleteXXXX(content)}>&#xf00d;</button>
+      <button title="ลบรายการนี้" onClick={() => deleteXXXX(content)}>&#xf00d;</button>
     </div>
   )
 }
