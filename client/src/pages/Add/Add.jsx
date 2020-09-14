@@ -99,7 +99,7 @@ export const Add = () => {
               </div>
             </div>
             <div className="table-container">
-              <Table>
+              <Table borderless>
                 <thead>
                   <tr>
                     <th>อะไหล่ที่ซ่อม</th>
@@ -108,22 +108,6 @@ export const Add = () => {
                 </thead>
                 <tbody>
                   {partList.map((ele, i) => renderTable(ele))}
-                  {/* <tr>
-                    <td>ลิ้นไอดี</td>
-                    <td>
-                      <Form.Control as="select" className="position-dropdown" style={{ display: "inline", width: '100%' }} variant="info">
-                        {statusList.map((ele, i) => <option href="#" key={i} >{ele}</option>)}
-                      </Form.Control>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>ลิ้นไอเสีย</td>
-                    <td>
-                      <Form.Control as="select" className="position-dropdown" style={{ display: "inline", width: '100%' }} variant="info">
-                        {statusList.map((ele, i) => <option href="#" key={i} >{ele}</option>)}
-                      </Form.Control>
-                    </td>
-                  </tr> */}
                 </tbody>
               </Table>
             </div>

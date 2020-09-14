@@ -13,7 +13,7 @@
       top: 0;
       width: 100%;
       height: 70px;
-      border-bottom: solid #c4c4c4 1px;
+      border-bottom: solid #c4c4c4 0.5px;
       background-color: rgba(255, 255, 255, 0.4);
       backdrop-filter: blur(15px) saturate(200%);
       z-index: 100;
@@ -23,9 +23,9 @@
         font-style: bold;
         margin-left: 2rem;
         margin-top: 1rem;
-        // white-space: nowrap;
-        // overflow: hidden;
-        // text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
         @media screen and (max-width: 359px) {
           font-size: x-large;
           // margin-bottom: 1rem;
