@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import './Add.scss'
 import { Link, useHistory } from 'react-router-dom'
-import { Button, InputGroup, Form, FormControl, Modal, DropdownButton, Dropdown } from 'react-bootstrap'
+import { Button, InputGroup, Form, FormControl, Modal, DropdownButton, Dropdown, Table } from 'react-bootstrap'
 
 export const Add = () => {
   const history = useHistory()
@@ -16,6 +16,8 @@ export const Add = () => {
   const locationList = [1, 2, 3]
   const machineList = ["Compressor", "ปั๊มน้ำ", "พัดลมคูลลิ่ง"]
   const positionList = ["ฝั่งมอเตอร์", "ฝั่งวาล์วดูด"]
+  const statusList = ["ปกติ", "ซ่อม", "เปลี่ยน"]
+  const partList = ["ลิ้นไอดี", "ลิ้นไอเสีย", "ก้านสูบ"]
 
   const [date, setDate] = useState(currentDate)
   const [time, setTime] = useState(currentTime)
@@ -41,6 +43,19 @@ export const Add = () => {
     if (minute.length < 2) minute = '0' + minute
 
     return [hour, minute].join(":")
+  }
+
+  function renderTable(part) {
+    return (
+      <tr onChange={() => console.log("B")}>
+        <td>{part}</td>
+        <td>
+          <Form.Control as="select" className="position-dropdown" style={{ display: "inline", width: '100%' }} variant="info">
+            {statusList.map((ele, i) => <option href="#" key={i} >{ele}</option>)}
+          </Form.Control>
+        </td>
+      </tr>
+    )
   }
 
   return (
@@ -77,13 +92,42 @@ export const Add = () => {
             </div>
             <div className="line-wrapper">
               <div className="inner">
-                <p style={{ minWidth: "2rem" }}>วันที่</p>
-                <input style={{ flex: "1 1 auto", margin: "0 5px", width: "50px" }} defaultValue={date} type="date" required />
-                <p style={{ margin: "0 0.5rem", minWidth: "1px" }}>เวลา</p>
-                <input type="time" defaultValue={time} required />
+                <p style={{ minWidth: "4rem" }}>วัน/เวลา</p>
+                <input style={{ flex: "1 1 auto", width: "50px" }} defaultValue={date + "T" + time} type="datetime-local" required />
+                {/* <p style={{ margin: "0 0.5rem", minWidth: "1px" }}>เวลา</p> */}
+                {/* <input type="time" defaultValue={time} required /> */}
               </div>
             </div>
-            <Form.Group controlId="exampleForm.ControlTextarea1">
+            <div className="table-container">
+              <Table>
+                <thead>
+                  <tr>
+                    <th>อะไหล่ที่ซ่อม</th>
+                    <th>ตัวเลือก</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {partList.map((ele, i) => renderTable(ele))}
+                  {/* <tr>
+                    <td>ลิ้นไอดี</td>
+                    <td>
+                      <Form.Control as="select" className="position-dropdown" style={{ display: "inline", width: '100%' }} variant="info">
+                        {statusList.map((ele, i) => <option href="#" key={i} >{ele}</option>)}
+                      </Form.Control>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>ลิ้นไอเสีย</td>
+                    <td>
+                      <Form.Control as="select" className="position-dropdown" style={{ display: "inline", width: '100%' }} variant="info">
+                        {statusList.map((ele, i) => <option href="#" key={i} >{ele}</option>)}
+                      </Form.Control>
+                    </td>
+                  </tr> */}
+                </tbody>
+              </Table>
+            </div>
+            <Form.Group controlId="remark">
               <Form.Label style={{ fontWeight: "bold" }}>หมายเหตุ</Form.Label>
               <Form.Control as="textarea" rows="3" />
             </Form.Group>
