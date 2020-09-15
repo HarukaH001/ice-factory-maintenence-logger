@@ -36,8 +36,8 @@ export const Machine = () => {
           <InputGroup className="location">
             <Form.Label style={{ width: "100%" }}>เพิ่มตำแหน่งที่ซ่อม</Form.Label>
             <FormControl
-              placeholder="เพิ่มตำแหน่งที่ซ่อม"
-              aria-label="เพิ่มตำแหน่งที่ซ่อม"
+              placeholder="กรอกตำแหน่งที่ซ่อม"
+              aria-label="กรอกตำแหน่งที่ซ่อม"
             />
             <InputGroup.Append>
               <Button variant="primary">เพิ่ม</Button>
@@ -47,10 +47,10 @@ export const Machine = () => {
             {locationList.map((ele, i) => <Tag key={i} content={ele} />)}
           </div>
           <InputGroup className="list">
-            <Form.Label style={{ width: "100%" }}>รายการสิ่งที่จะซ่อม</Form.Label>
+            <Form.Label style={{ width: "100%" }}>เพิ่มรายการอะไหล่</Form.Label>
             <FormControl
-              placeholder="เพิ่มรายการอะไหล่"
-              aria-label="เพิ่มรายการอะไหล่"
+              placeholder="กรอกชื่ออะไหล่"
+              aria-label="กรอกชื่ออะไหล่"
             />
             <InputGroup.Append>
               <Button variant="primary">เพิ่ม</Button>
