@@ -9,12 +9,43 @@ export const Machine = () => {
   const { path, url } = useRouteMatch()
   const { machine, num } = useParams()
 
-  const locationList = ["ฝั่งมอเตอร์", "ฝั่งวาล์วดูด"]
-  const partList = ["ลิ้นไอดี", "ลิ้นไอเสีย", "ลูกสูบ"]
+  const [position, setPosition] = useState([])
+  const [repairlist, setRepairList] = useState([])
 
   const [showModal, setShowModal] = useState(false)
   const handleClose = () => { setShowModal(false) }
   const handleShow = () => { setShowModal(true) }
+
+  useEffect(() => {
+    Data.getPositionRef(num, machine).on('value', snapshot => {
+      if (snapshot) {
+        if (snapshot.val()) {
+          const Data = Object.entries(snapshot.val()).map(ele => {
+            ele[1].pid = ele[0]
+            return ele[1]
+          })
+          setPosition(Data)
+        } else setPosition([])
+      }
+    })
+
+    Data.getRepairListRef(num, machine).on('value', snapshot => {
+      if (snapshot) {
+        if (snapshot.val()) {
+          const Data = Object.entries(snapshot.val()).map(ele => {
+            ele[1].rid = ele[0]
+            return ele[1]
+          })
+          setRepairList(Data)
+        } else setRepairList([])
+      }
+    })
+
+    return () => {
+      Data.getPositionRef(num, machine).off()
+      Data.getRepairListRef(num, machine).off()
+    }
+  }, [])
 
   function deleteMachineHandler(e) {
     e.preventDefault()
@@ -22,6 +53,38 @@ export const Machine = () => {
     Data.deleteMachine(num, machine).then(() => {
       history.push("/sites/" + num + "?deleted=" + machine)
     })
+  }
+
+  function addPositionHandler(e){
+    e.preventDefault()
+    const name = document.getElementById('position-name').value
+    if (name !== '') {
+      if (position.length > 0) {
+        if (position.find(ele => ele.pid === name)) {
+          document.getElementById('position-name').value = ''
+          return
+        }
+      }
+      Data.addPosition(num, machine, name).then(() => {
+        document.getElementById('position-name').value = ''
+      })
+    }
+  }
+
+  function addRepairListHandler(e){
+    e.preventDefault()
+    const name = document.getElementById('repl-name').value
+    if (name !== '') {
+      if (repairlist.length > 0) {
+        if (repairlist.find(ele => ele.rid === name)) {
+          document.getElementById('repl-name').value = ''
+          return
+        }
+      }
+      Data.addRepairList(num, machine, name).then(() => {
+        document.getElementById('repl-name').value = ''
+      })
+    }
   }
 
   return (
@@ -36,28 +99,30 @@ export const Machine = () => {
           <InputGroup className="location">
             <Form.Label style={{ width: "100%" }}>เพิ่มตำแหน่งที่ซ่อม</Form.Label>
             <FormControl
+              id="position-name"
               placeholder="กรอกตำแหน่งที่ซ่อม"
               aria-label="กรอกตำแหน่งที่ซ่อม"
             />
             <InputGroup.Append>
-              <Button variant="primary">เพิ่ม</Button>
+              <Button variant="primary" onClick={addPositionHandler}>เพิ่ม</Button>
             </InputGroup.Append>
           </InputGroup>
           <div className="tag-wrapper">
-            {locationList.map((ele, i) => <Tag key={i} content={ele} />)}
+            {position.map((ele, i) => <Tag key={i} content={ele.pid} />)}
           </div>
           <InputGroup className="list">
             <Form.Label style={{ width: "100%" }}>เพิ่มรายการอะไหล่</Form.Label>
             <FormControl
+              id="repl-name"
               placeholder="กรอกชื่ออะไหล่"
               aria-label="กรอกชื่ออะไหล่"
             />
             <InputGroup.Append>
-              <Button variant="primary">เพิ่ม</Button>
+              <Button variant="primary" onClick={addRepairListHandler}>เพิ่ม</Button>
             </InputGroup.Append>
           </InputGroup>
           <div className="tag-wrapper">
-            {partList.map((ele, i) => <Tag key={i} content={ele} />)}
+            {repairlist.map((ele, i) => <Tag key={i} content={ele.rid} />)}
           </div>
         </div>
       </div>

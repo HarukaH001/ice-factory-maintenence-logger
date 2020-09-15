@@ -60,5 +60,57 @@ export const _Data = (firebase) => {
                 })
             })
         },
+
+        getPositionRef(site, machine){
+            return database.ref('sites/'+site+'/machine/'+machine+'/position')
+        },
+
+        getRepairListRef(site, machine){
+            return database.ref('sites/'+site+'/machine/'+machine+'/repairlist')
+        },
+
+        addPosition(site, machine, name){
+            return new Promise(resolve => {
+                database.ref('sites/'+site+'/machine/'+machine+'/position/'+name).update({
+                    createdTime: Date.now()
+                }).then(res=>{
+                    resolve()
+                }).catch(err=>{
+                    resolve()
+                })
+            })
+        },
+
+        addRepairList(site, machine, name){
+            return new Promise(resolve => {
+                database.ref('sites/'+site+'/machine/'+machine+'/repairlist/'+name).update({
+                    createdTime: Date.now()
+                }).then(res=>{
+                    resolve()
+                }).catch(err=>{
+                    resolve()
+                })
+            })
+        },
+
+        deletePosition(site, machine, name){
+            return new Promise(resolve=>{
+                database.ref('sites/'+site+'/machine/'+machine+'/position/'+name).set(null).then(res=>{
+                    resolve()
+                }).catch(err=>{
+                    resolve()
+                })
+            })
+        },
+
+        deleteRepairList(site, machine, name){
+            return new Promise(resolve=>{
+                database.ref('sites/'+site+'/machine/'+machine+'/repairlist/'+name).set(null).then(res=>{
+                    resolve()
+                }).catch(err=>{
+                    resolve()
+                })
+            })
+        },
     }
 }
