@@ -17,7 +17,7 @@ export const Add = () => {
   const machineList = ["Compressor", "ปั๊มน้ำ", "พัดลมคูลลิ่ง"]
   const positionList = ["ฝั่งมอเตอร์", "ฝั่งวาล์วดูด"]
   const statusList = ["ปกติ", "ซ่อม", "เปลี่ยน"]
-  const partList = ["ลิ้นไอดี", "ลิ้นไอเสีย", "ก้านสูบ"]
+  const partList = ["ลิ้นไอดี", "ลิ้นไอเสีย", "ก้านสูบ", "ลิ้นไอดี", "ลิ้นไอเสีย", "ก้านสูบ"]
 
   const [date, setDate] = useState(currentDate)
   const [time, setTime] = useState(currentTime)
