@@ -87,6 +87,24 @@ export const Machine = () => {
     }
   }
 
+  const Tag = ({ content, type }) => {
+    function deleteTag(e) {
+      e.preventDefault()
+      if(type === 'pos'){
+        Data.deletePosition(num, machine, content)
+      } else if(type === 'repl'){
+        Data.deleteRepairList(num, machine, content)
+      }
+    }
+  
+    return (
+      <div className="Tag">
+        <h5>{content}</h5>
+        <button title="ลบรายการนี้" onClick={deleteTag}>&#xf00d;</button>
+      </div>
+    )
+  }
+
   return (
     <div className="Machine">
       <div className="container">
@@ -108,7 +126,7 @@ export const Machine = () => {
             </InputGroup.Append>
           </InputGroup>
           <div className="tag-wrapper">
-            {position.map((ele, i) => <Tag key={i} content={ele.pid} />)}
+            {position.map((ele, i) => <Tag key={i} content={ele.pid} type={"pos"}/>)}
           </div>
           <InputGroup className="list">
             <Form.Label style={{ width: "100%" }}>เพิ่มรายการอะไหล่</Form.Label>
@@ -122,7 +140,7 @@ export const Machine = () => {
             </InputGroup.Append>
           </InputGroup>
           <div className="tag-wrapper">
-            {repairlist.map((ele, i) => <Tag key={i} content={ele.rid} />)}
+            {repairlist.map((ele, i) => <Tag key={i} content={ele.rid} type={"repl"}/>)}
           </div>
         </div>
       </div>
@@ -139,20 +157,6 @@ export const Machine = () => {
           <Button variant="danger" type="button" onClick={deleteMachineHandler}>ลบ</Button>
         </Modal.Footer>
       </Modal>
-    </div>
-  )
-}
-
-const Tag = ({ content }) => {
-
-  function deleteXXXX() {
-    alert(content)
-  }
-
-  return (
-    <div className="Tag">
-      <h5>{content}</h5>
-      <button title="ลบรายการนี้" onClick={() => deleteXXXX(content)}>&#xf00d;</button>
     </div>
   )
 }
