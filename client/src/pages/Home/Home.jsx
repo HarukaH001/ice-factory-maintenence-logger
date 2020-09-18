@@ -1,44 +1,53 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './Home.scss'
 import { Link } from 'react-router-dom';
 import { Button, Form } from 'react-bootstrap'
 import { HistoryCard, NavDropdown } from '../../components'
+import { Authen, Data } from '../../services/service';
 
 export const Home = () => {
   // const history = useHistory()
   const [search, setSearch] = useState('')
+  const [log, setLog] = useState([])
+  const [user, setUser] = useState()
 
-  const mock = [{
-    machine: "Compressor",
-    location: "ลูกสูบฝั่งมอเตอร์",
-    number: 1,
-    jobNo: "10244",
-    technician: "ช่าง ABC",
-    list: ["ABC", "DEF"],
-    date: "16 สิงหาคม 2563  15:03 น.",
-    remark: "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-  }, {
-    machine: "ปั๊มน้ำ",
-    location: "คอเพลาซ้าย",
-    number: 3,
-    jobNo: "ก3092",
-    technician: "ช่าง ABC",
-    list: ["ABC", "DEF"],
-    date: "16 สิงหาคม 2563  15:03 น.",
-    remark: "กขฃคฅฆงจฉชซฌญฎฏฐฑฒณดตถทธนบปผฝพฟภมยรลวศษสหฬอฮ"
-  }
-  ]
+  useEffect(()=>{
+    Authen.getUser().then(value=>{
+      setUser(value)
+    })
+  },[])
+
+  useEffect(() => {
+    if(user){
+      Data.getRecordRef().on('value', snapshot => {
+        if(snapshot){
+          if(snapshot.val()) {
+            const Data = Object.entries(snapshot.val()).map(ele=>{
+              ele[1].lid = ele[0]
+              return ele[1]
+            })
+            Data.sort((a,b)=>b.lid-a.lid)
+            setLog(Data)
+          } else setLog([])
+        }
+      })
+  
+      return () => {
+        Data.getRecordRef().off()
+      }
+    }
+  }, [user])
 
   function cardRender(search) {
-    return mock.map((ele, i) => {
+    return log.map((ele, i) => {
       if (search) {
         if (ele.machine.includes(search) || ele.location.includes(search)) {
-          return (<HistoryCard data={ele} key={i} />)
+          return (<HistoryCard user={user} data={ele} key={i} />)
         }
         else return null
       }
       else {
-        return (<HistoryCard data={ele} key={i} />)
+        return (<HistoryCard user={user} data={ele} key={i} />)
       }
     })
   }

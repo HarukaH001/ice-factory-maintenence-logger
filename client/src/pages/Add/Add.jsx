@@ -2,13 +2,15 @@ import React, { useState, useEffect } from 'react'
 import './Add.scss'
 import { Link, useHistory } from 'react-router-dom'
 import { Button, InputGroup, Form, FormControl, Modal, DropdownButton, Dropdown, Table } from 'react-bootstrap'
-import { Data } from '../../services/service'
+import { Authen, Data } from '../../services/service'
 
 export const Add = () => {
   const history = useHistory()
   const [showModal, setShowModal] = useState(false);
   const handleClose = () => { setShowModal(false) }
   const handleShow = () => { setShowModal(true) }
+  
+  const [user, setUser] = useState()
 
   const [location, setLocation] = useState("เลือกบ่อ")
   const [machine, setMachine] = useState("เลือกเครื่อง")
@@ -25,12 +27,20 @@ export const Add = () => {
   const [date, setDate] = useState(currentDate)
   const [time, setTime] = useState(currentTime)
 
-  useEffect(() => {
-    Data.getSites().then(value => {
-      setLocaltionList(value)
+  useEffect(()=>{
+    Authen.getUser().then(value=>{
+      setUser(value)
     })
-    setSelectedDate(date + "T" + time)
-  }, [])
+  },[])
+
+  useEffect(() => {
+    if(user){
+      Data.getSites().then(value => {
+        setLocaltionList(value)
+      })
+      setSelectedDate(date + "T" + time)
+    }
+  }, [user])
 
   useEffect(() => {
     setMachine("เลือกเครื่อง")
@@ -100,9 +110,14 @@ export const Add = () => {
         ele.status = document.querySelectorAll("#parts-form")[i].value
         return ele
       }),
-      note: document.getElementById("remark").value
+      note: document.getElementById("remark").value,
+      technician: user.username
     };
-    console.log(formData);
+    // console.log(formData);
+    Data.addRecord(formData).then(()=>{
+      console.log('Log Updated')
+      history.push('/')
+    })
   }
 
   return (
