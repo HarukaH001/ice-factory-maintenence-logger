@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './Add.scss'
 import { Link, useHistory } from 'react-router-dom'
 import { Button, InputGroup, Form, FormControl, Modal, DropdownButton, Dropdown, Table } from 'react-bootstrap'
+import {Data} from '../../services/service'
 
 export const Add = () => {
   const history = useHistory()
@@ -13,14 +14,43 @@ export const Add = () => {
   const [machine, setMachine] = useState("เลือกเครื่อง")
   const [position, setPosition] = useState("เลือกตำแหน่ง")
 
-  const locationList = [1, 2, 3]
-  const machineList = ["Compressor", "ปั๊มน้ำ", "พัดลมคูลลิ่ง"]
-  const positionList = ["ฝั่งมอเตอร์", "ฝั่งวาล์วดูด"]
+  const [locationList, setLocaltionList] = useState([])
+  const [machineList,setMachineList] = useState([])
+  // const positionList = ["ฝั่งมอเตอร์", "ฝั่งวาล์วดูด"]
+  const [positionList, setPositionList] = useState([])
   const statusList = ["ปกติ", "ซ่อม", "เปลี่ยน"]
-  const partList = ["ลิ้นไอดี", "ลิ้นไอเสีย", "ก้านสูบ", "ลิ้นไอดี", "ลิ้นไอเสีย", "ก้านสูบ"]
+  const [partList, setPartList] = useState([])
 
   const [date, setDate] = useState(currentDate)
   const [time, setTime] = useState(currentTime)
+
+  useEffect(() => {
+    Data.getSites().then(value=>{
+      setLocaltionList(value)
+    })
+  }, [])
+
+  useEffect(()=>{
+    setMachine("เลือกเครื่อง")
+    if(location){
+      setMachineList(location.machine ? location.machine : [])
+    }else{
+      setMachineList([])
+    }
+  },[location])
+
+  useEffect(()=>{
+    setPosition("เลือกตำแหน่ง")
+    if(machine){
+      setPositionList(machine.position ? machine.position : [])
+      setPartList(machine.repairlist ? machine.repairlist : [])
+    }else{
+      setPositionList([])
+      setPartList([])
+    }
+  },[machine])
+  
+
 
   function currentDate() {
     const d = new Date()
@@ -47,11 +77,11 @@ export const Add = () => {
 
   function renderTable(part) {
     return (
-      <tr onChange={() => console.log("B")}>
-        <td>{part}</td>
+      <tr key={part.rid} onChange={() => console.log("B")}>
+        <td>{part.rid}</td>
         <td>
           <Form.Control as="select" className="position-dropdown" style={{ display: "inline", width: '100%' }} variant="info">
-            {statusList.map((ele, i) => <option href="#" key={i} >{ele}</option>)}
+            {statusList.map((ele, i) => <option href="#" key={ele} >{ele}</option>)}
           </Form.Control>
         </td>
       </tr>
@@ -60,7 +90,7 @@ export const Add = () => {
 
   return (
     <div className="Add">
-      <div className="container">
+      {locationList.length > 0 && (<div className="container">
         <div className="header">
           <h2>รายละเอียดการซ่อม</h2>
         </div>
@@ -69,24 +99,24 @@ export const Add = () => {
             <div className="line-wrapper">
               <div className="inner">
                 <p>บ่อ</p>
-                <DropdownButton className="location-dropdown" title={location === "เลือกบ่อ" ? location : "บ่อ " + location} style={{ display: "inline", width: '100%' }} variant="light">
-                  {locationList.map((ele, i) => <Dropdown.Item href="#" key={i} onClick={() => setLocation(ele)}>{ele}</Dropdown.Item>)}
+                <DropdownButton className="location-dropdown" title={location.sid||"เลือกบ่อ"} style={{ display: "inline", width: '100%' }} variant="light">
+                  {locationList.map((ele, i) => <Dropdown.Item href="#" key={ele.sid} onClick={() => setLocation(ele)}>{ele.sid}</Dropdown.Item>)}
                 </DropdownButton>
               </div>
             </div>
             <div className="line-wrapper">
               <div className="inner">
                 <p>เครื่อง</p>
-                <DropdownButton className="machine-dropdown" title={machine} style={{ display: "inline", width: '100%' }} variant="light">
-                  {machineList.map((ele, i) => <Dropdown.Item href="#" key={i} onClick={() => setMachine(ele)}>{ele}</Dropdown.Item>)}
+                <DropdownButton className="machine-dropdown" title={machine.mid || "เลือกเครื่อง"} style={{ display: "inline", width: '100%' }} variant="light">
+                  {machineList?.map((ele, i) => <Dropdown.Item href="#" key={ele.mid} onClick={() => setMachine(ele)}>{ele.mid}</Dropdown.Item>)}
                 </DropdownButton>
               </div>
             </div>
             <div className="line-wrapper">
               <div className="inner">
                 <p>ตำแหน่ง</p>
-                <DropdownButton className="position-dropdown" title={position} style={{ display: "inline", width: '100%' }} variant="light">
-                  {positionList.map((ele, i) => <Dropdown.Item href="#" key={i} onClick={() => setPosition(ele)}>{ele}</Dropdown.Item>)}
+                <DropdownButton className="position-dropdown" title={position.pid || "เลือกตำแหน่ง"} style={{ display: "inline", width: '100%' }} variant="light">
+                  {positionList.map((ele, i) => <Dropdown.Item href="#" key={ele.pid} onClick={() => setPosition(ele)}>{ele.pid}</Dropdown.Item>)}
                 </DropdownButton>
               </div>
             </div>
@@ -124,7 +154,7 @@ export const Add = () => {
             <Button>บันทึก</Button>
           </div>
         </div>
-      </div>
+      </div>)}
       <Modal show={showModal} onHide={handleClose} centered style={{ fontFamily: "IBM Plex Sans Thai" }} backdrop="static" keyboard={false}>
         <Modal.Header>
           <Modal.Title style={{ width: "100%" }}>ละทิ้ง</Modal.Title>

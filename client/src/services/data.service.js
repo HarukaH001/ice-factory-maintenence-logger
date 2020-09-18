@@ -12,6 +12,49 @@ export const _Data = (firebase) => {
         getSitesRef(){
             return database.ref('sites')
         },
+        getSites(){
+            return database.ref('sites').once('value').then(snapshot=>{
+                if(snapshot){
+                    if(snapshot.val()){
+                        const Data = Object.entries(snapshot.val()).map(v=>{
+                                v[1].sid=v[0];
+
+                                if(v[1].machine){
+
+                                    v[1].machine = Object.entries(v[1].machine).map(m=>{
+                                        m[1].mid = m[0]
+                                        
+                                        if(m[1].position){
+                                            m[1].position = Object.entries(m[1].position).map(p=>{
+                                                p[1].pid = p[0]
+                                                return p[1]
+                                            })
+                                        }
+                    
+                                        if(m[1].repairlist){
+                                            m[1].repairlist = Object.entries(m[1].repairlist).map(rp=>{
+                                                rp[1].rid = rp[0]
+                                                return rp[1]
+                                            })
+                                        }
+    
+                                        return m[1]
+                                    })
+
+                                }
+
+                                return v[1]
+                                
+                            }
+                        )
+                        
+                        return Data
+                    }else{
+                        return []
+                    }
+                }
+            })
+        },
 
         addSite(name){
             return new Promise(resolve=>{
@@ -68,6 +111,7 @@ export const _Data = (firebase) => {
         getRepairListRef(site, machine){
             return database.ref('sites/'+site+'/machine/'+machine+'/repairlist')
         },
+
 
         addPosition(site, machine, name){
             return new Promise(resolve => {
