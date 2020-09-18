@@ -13,6 +13,7 @@ export const Add = () => {
   const [location, setLocation] = useState("เลือกบ่อ")
   const [machine, setMachine] = useState("เลือกเครื่อง")
   const [position, setPosition] = useState("เลือกตำแหน่ง")
+  const [selectedDate, setSelectedDate] = useState()
 
   const [locationList, setLocaltionList] = useState([])
   const [machineList, setMachineList] = useState([])
@@ -28,6 +29,7 @@ export const Add = () => {
     Data.getSites().then(value => {
       setLocaltionList(value)
     })
+    setSelectedDate(date + "T" + time)
   }, [])
 
   useEffect(() => {
@@ -49,8 +51,6 @@ export const Add = () => {
       setPartList([])
     }
   }, [machine])
-
-
 
   function currentDate() {
     const d = new Date()
@@ -80,12 +80,29 @@ export const Add = () => {
       <tr key={part.rid}>
         <td>{part.rid}</td>
         <td>
-          <Form.Control as="select" className="position-dropdown" style={{ display: "inline", width: '100%' }} variant="info">
-            {statusList.map((ele, i) => <option href="#" key={ele} >{ele}</option>)}
+          <Form.Control as="select" id="parts-form" className="position-dropdown" style={{ display: "inline", width: '100%' }} variant="info">
+            {statusList.map((ele, i) => <option href="#" key={i} value={ele}>{ele}</option>)}
           </Form.Control>
         </td>
       </tr>
     )
+  }
+
+  function submitHandler() {
+    const formData = {
+      createdTime: Date.now(),
+      location: location.sid,
+      machine: machine.mid,
+      position: position.pid,
+      date: selectedDate,
+      part: partList.map((ele, i) => {
+        delete ele["createdTime"];
+        ele.status = document.querySelectorAll("#parts-form")[i].value
+        return ele
+      }),
+      note: document.getElementById("remark").value
+    };
+    console.log(formData);
   }
 
   return (
@@ -123,7 +140,7 @@ export const Add = () => {
             <div className="line-wrapper">
               <div className="inner">
                 <p style={{ minWidth: "4rem" }}>วัน/เวลา</p>
-                <input style={{ flex: "1 1 auto", width: "50px" }} defaultValue={date + "T" + time} type="datetime-local" required />
+                <input style={{ flex: "1 1 auto", width: "50px" }} defaultValue={date + "T" + time} type="datetime-local" required onChange={e => setSelectedDate(e.target.value)} />
               </div>
             </div>
             <div className="table-container">
@@ -149,7 +166,7 @@ export const Add = () => {
           <div className="line"></div>
           <div className="btn-container">
             <Button variant="secondary" onClick={handleShow}>ยกเลิก</Button>
-            <Button>บันทึก</Button>
+            <Button onClick={submitHandler}>บันทึก</Button>
           </div>
         </div>
       </div>)}
