@@ -9,7 +9,7 @@ export const HistoryCard = ({ data, user }) => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  function handleDelete(e){
+  function handleDelete(e) {
     e.preventDefault()
     Data.deleteRecord(data.lid)
     handleClose()
@@ -31,23 +31,24 @@ export const HistoryCard = ({ data, user }) => {
           <h3>{data.location}</h3>
         </div>
         <div className="date">
-          <p>{new Date(data.date).toLocaleString()}</p>
+          <p>{data.technician + " · " + new Date(data.date).toLocaleString() + " น."}</p>
         </div>
       </div>
-      <Modal show={show} onHide={handleClose} centered style={{fontFamily: "IBM Plex Sans Thai"}}>
+      <Modal show={show} onHide={handleClose} centered style={{ fontFamily: "IBM Plex Sans Thai" }}>
         <Modal.Header closeButton>
           <Modal.Title>รายละเอียดงาน <small>#{data.lid}</small></Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          เครื่อง : <b>{data.machine}</b><br/>
-          ผู้ซ่อม : <b>{data.technician}</b><br/>
-          วันที่ : <b>{new Date(data.date).toLocaleString()}</b><br/>
-          ตำแหน่ง : <b>{data.position}</b><br/>
-          รายการซ่อม : <b>{data.part.map(ele=>ele.status!=="ปกติ"?ele.status+ele.rid:ele.rid+ele.status).join(", ")}</b><br/>
-          หมายเหตุ : <b>{data.note}</b>
+          <b>บ่อ</b> : {data.location}<br />
+          <b>เครื่อง</b> : {data.machine}<br />
+          <b>ผู้ซ่อม</b> : {data.technician}<br />
+          <b>วันที่</b> : {new Date(data.date).toLocaleString() + " น."}<br />
+          <b>ตำแหน่ง</b> : {data.position}<br />
+          <b>รายการซ่อม</b> : {data.part.map(ele => ele.status !== "ปกติ" ? ele.status + ele.rid : ele.rid + ele.status).join(", ")}<br />
+          <b>หมายเหตุ</b> : {data.note}
         </Modal.Body>
         <Modal.Footer>
-          {user.role === 'admin' && <Button variant="primary" style={{backgroundColor: "red",border:"1px solid red"}} onClick={handleDelete}>ลบ</Button>}
+          {user.role === 'admin' && <Button variant="danger" onClick={handleDelete}>ลบ</Button>}
           <Button variant="primary" onClick={handleClose}>ปิด</Button>
         </Modal.Footer>
       </Modal>
