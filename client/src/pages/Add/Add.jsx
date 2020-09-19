@@ -175,7 +175,7 @@ export const Add = () => {
               <div className="inner">
                 <p>เครื่อง</p>
                 <DropdownButton className="machine-dropdown" title={machine.mid || "เลือกเครื่อง"} style={{ display: "inline", width: '100%' }} variant={alert[1] === true ? "danger" : "light"}>
-                  {location !== "เลือกบ่อ" ? (machineList.length !== 0 ? machineList.map((ele, i) => <Dropdown.Item href="#" key={ele.mid} onClick={() => setMachine(ele)}>{ele.mid}</Dropdown.Item>) : <Dropdown.Item href="#" disabled>ไม่พบเครื่อง</Dropdown.Item>) : <Dropdown.Item href="#" disabled>กรุณาเลือกบ่อก่อน</Dropdown.Item>}
+                  {location !== "เลือกบ่อ" ? (machineList.length !== 0 ? machineList.map((ele, i) => <Dropdown.Item href="#" key={ele.mid} onClick={() => setMachine(ele)}>{ele.mid}</Dropdown.Item>) : <Dropdown.Item href="#" disabled>ไม่พบเครื่อง</Dropdown.Item>) : <Dropdown.Item href="#" disabled>กรุณาเลือกบ่อ</Dropdown.Item>}
                 </DropdownButton>
               </div>
             </div>
@@ -183,7 +183,7 @@ export const Add = () => {
               <div className="inner">
                 <p>ตำแหน่ง</p>
                 <DropdownButton className="position-dropdown" title={position.pid || "เลือกตำแหน่ง"} style={{ display: "inline", width: '100%' }} variant={alert[2] === true ? "danger" : "light"}>
-                  {machine !== "เลือกเครื่อง" ? (positionList.length !== 0 ? positionList.map((ele, i) => <Dropdown.Item href="#" key={ele.pid} onClick={() => setPosition(ele)}>{ele.pid}</Dropdown.Item>) : <Dropdown.Item href="#" disabled>ไม่พบตำแหน่ง</Dropdown.Item>) : <Dropdown.Item href="#" disabled>กรุณาเลือกเครื่องก่อน</Dropdown.Item>}
+                  {machine !== "เลือกเครื่อง" ? (positionList.length !== 0 ? positionList.map((ele, i) => <Dropdown.Item href="#" key={ele.pid} onClick={() => setPosition(ele)}>{ele.pid}</Dropdown.Item>) : <Dropdown.Item href="#" disabled>ไม่พบตำแหน่ง</Dropdown.Item>) : <Dropdown.Item href="#" disabled>กรุณาเลือกเครื่อง</Dropdown.Item>}
                 </DropdownButton>
               </div>
             </div>
