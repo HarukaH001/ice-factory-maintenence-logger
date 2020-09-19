@@ -212,7 +212,7 @@ export const Users = () => {
       </Modal>
       <Toast show={showSuccess} onClose={toggleShowSuccess} delay={4000} autohide
         style={{
-          position: 'absolute',
+          position: 'fixed',
           bottom: '2rem',
           left: '50%',
           backgroundColor: '#28A745',
@@ -274,7 +274,7 @@ export const Users = () => {
       </Modal>
       <Toast show={showEditSuccess} onClose={toggleShowEditSuccess} delay={4000} autohide
         style={{
-          position: 'absolute',
+          position: 'fixed',
           bottom: '2rem',
           left: '50%',
           backgroundColor: '#28A745',
@@ -302,7 +302,7 @@ export const Users = () => {
       </Modal>
       <Toast show={showDeleteSuccess} onClose={toggleShowDeleteSuccess} delay={4000} autohide
         style={{
-          position: 'absolute',
+          position: 'fixed',
           bottom: '2rem',
           left: '50%',
           backgroundColor: '#28A745',

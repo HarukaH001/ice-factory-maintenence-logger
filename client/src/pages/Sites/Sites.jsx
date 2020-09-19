@@ -92,7 +92,7 @@ export const Sites = () => {
       </div>
       <Toast show={showDeleteSuccess} onClose={() => { toggleShowDeleteSuccess(); history.replace("/sites") }} delay={3500} autohide
         style={{
-          position: 'absolute',
+          position: 'fixed',
           bottom: '2rem',
           left: '50%',
           backgroundColor: '#17a2b8',
@@ -106,7 +106,7 @@ export const Sites = () => {
 
       <Toast show={showAddSuccess} onClose={toggleShowAddSuccess} delay={3500} autohide
         style={{
-          position: 'absolute',
+          position: 'fixed',
           bottom: '2rem',
           left: '50%',
           backgroundColor: '#28a745',
@@ -120,7 +120,7 @@ export const Sites = () => {
 
       <Toast show={showAddFail} onClose={toggleShowAddFail} delay={5000} autohide
         style={{
-          position: 'absolute',
+          position: 'fixed',
           bottom: '2rem',
           left: '50%',
           backgroundColor: '#dc3545',
