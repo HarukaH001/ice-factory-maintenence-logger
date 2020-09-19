@@ -15,6 +15,8 @@ export const Login = () => {
   const [loginError, setLoginError] = useState(false)
   const [errorMessage, setErrorMessage] = useState(errorMessageList[1])
   const [userList, setUserList] = useState([])
+  const [isLoading, setLoading] = useState(false)
+
 
   function login(e) {
     e.preventDefault()
@@ -28,9 +30,11 @@ export const Login = () => {
         setLoginError(true)
         return
       }
+      setLoading(true)
       Authen.login(user.email, password).then(value => {
         document.getElementById('password').value = ''
         setPassword('')
+        setLoading(false)
         if (value.user) {
           setUser(defaultSelectUser)
           // history.push('/')
@@ -87,7 +91,7 @@ export const Login = () => {
               />
             </InputGroup>
             {loginError ? <Alert variant="danger" className="alert">{errorMessage}</Alert> : null}
-            <Button variant="primary" className="login-btn" type="submit" onClick={login}>ลงชื่อเข้าใช้</Button>
+            <Button variant="primary" className="login-btn" type="submit" onClick={login} disabled={isLoading}>{isLoading ? "กำลังลงชื่อเข้าใช้..." : "ลงชื่อเข้าใช้"}</Button>
           </Form>
         </div>
       </div >
