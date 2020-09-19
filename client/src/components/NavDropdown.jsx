@@ -22,7 +22,7 @@ export const NavDropdown = ({ data, _disabled }) => {
         <Dropdown.Menu>
             <Dropdown.Item href="#" disabled>{user?.username}</Dropdown.Item>
             <Dropdown.Divider />
-            {user?.role === 'admin' && <Dropdown.Item href="/" disabled={_disabled === "home"}>ประวัติการซ่อม</Dropdown.Item>}
+            {user?.role === 'admin' && <Dropdown.Item href="/" disabled={_disabled === "home"}>หน้าหลัก</Dropdown.Item>}
             {user?.role === 'admin' && <Dropdown.Item href="/users" disabled={_disabled === "users"}>จัดการผู้ใช้</Dropdown.Item>}
             {user?.role === 'admin' && <Dropdown.Item href="/sites" disabled={_disabled === "sites"}>จัดการบ่อ</Dropdown.Item>}
             {user?.role === 'admin' && <Dropdown.Divider />}
