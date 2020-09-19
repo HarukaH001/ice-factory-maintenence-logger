@@ -67,12 +67,6 @@
             text-align: start;
             justify-content: space-between;
             align-items: center;
-            background: #dbdbdb;
-            background: linear-gradient(
-              180deg,
-              rgb(236, 236, 236) 0%,
-              rgb(218, 218, 218) 100%
-            );
           }
 
           .dropdown-menu {
@@ -83,18 +77,14 @@
             border: none;
             padding: 5px 10px;
             border-radius: 0.25rem;
-            background: #dbdbdb;
-            background: linear-gradient(
-              180deg,
-              rgb(236, 236, 236) 0%,
-              rgb(218, 218, 218) 100%
-            );
+            background: #f8f9fa;
             transition: color 0.15s ease-in-out,
-            background-color 0.15s ease-in-out, border-color 0.15s ease-in-out,
-            box-shadow 0.15s ease-in-out;
+              background-color 0.15s ease-in-out, border-color 0.15s ease-in-out,
+              box-shadow 0.15s ease-in-out;
             border: 1px solid transparent;
 
             &:hover {
+              background: #e2e6ea;
               border-color: #dae0e5;
               cursor: pointer;
             }

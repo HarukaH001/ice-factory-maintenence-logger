@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import './Add.scss'
 import { Link, useHistory } from 'react-router-dom'
-import { Button, InputGroup, Form, FormControl, Modal, DropdownButton, Dropdown, Table } from 'react-bootstrap'
+import { Button, InputGroup, Form, FormControl, Modal, DropdownButton, Dropdown, Table, Toast } from 'react-bootstrap'
 import { Data } from '../../services/service'
 
 export const Add = () => {
@@ -13,6 +13,7 @@ export const Add = () => {
   const [location, setLocation] = useState("เลือกบ่อ")
   const [machine, setMachine] = useState("เลือกเครื่อง")
   const [position, setPosition] = useState("เลือกตำแหน่ง")
+  const [alert, setAlert] = useState([false, false, false])
   const [selectedDate, setSelectedDate] = useState()
 
   const [locationList, setLocaltionList] = useState([])
@@ -24,6 +25,9 @@ export const Add = () => {
 
   const [date, setDate] = useState(currentDate)
   const [time, setTime] = useState(currentTime)
+
+  const [showAddFail, setShowAddFail] = useState(false)
+  const toggleShowAddFail = () => setShowAddFail(!showAddFail)
 
   useEffect(() => {
     Data.getSites().then(value => {
@@ -89,6 +93,7 @@ export const Add = () => {
   }
 
   function submitHandler() {
+    // e.preventDefault()
     const formData = {
       createdTime: Date.now(),
       location: location.sid,
@@ -105,6 +110,36 @@ export const Add = () => {
     console.log(formData);
   }
 
+  function formCheck(e) {
+    e.preventDefault()
+    if (location === "เลือกบ่อ") {
+      setAlert([true, false, false])
+      toggleShowAddFail()
+      // document.querySelector(".location-dropdown").classList.add("alert")
+      // alert("A")
+    }
+    else if (machine === "เลือกเครื่อง") {
+      setAlert([false, true, false])
+      toggleShowAddFail()
+      // document.querySelector(".machine-dropdown").classList.add("alert")
+      // alert("B")
+    }
+    else if (position === "เลือกตำแหน่ง") {
+      setAlert([false, false, true])
+      toggleShowAddFail()
+      // document.querySelector(".position-dropdown").classList.add("alert")
+      // alert("C")
+    }
+    else {
+      setAlert([false, false, false])
+      // document.querySelector(".location-dropdown").classList.remove("alert")
+      // document.querySelector(".machine-dropdown").classList.remove("alert")
+      // document.querySelector(".position-dropdown").classList.remove("alert")
+      // alert("D")
+      submitHandler()
+    }
+  }
+
   return (
     <div className="Add">
       {locationList.length > 0 && (<div className="container">
@@ -112,11 +147,11 @@ export const Add = () => {
           <h2>รายละเอียดการซ่อม</h2>
         </div>
         <div className="form">
-          <Form>
+          <Form onSubmit={e => formCheck(e)}>
             <div className="line-wrapper">
               <div className="inner">
                 <p>บ่อ</p>
-                <DropdownButton className="location-dropdown" title={location.sid || "เลือกบ่อ"} style={{ display: "inline", width: '100%' }} variant="light">
+                <DropdownButton className="location-dropdown a" title={location.sid || "เลือกบ่อ"} style={{ display: "inline", width: '100%' }} variant={alert[0] === true ? "danger" : "light"}>
                   {locationList.length !== 0 ? locationList.map((ele, i) => <Dropdown.Item href="#" key={ele.sid} onClick={() => setLocation(ele)}>{ele.sid}</Dropdown.Item>) : <Dropdown.Item href="#" disabled>ไม่พบบ่อ</Dropdown.Item>}
                 </DropdownButton>
               </div>
@@ -124,7 +159,7 @@ export const Add = () => {
             <div className="line-wrapper">
               <div className="inner">
                 <p>เครื่อง</p>
-                <DropdownButton className="machine-dropdown" title={machine.mid || "เลือกเครื่อง"} style={{ display: "inline", width: '100%' }} variant="light">
+                <DropdownButton className="machine-dropdown" title={machine.mid || "เลือกเครื่อง"} style={{ display: "inline", width: '100%' }} variant={alert[1] === true ? "danger" : "light"}>
                   {location !== "เลือกบ่อ" ? (machineList.length !== 0 ? machineList.map((ele, i) => <Dropdown.Item href="#" key={ele.mid} onClick={() => setMachine(ele)}>{ele.mid}</Dropdown.Item>) : <Dropdown.Item href="#" disabled>ไม่พบเครื่อง</Dropdown.Item>) : <Dropdown.Item href="#" disabled>กรุณาเลือกบ่อก่อน</Dropdown.Item>}
                 </DropdownButton>
               </div>
@@ -132,7 +167,7 @@ export const Add = () => {
             <div className="line-wrapper">
               <div className="inner">
                 <p>ตำแหน่ง</p>
-                <DropdownButton className="position-dropdown" title={position.pid || "เลือกตำแหน่ง"} style={{ display: "inline", width: '100%' }} variant="light">
+                <DropdownButton className="position-dropdown" title={position.pid || "เลือกตำแหน่ง"} style={{ display: "inline", width: '100%' }} variant={alert[2] === true ? "danger" : "light"}>
                   {machine !== "เลือกเครื่อง" ? (positionList.length !== 0 ? positionList.map((ele, i) => <Dropdown.Item href="#" key={ele.pid} onClick={() => setPosition(ele)}>{ele.pid}</Dropdown.Item>) : <Dropdown.Item href="#" disabled>ไม่พบตำแหน่ง</Dropdown.Item>) : <Dropdown.Item href="#" disabled>กรุณาเลือกเครื่องก่อน</Dropdown.Item>}
                 </DropdownButton>
               </div>
@@ -140,7 +175,7 @@ export const Add = () => {
             <div className="line-wrapper">
               <div className="inner">
                 <p style={{ minWidth: "4rem" }}>วัน/เวลา</p>
-                <input style={{ flex: "1 1 auto", width: "50px" }} defaultValue={date + "T" + time} type="datetime-local" required onChange={e => setSelectedDate(e.target.value)} />
+                <Form.Control as="input" type="datetime-local" defaultValue={date + "T" + time} onChange={e => setSelectedDate(e.target.value)} required />
               </div>
             </div>
             <div className="table-container">
@@ -160,14 +195,14 @@ export const Add = () => {
               <Form.Label style={{ fontWeight: "bold" }}>หมายเหตุ</Form.Label>
               <Form.Control as="textarea" rows="3" />
             </Form.Group>
+            <div className="footer">
+              <div className="line"></div>
+              <div className="btn-container">
+                <Button variant="secondary" onClick={handleShow}>ยกเลิก</Button>
+                <Button type="submit">บันทึก</Button>
+              </div>
+            </div>
           </Form>
-        </div>
-        <div className="footer">
-          <div className="line"></div>
-          <div className="btn-container">
-            <Button variant="secondary" onClick={handleShow}>ยกเลิก</Button>
-            <Button onClick={submitHandler}>บันทึก</Button>
-          </div>
         </div>
       </div>)}
       <Modal show={showModal} onHide={handleClose} centered style={{ fontFamily: "IBM Plex Sans Thai" }} backdrop="static" keyboard={false}>
@@ -182,6 +217,21 @@ export const Add = () => {
           <Link to="/"><Button variant="danger" type="button">ละทิ้ง</Button></Link>
         </Modal.Footer>
       </Modal>
+
+      <Toast show={showAddFail} onClose={toggleShowAddFail} delay={3500} autohide
+        style={{
+          position: 'fixed',
+          bottom: '5rem',
+          left: '50%',
+          backgroundColor: '#dc3545',
+          color: 'white',
+          transform: 'translateX(-50%)',
+          width: "100%",
+          textAlign: "center",
+          zIndex: "101"
+        }}>
+        <Toast.Body><b style={{ fontSize: "18px" }}>กรุณากรอกข้อมูลให้ครบ</b></Toast.Body>
+      </Toast>
     </div>
   )
 }
