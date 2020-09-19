@@ -40,9 +40,9 @@ const App = () => {
           <Route exact path="/login"><Login /></Route>
           <Route exact path="/users">{isAuthenticated && <Users />}</Route>
           <Route exact path="/sites">{isAuthenticated && <Sites />}</Route>
-          <Route exact path="/sites/:num"><Subsite /></Route>
-          <Route exact path="/sites/:num/:machine"><Machine /></Route>
-          <Route exact path="/add"><Add /></Route>
+          <Route exact path="/sites/:num">{isAuthenticated && <Subsite />}</Route>
+          <Route exact path="/sites/:num/:machine">{isAuthenticated && <Machine />}</Route>
+          <Route exact path="/add">{isAuthenticated && <Add />}</Route>
           <Route path="/"><Error /></Route>
         </Switch>
       </Router>
