@@ -74,6 +74,7 @@
           }
 
           input {
+            color: #212529;
             border: none;
             padding: 5px 10px;
             border-radius: 0.25rem;
@@ -84,13 +85,14 @@
             border: 1px solid transparent;
 
             &:hover {
-              background: #e2e6ea;
+              background: #E2E6EA;
               border-color: #dae0e5;
               cursor: pointer;
             }
 
             &:focus {
               outline: none;
+              background: #E2E6EA;
               border-color: #dae0e5;
               box-shadow: 0 0 0 0.2rem rgba(216, 217, 219, 0.5);
             }
