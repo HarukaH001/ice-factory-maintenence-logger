@@ -9,10 +9,14 @@ export const HistoryCard = ({ data, user }) => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const [showDelete, setShowDelete] = useState(false);
+  const handleCloseDelete = () => { setShowDelete(false) }
+  const handleShowDelete = () => { setShowDelete(true); handleClose() }
+
   function handleDelete(e) {
     e.preventDefault()
     Data.deleteRecord(data.lid)
-    handleClose()
+    handleCloseDelete()
   }
 
   return (
@@ -31,7 +35,7 @@ export const HistoryCard = ({ data, user }) => {
           <h3>{data.location}</h3>
         </div>
         <div className="date">
-          <p>{data.technician + " · " + new Date(data.date).toLocaleString() + " น."}</p>
+          <p>{data.technician + " · " + new Date(data.date).toLocaleString([], { dateStyle: 'long', timeStyle: 'short' }) + " น."}</p>
         </div>
       </div>
       <Modal show={show} onHide={handleClose} centered style={{ fontFamily: "IBM Plex Sans Thai" }}>
@@ -42,14 +46,27 @@ export const HistoryCard = ({ data, user }) => {
           <b>บ่อ</b> : {data.location}<br />
           <b>เครื่อง</b> : {data.machine}<br />
           <b>ผู้ซ่อม</b> : {data.technician}<br />
-          <b>วันที่</b> : {new Date(data.date).toLocaleString() + " น."}<br />
+          <b>วันที่</b> : {new Date(data.date).toLocaleString([], { dateStyle: 'long', timeStyle: 'short' }) + " น."}<br />
           <b>ตำแหน่ง</b> : {data.position}<br />
           <b>รายการซ่อม</b> : {data.part.map(ele => ele.status !== "ปกติ" ? ele.status + ele.rid : ele.rid + ele.status).join(", ")}<br />
           <b>หมายเหตุ</b> : {data.note}
         </Modal.Body>
         <Modal.Footer>
-          {user.role === 'admin' && <Button variant="danger" onClick={handleDelete}>ลบ</Button>}
+          {user.role === 'admin' && <Button variant="danger" onClick={handleShowDelete}>ลบ</Button>}
           <Button variant="primary" onClick={handleClose}>ปิด</Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal show={showDelete} onHide={handleCloseDelete} centered style={{ fontFamily: "IBM Plex Sans Thai" }} backdrop="static" keyboard={false}>
+        <Modal.Header>
+          <Modal.Title style={{ width: "100%" }}>ลบรายการซ่อม</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>คุณแน่ใจว่าต้องการลบรายการซ่อมนี้ ?</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" type="button" onClick={() => { handleCloseDelete(); handleShow() }}>ยกเลิก</Button>
+          <Button variant="danger" type="button" onClick={(e) => handleDelete(e)}>ลบ</Button>
         </Modal.Footer>
       </Modal>
     </>
