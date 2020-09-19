@@ -53,7 +53,7 @@ export const Home = () => {
   function cardRender(search) {
     return log.map((ele, i) => {
       if (search) {
-        if (ele.machine.includes(search) || ele.location.includes(search)) {
+        if (ele.machine.includes(search) || ele.position.includes(search) || ele.technician.includes(search) || ele.location.includes(search)) {
           return (<HistoryCard user={user} data={ele} key={i} />)
         }
         else return null
@@ -69,7 +69,7 @@ export const Home = () => {
       <div className="container">
         <div className="home-container">
           <div className="header">
-            <h2 style={{ fontStyle: "Bold" }}>ประวัติการซ่อม</h2>
+            <h2 style={{ fontStyle: "Bold" }}>การซ่อมบำรุง</h2>
             <NavDropdown _disabled={"home"}></NavDropdown>
           </div>
           <Form.Group controlId="exampleForm.ControlInput1">
