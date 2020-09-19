@@ -1,22 +1,26 @@
 import React, { useReducer, useState } from 'react'
 import './HistoryCard.scss'
+import { useHistory } from 'react-router-dom'
 import { Button, Modal } from 'react-bootstrap'
 import { Data } from '../services/service';
 
 export const HistoryCard = ({ data, user }) => {
-  const [show, setShow] = useState(false);
+  const history = useHistory()
+  const [show, setShow] = useState(false)
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleClose = () => setShow(false)
+  const handleShow = () => setShow(true)
 
-  const [showDelete, setShowDelete] = useState(false);
+  const [showDelete, setShowDelete] = useState(false)
   const handleCloseDelete = () => { setShowDelete(false) }
   const handleShowDelete = () => { setShowDelete(true); handleClose() }
 
   function handleDelete(e) {
     e.preventDefault()
-    Data.deleteRecord(data.lid)
     handleCloseDelete()
+    Data.deleteRecord(data.lid).then(() => {
+      history.replace("/?deleted=" + data.lid)
+    })
   }
 
   return (
