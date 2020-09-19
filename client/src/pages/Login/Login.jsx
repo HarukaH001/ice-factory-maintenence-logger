@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 // import { useHistory } from 'react-router-dom'
 import './Login.scss'
 import { Button, InputGroup, FormControl, Dropdown, Alert, Form } from 'react-bootstrap'
-import { FaLock } from 'react-icons/fa'
 import { Authen } from '../../services/service.js'
 
 export const Login = () => {
@@ -79,7 +78,7 @@ export const Login = () => {
             </Dropdown>
             <InputGroup className="password">
               <InputGroup.Prepend>
-                <InputGroup.Text id="lock"><FaLock /></InputGroup.Text>
+                <InputGroup.Text id="lock">&#xf023;</InputGroup.Text>
               </InputGroup.Prepend>
               <FormControl
                 type="password"
