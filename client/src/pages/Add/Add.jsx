@@ -211,7 +211,6 @@ export const Add = () => {
               <Form.Control as="textarea" rows="3" />
             </Form.Group>
             <div className="footer">
-              <div className="line"></div>
               <div className="btn-container">
                 <Button variant="secondary" onClick={handleShow}>ยกเลิก</Button>
                 <Button type="submit">บันทึก</Button>
@@ -225,7 +224,7 @@ export const Add = () => {
           <Modal.Title style={{ width: "100%" }}>ละทิ้ง</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <p>คุณแน่ใจหรือไม่ว่าต้องการละทิ้ง?</p>
+          <p>คุณแน่ใจหรือไม่ว่าต้องการละทิ้งรายการนี้?</p>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" type="button" onClick={handleClose}>ยกเลิก</Button>
