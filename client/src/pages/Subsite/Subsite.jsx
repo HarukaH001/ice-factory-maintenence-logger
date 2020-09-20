@@ -5,6 +5,7 @@ import { Button, InputGroup, FormControl, Modal, Toast } from 'react-bootstrap'
 import firebase, { Data, Authen } from '../../services/service'
 
 export const Subsite = () => {
+
   const history = useHistory()
   const { num } = useParams()
   const { path, url } = useRouteMatch()
@@ -30,6 +31,17 @@ export const Subsite = () => {
   const toggleShowAddFail = () => setShowAddFail(!showAddFail)
 
   useEffect(() => {
+
+    const localStr = JSON.parse(window.localStorage.getItem("site"))
+
+    if(localStr !== null){
+      if(!localStr.find(ele=>ele===num)){
+        history.push('/404')
+      }
+    }else{
+      history.push('/404')
+    }
+
     Data.getMachineRef(num).on('value', snapshot => {
       if (snapshot) {
         if (snapshot.val()) {

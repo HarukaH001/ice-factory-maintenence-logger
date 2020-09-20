@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './App.scss';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Home, Login, Sites, Users, Subsite, Machine, Error, Add } from './pages';
-import { Authen } from './services/service.js'
+import { Data, Authen } from './services/service.js'
 
 const App = () => {
   const [isAuthenticated, setAuthenticated] = useState(false)
@@ -31,6 +31,34 @@ const App = () => {
       }
     })
   }, [])
+
+  useEffect(() => {
+    if(isAuthenticated){
+      Data.getSitesRef().on('value', snapshot => {
+        if (snapshot) {
+          if (snapshot.val()) {
+            const Data = Object.entries(snapshot.val()).map(ele => {
+              ele[1].sid = ele[0]
+              return ele[1]
+            })
+            const localContent = Data.map(ele=>{
+              return ele.sid
+            })
+            window.localStorage.setItem("site",JSON.stringify(localContent))
+          }
+          // else setSite([])
+          else{
+            window.localStorage.removeItem("site")
+          }
+        }
+      })
+  
+      return () => {
+        Data.getSitesRef().off()
+      }
+    }
+  }, [isAuthenticated])
+
 
   return (
     <div className="App">

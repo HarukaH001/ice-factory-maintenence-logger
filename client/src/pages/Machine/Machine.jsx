@@ -17,6 +17,18 @@ export const Machine = () => {
   const handleShow = () => { setShowModal(true) }
 
   useEffect(() => {
+
+    const localStr = JSON.parse(window.localStorage.getItem("site"))
+    
+    if(localStr !== null){
+      if(!localStr.find(ele=>ele===num)){
+        history.push('/404')
+      }
+    }else{
+      history.push('/404')
+    }
+
+
     Data.getPositionRef(num, machine).on('value', snapshot => {
       if (snapshot) {
         if (snapshot.val()) {
