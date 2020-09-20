@@ -39,7 +39,7 @@ export const HistoryCard = ({ data, user }) => {
           <h3>{data.location}</h3>
         </div>
         <div className="date">
-          <p style={{color: "#6c757d"}}>{"#" + data.lid}</p><p>{" · " + data.technician + " · " + new Date(data.date).toLocaleString([], { dateStyle: 'long', timeStyle: 'short' }) + " น."}</p>
+          <p style={{ color: "#6c757d" }}>{"#" + data.lid}</p><p>{" · " + data.technician + " · " + new Date(data.date).toLocaleString([], { dateStyle: 'long', timeStyle: 'short' }) + " น."}</p>
         </div>
       </div>
       <Modal show={show} onHide={handleClose} centered style={{ fontFamily: "IBM Plex Sans Thai" }}>
@@ -52,8 +52,8 @@ export const HistoryCard = ({ data, user }) => {
           <b>ตำแหน่ง</b> : {data.position}<br />
           <b>ผู้ซ่อม</b> : {data.technician}<br />
           <b>วันที่</b> : {new Date(data.date).toLocaleString([], { dateStyle: 'long', timeStyle: 'short' }) + " น."}<br />
-          <b>รายการซ่อม</b> : <ul>{data.part.map(ele => ele.status !== "ปกติ" ? ele.status + ele.rid : ele.rid + ele.status).join(", ")}</ul><br />
-          <b>หมายเหตุ</b> : <br />{" "}{data.note}
+          <b>รายการซ่อม</b> : {data.part.map(ele => ele.status !== "ปกติ" ? <ul style={{ margin: 0 }}>{" • " + ele.status + ele.rid}</ul> : <ul style={{ margin: 0 }}>{" • " + ele.rid + ele.status}</ul>)}
+          <b>หมายเหตุ</b> : <br />&emsp;{data.note}
         </Modal.Body>
         <Modal.Footer>
           {user.role === 'admin' && <Button variant="danger" onClick={handleShowDelete}>ลบ</Button>}
