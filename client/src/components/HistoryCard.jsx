@@ -52,7 +52,7 @@ export const HistoryCard = ({ data, user }) => {
           <b>ตำแหน่ง</b> : {data.position}<br />
           <b>ผู้ซ่อม</b> : {data.technician}<br />
           <b>วันที่</b> : {new Date(data.date).toLocaleString([], { dateStyle: 'long', timeStyle: 'short' }) + " น."}<br />
-          <b>รายการซ่อม</b> : {data.part.map(ele => ele.status !== "ปกติ" ? <ul style={{ margin: 0 }}>{" • " + ele.status + ele.rid}</ul> : <ul style={{ margin: 0 }}>{" • " + ele.rid + ele.status}</ul>)}
+          <b>รายการซ่อม</b> : {data.part.map(ele => ele.status !== "ปกติ" ? <ul style={{ margin: 0 }}>{" • " + ele.status + ele.rid}</ul> : null)}
           <b>หมายเหตุ</b> : <br />&emsp;{data.note}
         </Modal.Body>
         <Modal.Footer>
