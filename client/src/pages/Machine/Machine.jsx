@@ -19,12 +19,12 @@ export const Machine = () => {
   useEffect(() => {
 
     const localStr = JSON.parse(window.localStorage.getItem("site"))
-    
-    if(localStr !== null){
-      if(!localStr.find(ele=>ele===num)){
+
+    if (localStr !== null) {
+      if (!localStr.find(ele => ele === num)) {
         history.push('/404')
       }
-    }else{
+    } else {
       history.push('/404')
     }
 
@@ -67,7 +67,7 @@ export const Machine = () => {
     })
   }
 
-  function addPositionHandler(e){
+  function addPositionHandler(e) {
     e.preventDefault()
     const name = document.getElementById('position-name').value
     if (name !== '') {
@@ -83,7 +83,7 @@ export const Machine = () => {
     }
   }
 
-  function addRepairListHandler(e){
+  function addRepairListHandler(e) {
     e.preventDefault()
     const name = document.getElementById('repl-name').value
     if (name !== '') {
@@ -102,13 +102,13 @@ export const Machine = () => {
   const Tag = ({ content, type }) => {
     function deleteTag(e) {
       e.preventDefault()
-      if(type === 'pos'){
+      if (type === 'pos') {
         Data.deletePosition(num, machine, content)
-      } else if(type === 'repl'){
+      } else if (type === 'repl') {
         Data.deleteRepairList(num, machine, content)
       }
     }
-  
+
     return (
       <div className="Tag">
         <h5>{content}</h5>
@@ -138,7 +138,7 @@ export const Machine = () => {
             </InputGroup.Append>
           </InputGroup>
           <div className="tag-wrapper">
-            {position.map((ele, i) => <Tag key={i} content={ele.pid} type={"pos"}/>)}
+            {position.map((ele, i) => <Tag key={i} content={ele.pid} type={"pos"} />)}
           </div>
           <InputGroup className="list">
             <Form.Label style={{ width: "100%" }}>เพิ่มรายการอะไหล่</Form.Label>
@@ -152,7 +152,7 @@ export const Machine = () => {
             </InputGroup.Append>
           </InputGroup>
           <div className="tag-wrapper">
-            {repairlist.map((ele, i) => <Tag key={i} content={ele.rid} type={"repl"}/>)}
+            {repairlist.map((ele, i) => <Tag key={i} content={ele.rid} type={"repl"} />)}
           </div>
         </div>
       </div>
@@ -162,7 +162,7 @@ export const Machine = () => {
         </Modal.Header>
         <Modal.Body>
           <strong style={{ color: "#dc3545", display: "inline" }}>ตำแหน่งซ่อม และรายการอะไหล่ที่เกี่ยวข้องจะถูกลบทั้งหมด</strong>{" "}
-          <p style={{ color: "#dc3545", display: "inline" }}>คุณแน่ใจหรือไม่ว่าต้องการลบ "{machine}" ?</p>
+          <p style={{ color: "#dc3545", display: "inline" }}>คุณแน่ใจหรือไม่ว่าต้องการลบ "{machine}"  ในบ่อ {num}?</p>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" type="button" onClick={handleClose}>ยกเลิก</Button>
