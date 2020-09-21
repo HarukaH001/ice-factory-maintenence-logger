@@ -118,7 +118,7 @@ export const Add = () => {
       note: document.getElementById("remark").value,
       technician: user.username
     };
-    // console.log(formData);
+    console.log(formData);
     Data.addRecord(formData).then(() => {
       console.log('Log Updated')
       history.push('/')
@@ -130,27 +130,17 @@ export const Add = () => {
     if (location === "เลือกบ่อ") {
       setAlert([true, false, false])
       toggleShowAddFail()
-      // document.querySelector(".location-dropdown").classList.add("alert")
-      // alert("A")
     }
     else if (machine === "เลือกเครื่อง") {
       setAlert([false, true, false])
       toggleShowAddFail()
-      // document.querySelector(".machine-dropdown").classList.add("alert")
-      // alert("B")
     }
     else if (position === "เลือกตำแหน่ง") {
       setAlert([false, false, true])
       toggleShowAddFail()
-      // document.querySelector(".position-dropdown").classList.add("alert")
-      // alert("C")
     }
     else {
       setAlert([false, false, false])
-      // document.querySelector(".location-dropdown").classList.remove("alert")
-      // document.querySelector(".machine-dropdown").classList.remove("alert")
-      // document.querySelector(".position-dropdown").classList.remove("alert")
-      // alert("D")
       submitHandler()
     }
   }
