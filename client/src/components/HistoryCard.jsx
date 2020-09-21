@@ -7,6 +7,7 @@ import { Data } from '../services/service';
 export const HistoryCard = ({ data, user }) => {
   const history = useHistory()
   const [show, setShow] = useState(false)
+  const [good, setGood] = useState(false)
 
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
@@ -20,6 +21,12 @@ export const HistoryCard = ({ data, user }) => {
     handleCloseDelete()
     Data.deleteRecord(data.lid).then(() => {
       history.replace("/?deleted=" + data.lid)
+    })
+  }
+
+  function checkGood() {
+    return !data.part.find(ele => {
+      if (ele.status !== "ปกติ") return true
     })
   }
 
@@ -52,7 +59,8 @@ export const HistoryCard = ({ data, user }) => {
           <b>ตำแหน่ง</b> : {data.position}<br />
           <b>ผู้ซ่อม</b> : {data.technician}<br />
           <b>วันที่</b> : {new Date(data.date).toLocaleString([], { dateStyle: 'long', timeStyle: 'short' }) + " น."}<br />
-          <b>รายการซ่อม</b> : {data.part.map((ele, i) => ele.status !== "ปกติ" ? <ul key={i} style={{ margin: 0, paddingLeft: "1rem" }}>{" • " + ele.status + ele.rid}</ul> : null)}
+          <b>รายการซ่อม</b> : {data.part.map((ele, i) => ele.status !== "ปกติ" && <ul key={i} style={{ margin: 0, paddingLeft: "1rem" }}>{" • " + ele.status + ele.rid}</ul>)}
+          {checkGood() && <ul style={{ margin: 0, paddingLeft: "1rem" }}>{" • ทุกรายการปกติ"}</ul>}
           <b>หมายเหตุ</b> : <br />&emsp;{data.note || "--ไม่มี--"}
         </Modal.Body>
         <Modal.Footer>
