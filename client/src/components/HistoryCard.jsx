@@ -52,8 +52,8 @@ export const HistoryCard = ({ data, user }) => {
           <b>ตำแหน่ง</b> : {data.position}<br />
           <b>ผู้ซ่อม</b> : {data.technician}<br />
           <b>วันที่</b> : {new Date(data.date).toLocaleString([], { dateStyle: 'long', timeStyle: 'short' }) + " น."}<br />
-          <b>รายการซ่อม</b> : {data.part.map(ele => ele.status !== "ปกติ" ? <ul style={{ margin: 0 }}>{" • " + ele.status + ele.rid}</ul> : null)}
-          <b>หมายเหตุ</b> : <br />&emsp;{data.note}
+          <b>รายการซ่อม</b> : {data.part.map((ele, i) => ele.status !== "ปกติ" ? <ul key={i} style={{ margin: 0, paddingLeft: "1rem" }}>{" • " + ele.status + ele.rid}</ul> : null)}
+          <b>หมายเหตุ</b> : <br />&emsp;{data.note || "--ไม่มี--"}
         </Modal.Body>
         <Modal.Footer>
           {user.role === 'admin' && <Button variant="danger" onClick={handleShowDelete}>ลบ</Button>}
