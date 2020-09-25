@@ -46,7 +46,7 @@ export const HistoryCard = ({ data, user }) => {
           <h3>{data.location}</h3>
         </div>
         <div className="date">
-          <p style={{ color: "#6c757d" }}>{"#" + data.lid}</p><p>{" · " + data.technician + " · " + new Date(data.date).toLocaleString([], { dateStyle: 'long', timeStyle: 'short' }) + " น."}</p>
+          <p style={{ color: "#6c757d" }}>{"#" + data.lid}</p><p>{" · " + data.technician + " · " + new Date(data.date).toLocaleString([], { dateStyle: 'long', timeStyle: 'short' })}</p>
         </div>
       </div>
       <Modal show={show} onHide={handleClose} centered style={{ fontFamily: "IBM Plex Sans Thai" }}>
@@ -58,7 +58,7 @@ export const HistoryCard = ({ data, user }) => {
           <b>เครื่อง</b> : {data.machine}<br />
           <b>ตำแหน่ง</b> : {data.position}<br />
           <b>ผู้ซ่อม</b> : {data.technician}<br />
-          <b>วันที่</b> : {new Date(data.date).toLocaleString([], { dateStyle: 'long', timeStyle: 'short' }) + " น."}<br />
+          <b>วันที่</b> : {new Date(data.date).toLocaleString([], { dateStyle: 'long', timeStyle: 'short' })}<br />
           <b>รายการซ่อม</b> : {data.part.map((ele, i) => ele.status !== "ปกติ" && <ul key={i} style={{ margin: 0, paddingLeft: "1rem" }}>{" • " + ele.status + ele.rid}</ul>)}
           {checkGood() && <ul style={{ margin: 0, paddingLeft: "1rem" }}>{" • ทุกรายการปกติ"}</ul>}
           <b>หมายเหตุ</b> : <br />&emsp;{data.note || "--ไม่มี--"}
