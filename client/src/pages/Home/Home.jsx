@@ -4,6 +4,7 @@ import { Link, useLocation, useHistory } from 'react-router-dom';
 import { Button, Form, Toast } from 'react-bootstrap'
 import { HistoryCard, NavDropdown } from '../../components'
 import { Authen, Data } from '../../services/service';
+import Fuse from 'fuse.js'
 
 export const Home = () => {
   const history = useHistory()
@@ -51,17 +52,44 @@ export const Home = () => {
   }, [del])
 
   function cardRender(search) {
-    return log.map((ele, i) => {
-      if (search) {
-        if (ele.machine.includes(search) || ele.position.includes(search) || ele.technician.includes(search) || ele.location.includes(search)) {
-          return (<HistoryCard user={user} data={ele} key={i} />)
-        }
-        else return null
+    const presearch = log.map(ele=>{
+      const date = new Date(ele.date)
+      ele.dateObj = {
+        dd: date.getDate(),
+        mm: date.getMonth() + 1,
+        yyyy: date.getFullYear()
       }
-      else {
-        return (<HistoryCard user={user} data={ele} key={i} />)
-      }
+      return ele
     })
+
+    const options = {
+      keys: [
+        "lid",
+        "location",
+        "position",
+        "technician",
+        "machine",
+        "part.rid",
+        "part.status",
+        "dateObj.dd",
+        "dateObj.mm",
+        "dateObj.yyyy",
+        "note",
+      ]
+    }
+    const fuse = new Fuse(presearch, options)
+
+    if(search){
+      const result = fuse.search(search)
+      // console.log(result)
+      return result?result.map((ele,i)=>{
+        return (<HistoryCard user={user} data={ele.item} key={i} />)
+      }):[]
+    } else {
+      return log.map((ele,i)=>{
+        return (<HistoryCard user={user} data={ele} key={i} />)
+      })
+    }
   }
 
   return (
