@@ -4,6 +4,7 @@ import './Users.scss'
 import { Button, InputGroup, FormControl, Modal, Form, Toast, Table } from 'react-bootstrap'
 import { NavDropdown } from '../../components'
 import firebase, { Authen } from '../../services/service.js'
+import Fuse from 'fuse.js'
 
 export const Users = () => {
   // const history = useHistory()
@@ -76,29 +77,60 @@ export const Users = () => {
   }, [user])
 
   function renderUser(search) {
-    return user.sort((a, b) => sortByTimeStampGeneratedEmail(a, b, 'Asd')).map((ele, i) => {
-      if (search) {
-        if (ele.username.includes(search)) {
-          return (
-            <tr onClick={() => handleShowDetail(ele)} style={{ cursor: "pointer" }} key={ele.uid}>
-              <td>{i + 1}</td>
-              <td>{ele.username}</td>
-              <td>{ele.password}</td>
-            </tr>
-          )
-        }
-        else return null
-      }
-      else {
-        return ( //ทำ component มา render ที่นี่
+    const options = {
+      keys: [
+        "role",
+        "username"
+      ]
+    }
+    const fuse = new Fuse(user, options)
+
+    if(search){
+      const result = fuse.search(search).map(ele=>ele.item)
+      // console.log(result)
+      return result?result.sort((a, b) => sortByTimeStampGeneratedEmail(a, b, 'Asd')).map((ele,i)=>{
+        return (
           <tr onClick={() => handleShowDetail(ele)} style={{ cursor: "pointer" }} key={ele.uid}>
             <td>{i + 1}</td>
             <td>{ele.username}</td>
             <td>{ele.password}</td>
           </tr>
         )
-      }
-    })
+      }):[]
+    } else {
+      return user.sort((a, b) => sortByTimeStampGeneratedEmail(a, b, 'Asd')).map((ele,i)=>{
+        return (
+          <tr onClick={() => handleShowDetail(ele)} style={{ cursor: "pointer" }} key={ele.uid}>
+            <td>{i + 1}</td>
+            <td>{ele.username}</td>
+            <td>{ele.password}</td>
+          </tr>
+        )
+      })
+    }
+    // return user.sort((a, b) => sortByTimeStampGeneratedEmail(a, b, 'Asd')).map((ele, i) => {
+    //   if (search) {
+    //     if (ele.username.includes(search)) {
+    //       return (
+    //         <tr onClick={() => handleShowDetail(ele)} style={{ cursor: "pointer" }} key={ele.uid}>
+    //           <td>{i + 1}</td>
+    //           <td>{ele.username}</td>
+    //           <td>{ele.password}</td>
+    //         </tr>
+    //       )
+    //     }
+    //     else return null
+    //   }
+    //   else {
+    //     return ( //ทำ component มา render ที่นี่
+    //       <tr onClick={() => handleShowDetail(ele)} style={{ cursor: "pointer" }} key={ele.uid}>
+    //         <td>{i + 1}</td>
+    //         <td>{ele.username}</td>
+    //         <td>{ele.password}</td>
+    //       </tr>
+    //     )
+    //   }
+    // })
   }
 
   function sortByTimeStampGeneratedEmail(a, b, option = 'Des') {
