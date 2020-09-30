@@ -20,7 +20,6 @@ export const Add = () => {
 
   const [locationList, setLocaltionList] = useState([])
   const [machineList, setMachineList] = useState([])
-  // const positionList = ["ฝั่งมอเตอร์", "ฝั่งวาล์วดูด"]
   const [positionList, setPositionList] = useState([])
   const statusList = ["ปกติ", "ซ่อม", "เปลี่ยน"]
   const [partList, setPartList] = useState([])
@@ -103,7 +102,6 @@ export const Add = () => {
   }
 
   function submitHandler() {
-    // e.preventDefault()
     const formData = {
       createdTime: Date.now(),
       location: location.sid,

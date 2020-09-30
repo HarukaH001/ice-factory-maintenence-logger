@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-// import { useHistory } from 'react-router-dom'
 import './Login.scss'
 import { Button, InputGroup, FormControl, Dropdown, Alert, Form } from 'react-bootstrap'
 import { Authen } from '../../services/service.js'
@@ -8,7 +7,6 @@ export const Login = () => {
   const errorMessageList = ["กรุณากรอกรหัสผ่าน", "รหัสผ่านไม่ถูกต้อง", "กรุณาเลือกผู้ใช้", "บัญชีถูกระงับชั่วคราว", "สำหรับนักพัฒนา: อีเมลใช้งานไม่ได้", "สำหรับนักพัฒนา: ไม่พบผู้ใช้"]
   const defaultSelectUser = { username: "เลือกชื่อผู้ใช้" }
 
-  // const history = useHistory()
   const [user, setUser] = useState(defaultSelectUser)
   const [password, setPassword] = useState('')
   const [loginError, setLoginError] = useState(false)
@@ -36,7 +34,6 @@ export const Login = () => {
         setLoading(false)
         if (value.user) {
           setUser(defaultSelectUser)
-          // history.push('/')
         } else {
           console.log(value.code)
           if (value.code === "auth/invalid-email") {

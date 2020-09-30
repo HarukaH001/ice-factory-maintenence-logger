@@ -1,8 +1,7 @@
-// import firebase from "firebase"
+
 import {firebaseConfig as config} from '../Config.js'
 import superagent from 'superagent'
 
-// const database = firebase.database()
 
 export const Auth = (firebase) => {
     const database = firebase.database()
@@ -33,7 +32,6 @@ export const Auth = (firebase) => {
                     return ele[1]
                 })
             }).catch(err=>{
-                // console.log(err)
                 return []
             })
         },
@@ -64,9 +62,9 @@ export const Auth = (firebase) => {
                     password: config.commonPassword,
                     returnSecureToken: true
                 }).end((err,res)=>{
-                    // console.log(err?err:res)
+
                     if(!err){
-                        //เพิ่มผู้ใช้ใน db
+
                         database.ref('user/'+res.body.localId).set({
                             email: email,
                             password: password,

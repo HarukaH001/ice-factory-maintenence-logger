@@ -1,8 +1,7 @@
-// import firebase from "firebase"
+
 import {firebaseConfig as config} from '../Config.js'
 import superagent from 'superagent'
 
-// const database = firebase.database()
 
 export const _Data = (firebase) => {
     const database = firebase.database()

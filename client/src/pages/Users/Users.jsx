@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import './Users.scss'
-// import { useHistory } from 'react-router-dom';
 import { Button, InputGroup, FormControl, Modal, Form, Toast, Table } from 'react-bootstrap'
 import { NavDropdown } from '../../components'
 import firebase, { Authen } from '../../services/service.js'
-import Fuse from 'fuse.js'
+import stringSimilarity from 'string-similarity'
 
 export const Users = () => {
-  // const history = useHistory()
   const [user, setUser] = useState([])
   const [alert, setAlert] = useState('')
   const [edit, setEdit] = useState(false)
@@ -29,7 +27,6 @@ export const Users = () => {
 
   const [showDetail, setShowDetail] = useState(false);
   const handleCloseDetail = () => { setShowDetail(false); setEdit(false); setAlert('') }
-  // const handleCloseEdit = () => { setEdit(false) }
   const handleShowDetail = (select) => { setShowDetail(true); setUserDetail(select) };
 
   const [showDelete, setShowDelete] = useState(false);
@@ -76,18 +73,44 @@ export const Users = () => {
     //eslint-disable-next-line
   }, [user])
 
+  function customSearch(search, presearch){
+    const keyword = search.split(' ');
+    const target = ["username"]
+    target.reverse()
+
+    return presearch.map(ele=>{
+      let percent = 0
+      target.forEach((tg,i)=>{
+        let weight = 0
+        keyword.forEach(kw=>{
+          if(ele[tg]){
+              const temp = ele[tg]+""
+              if(kw.length > 1){
+                weight += stringSimilarity.compareTwoStrings(kw.toLowerCase(), temp.toLowerCase())
+              }
+              else{
+
+                if(temp.toLowerCase().includes(kw.toLowerCase())){
+                  weight += 1/temp.length
+                }
+              }
+            }
+        })
+        percent += weight*(i+1)
+      })
+      ele.percent = percent
+      return ele
+    }).sort((a,b)=>{
+      return b.percent - a.percent
+    })
+    
+  }
+
+
   function renderUser(search) {
-    const options = {
-      keys: [
-        "role",
-        "username"
-      ]
-    }
-    const fuse = new Fuse(user, options)
 
     if(search){
-      const result = fuse.search(search).map(ele=>ele.item)
-      // console.log(result)
+      const result = customSearch(search,user).filter(ele=>ele.percent>0)
       return result?result.sort((a, b) => sortByTimeStampGeneratedEmail(a, b, 'Asd')).map((ele,i)=>{
         return (
           <tr onClick={() => handleShowDetail(ele)} style={{ cursor: "pointer" }} key={ele.uid}>
@@ -108,29 +131,6 @@ export const Users = () => {
         )
       })
     }
-    // return user.sort((a, b) => sortByTimeStampGeneratedEmail(a, b, 'Asd')).map((ele, i) => {
-    //   if (search) {
-    //     if (ele.username.includes(search)) {
-    //       return (
-    //         <tr onClick={() => handleShowDetail(ele)} style={{ cursor: "pointer" }} key={ele.uid}>
-    //           <td>{i + 1}</td>
-    //           <td>{ele.username}</td>
-    //           <td>{ele.password}</td>
-    //         </tr>
-    //       )
-    //     }
-    //     else return null
-    //   }
-    //   else {
-    //     return ( //ทำ component มา render ที่นี่
-    //       <tr onClick={() => handleShowDetail(ele)} style={{ cursor: "pointer" }} key={ele.uid}>
-    //         <td>{i + 1}</td>
-    //         <td>{ele.username}</td>
-    //         <td>{ele.password}</td>
-    //       </tr>
-    //     )
-    //   }
-    // })
   }
 
   function sortByTimeStampGeneratedEmail(a, b, option = 'Des') {
@@ -158,7 +158,6 @@ export const Users = () => {
       setAlert("รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร")
     }
     else {
-      // console.log(formData)
       Authen.editUser(userDetail.uid, formData).then(() => {
         handleCloseDetail()
         toggleShowEditSuccess()

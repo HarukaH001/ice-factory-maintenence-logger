@@ -4,7 +4,8 @@ import { Link, useLocation, useHistory } from 'react-router-dom';
 import { Button, Form, Toast } from 'react-bootstrap'
 import { HistoryCard, NavDropdown } from '../../components'
 import { Authen, Data } from '../../services/service';
-import Fuse from 'fuse.js'
+
+import stringSimilarity from 'string-similarity'
 
 export const Home = () => {
   const history = useHistory()
@@ -51,40 +52,55 @@ export const Home = () => {
     if (del) toggleShowDeleteSuccess()
   }, [del])
 
+
+
+  function customSearch(search, presearch){
+    const keyword = search.split(' ');
+    const target = ["location","position","machine","technician","dd","mm","yyyy","lid"]
+    target.reverse()
+
+    return presearch.map(ele=>{
+      let percent = 0
+      target.forEach((tg,i)=>{
+        let weight = 0
+        keyword.forEach(kw=>{
+          if(ele[tg]){
+              const temp = ele[tg]+""
+              if(kw.length > 1){
+                weight += stringSimilarity.compareTwoStrings(kw.toLowerCase(), temp.toLowerCase())
+              }
+              else{
+
+                if(temp.toLowerCase().includes(kw.toLowerCase())){
+                  weight += 1/temp.length
+                }
+              }
+            }
+        })
+        percent += weight*(i+1)
+      })
+      ele.percent = percent
+      return ele
+    }).sort((a,b)=>{
+      return b.percent - a.percent
+    })
+    
+  }
+
   function cardRender(search) {
     const presearch = log.map(ele=>{
       const date = new Date(ele.date)
-      ele.dateObj = {
-        dd: date.getDate(),
-        mm: date.getMonth() + 1,
-        yyyy: date.getFullYear()
-      }
+        ele.dd = date.getDate()
+        ele.mm = date.getMonth()+ 1
+        ele.yyyy = date.getFullYear()
       return ele
     })
-
-    const options = {
-      keys: [
-        "lid",
-        "location",
-        "position",
-        "technician",
-        "machine",
-        "part.rid",
-        "part.status",
-        "dateObj.dd",
-        "dateObj.mm",
-        "dateObj.yyyy",
-        "note",
-      ]
-    }
-    const fuse = new Fuse(presearch, options)
+    const output = customSearch(search, presearch)
 
     if(search){
-      const result = fuse.search(search)
-      // console.log(result)
-      return result?result.map((ele,i)=>{
-        return (<HistoryCard user={user} data={ele.item} key={i} />)
-      }):[]
+      return output.map((ele,i)=>{
+        return (<HistoryCard user={user} data={ele} key={i} />)
+      })
     } else {
       return log.map((ele,i)=>{
         return (<HistoryCard user={user} data={ele} key={i} />)

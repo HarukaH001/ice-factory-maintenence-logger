@@ -4,7 +4,6 @@
   justify-content: center;
 
   .container {
-    // width: 90vw;
     margin-top: 1em;
 
     .header {
@@ -28,7 +27,6 @@
         text-overflow: ellipsis;
         @media screen and (max-width: 359px) {
           font-size: x-large;
-          // margin-bottom: 1rem;
         }
       }
     }
