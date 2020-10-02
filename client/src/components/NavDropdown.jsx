@@ -3,8 +3,14 @@ import { Dropdown } from 'react-bootstrap'
 import firebase, { Authen } from '../services/service.js'
 import { firebaseConfig as config } from '../Config.js'
 
-export const NavDropdown = ({ data, _disabled }) => {
+import * as FileSaver from 'file-saver';
+import * as XLSX from 'xlsx';
+
+export const NavDropdown = ({ data, _disabled,}) => {
   const [user, setUser] = useState('')
+  
+  const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+  const fileExtension = '.xlsx';
 
   useEffect(() => {
     if (firebase.auth().currentUser) {
@@ -26,6 +32,15 @@ export const NavDropdown = ({ data, _disabled }) => {
     return [day, month, year].join("-")
   }
 
+  const exportToCSV = (csvData, fileName) => {
+    console.log(csvData);
+    const ws = XLSX.utils.json_to_sheet(csvData);
+    const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
+    const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    const data = new Blob([excelBuffer], {type: fileType});
+    FileSaver.saveAs(data, 'Report-maintenance-logger-@-'+fileName + fileExtension);
+  }
+
   return (
     <>
       <Dropdown alignRight>
@@ -38,8 +53,9 @@ export const NavDropdown = ({ data, _disabled }) => {
             <Dropdown.Item href="/users" disabled={_disabled === "users"}>จัดการผู้ใช้</Dropdown.Item>
             <Dropdown.Item href="/sites" disabled={_disabled === "sites"}>จัดการบ่อ</Dropdown.Item>
             <Dropdown.Divider />
-            <Dropdown.Item href={"https://maintenance-logger.firebaseio.com/.json?apiKey=" + config.apiKey + "&download=maintenance-logger-backup-" + currentDate() + ".json&format=export&print=pretty"}>สำรองข้อมูล</Dropdown.Item>
-            <Dropdown.Item href="/" disabled>รับรายงานซ่อม</Dropdown.Item>
+            <Dropdown.Item href={"https://maintenance-logger.firebaseio.com/.json?apiKey=" + config.apiKey + "&download=Backup-maintenance-logger-@-" + currentDate() + ".json&format=export&print=pretty"}>สำรองข้อมูล</Dropdown.Item>
+            {/* <Dropdown.Item href="/" disabled>รับรายงานซ่อม</Dropdown.Item> */}
+            <Dropdown.Item onClick={()=>{exportToCSV(data,currentDate())}}>รับรายงานซ่อม</Dropdown.Item>
             <Dropdown.Divider />
           </>}
           <Dropdown.Item href="#" onClick={() => Authen.logout()} style={{ color: "red" }}>ออกจากระบบ</Dropdown.Item>
