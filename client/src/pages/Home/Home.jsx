@@ -55,12 +55,13 @@ export const Home = () => {
 
   useEffect(()=>{
     if(log){
-      setXcel(prepareData(log))
+      setXcel(prepareData(preSearch(log)))
     }
   },[log])
 
   function prepareData(data){
     let procData = []
+    data.reverse()
     if(data && data.length>0){
       data.forEach((ele, i)=>{
         let details = []
@@ -72,7 +73,9 @@ export const Home = () => {
           })
           details = details.join("  , ")
           procData.push({
-            "ว/ด/ปี": ele.dd+'/'+ele.mm+'/'+ele.yyyy,
+            "#": ele.lid,
+            "ว/ด/ปี": (ele.dd<10 ? '0'+ele.dd : ele.dd)+'/'+(ele.mm<10 ?'0'+ele.mm : ele.mm)+'/'+ele.yyyy,
+            "เวลา": (ele.hour<10 ? '0'+ele.hour : ele.hour)+':'+(ele.min<10 ? '0'+ele.min : ele.min)+' น.',
             "บ่อ": ele.location,
             "เครื่องจักร" : ele.machine,
             "ตำแหน่ง" : ele.position,
@@ -122,19 +125,14 @@ export const Home = () => {
         ele.dd = date.getDate()
         ele.mm = date.getMonth()+ 1
         ele.yyyy = date.getFullYear()
+        ele.hour = date.getHours()
+        ele.min = date.getMinutes()
       return ele
     })
   }
 
   function cardRender(search) {
-    const presearch = log.map(ele=>{
-      const date = new Date(ele.date)
-        ele.dd = date.getDate()
-        ele.mm = date.getMonth()+ 1
-        ele.yyyy = date.getFullYear()
-      return ele
-    })
-    const output = customSearch(search, presearch)
+    const output = customSearch(search, preSearch(log))
 
     if(search){
       return output.map((ele,i)=>{

@@ -33,8 +33,18 @@ export const NavDropdown = ({ data, _disabled,}) => {
   }
 
   const exportToCSV = (csvData, fileName) => {
-    console.log(csvData);
     const ws = XLSX.utils.json_to_sheet(csvData);
+    let wscols = [
+      {wpx: 27},
+      {wpx: 75},
+      {wpx: 50},
+      {wpx: 37},
+      {wpx: 100},
+      {wpx: 175},
+      {wpx: 575},
+      {wpx: 100},
+    ];
+    ws['!cols'] = wscols;
     const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
     const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
     const data = new Blob([excelBuffer], {type: fileType});
@@ -54,7 +64,6 @@ export const NavDropdown = ({ data, _disabled,}) => {
             <Dropdown.Item href="/sites" disabled={_disabled === "sites"}>จัดการบ่อ</Dropdown.Item>
             <Dropdown.Divider />
             <Dropdown.Item href={"https://maintenance-logger.firebaseio.com/.json?apiKey=" + config.apiKey + "&download=Backup-maintenance-logger-@-" + currentDate() + ".json&format=export&print=pretty"}>สำรองข้อมูล</Dropdown.Item>
-            {/* <Dropdown.Item href="/" disabled>รับรายงานซ่อม</Dropdown.Item> */}
             <Dropdown.Item onClick={()=>{exportToCSV(data,currentDate())}}>รับรายงานซ่อม</Dropdown.Item>
             <Dropdown.Divider />
           </>}
