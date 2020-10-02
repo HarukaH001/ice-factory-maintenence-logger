@@ -1,6 +1,7 @@
 
 import {firebaseConfig as config} from '../Config.js'
 import superagent from 'superagent'
+import axios from 'axios'
 
 
 export const Auth = (firebase) => {
@@ -77,14 +78,19 @@ export const Auth = (firebase) => {
                 })
             })
         },
-
-        removeUser(uid) {
+        removeUser(uid){
             return new Promise(resolve=>{
-                database.ref('user/'+uid).set(null).then(res=>{
-                    const rmuser = functions.httpsCallable('removeUser')
-                    rmuser({localId: uid})
-                    resolve()
-                }).catch(err=>{
+                database.ref('user/'+uid).set(null).then(DBres=>{
+                    axios.get("https://us-central1-maintenance-logger.cloudfunctions.net/api/removeuser",{
+                        headers:{
+                            'localid':uid
+                        }
+                    }).then(res=>{
+                        resolve()
+                    }).catch(err=>{
+                        resolve()
+                    })
+                }).catch(DBerr=>{
                     resolve()
                 })
             })
@@ -107,10 +113,8 @@ export const Auth = (firebase) => {
                     let subPass = config.commonPassword
                     let subMail = email
                     if(!user){
-                        //user not found
                         subMail = 'ff' + subMail
                     } else if(user && user.password !== password){
-                        //wrong password
                         subPass += 'ff'
                     }
                     return firebase.auth().signInWithEmailAndPassword(subMail, subPass).then(res=>{
