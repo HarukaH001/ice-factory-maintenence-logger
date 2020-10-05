@@ -74,7 +74,7 @@ export const Home = () => {
           details = details.join("  , ")
           procData.push({
             "#": ele.lid,
-            "ว/ด/ปี": (ele.dd<10 ? '0'+ele.dd : ele.dd)+'/'+(ele.mm<10 ?'0'+ele.mm : ele.mm)+'/'+ele.yyyy,
+            "ว/ด/ป": (ele.dd<10 ? '0'+ele.dd : ele.dd)+'/'+(ele.mm<10 ?'0'+ele.mm : ele.mm)+'/'+ele.yyyy,
             "เวลา": (ele.hour<10 ? '0'+ele.hour : ele.hour)+':'+(ele.min<10 ? '0'+ele.min : ele.min)+' น.',
             "บ่อ": ele.location,
             "เครื่องจักร" : ele.machine,
