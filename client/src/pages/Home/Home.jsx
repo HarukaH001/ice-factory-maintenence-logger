@@ -37,7 +37,8 @@ export const Home = () => {
               ele[1].lid = ele[0]
               return ele[1]
             })
-            Data.sort((a, b) => b.lid - a.lid)
+            // console.log(Data)
+            Data.sort((a, b) => new Date(b.date) - new Date(a.date))
             setLog(Data)
           } else setLog([])
         }
