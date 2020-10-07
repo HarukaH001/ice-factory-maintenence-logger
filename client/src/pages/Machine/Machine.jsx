@@ -100,6 +100,19 @@ export const Machine = () => {
   }
 
   const Tag = ({ content, type }) => {
+    return (
+      <div className="Tag">
+        <h5>{content}</h5>
+        <DeleteTag content={content} type={type} />
+      </div>
+    )
+  }
+
+  const DeleteTag = ({ content, type }) => {
+    const [showDelModal, setShowDelModal] = useState(false)
+    const handleDelClose = () => { setShowDelModal(false) }
+    const handleDelShow = () => { setShowDelModal(true) }
+
     function deleteTag(e) {
       e.preventDefault()
       if (type === 'pos') {
@@ -110,10 +123,21 @@ export const Machine = () => {
     }
 
     return (
-      <div className="Tag">
-        <h5>{content}</h5>
-        <button title="ลบรายการนี้" onClick={deleteTag}>&#xf00d;</button>
-      </div>
+      <>
+        <button title="ลบรายการนี้" onClick={handleDelShow}>&#xf00d;</button>
+        <Modal show={showDelModal} onHide={handleDelClose} centered style={{ fontFamily: "IBM Plex Sans Thai" }} backdrop="static" keyboard={false}>
+          <Modal.Header>
+            <Modal.Title style={{ width: "100%" }}>ลบ "{content}"</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <p>คุณแน่ใจหรือไม่ว่าต้องการลบ "{content}"?</p>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" type="button" onClick={handleDelClose}>ยกเลิก</Button>
+            <Link to="/"><Button variant="danger" type="button" onClick={deleteTag}>ลบ</Button></Link>
+          </Modal.Footer>
+        </Modal>
+      </>
     )
   }
 
