@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./Home.scss";
 import { Link, useLocation, useHistory } from "react-router-dom";
 import { Button, Form, Toast, InputGroup } from "react-bootstrap";
@@ -9,6 +9,7 @@ import stringSimilarity from "string-similarity";
 
 export const Home = () => {
   const history = useHistory();
+  const searchRef = useRef(null);
   const [search, setSearch] = useState("");
   const [log, setLog] = useState([]);
   const [user, setUser] = useState();
@@ -182,16 +183,13 @@ export const Home = () => {
               <Form.Control
                 type="text"
                 placeholder="ค้นหารายการซ่อม"
-                onInput={(e) => {
-                  setSearched(false);
-                  setSearch(e.target.value);
-                }}
+                ref={searchRef}
               />
               <InputGroup.Append>
                 <Button
                   variant="primary"
                   type="submit"
-                  onClick={() => setSearched(true)}
+                  onClick={() => {setSearched(true); setSearch(searchRef.current.value)}}
                   title="ค้นหา"
                 >
                   &#xF002;
